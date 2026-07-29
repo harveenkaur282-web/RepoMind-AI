@@ -1,144 +1,190 @@
-# RepoMind-AI
-## An Agentic Repository Intelligence Workspace for GitHub Knowledge Discovery
+# RepoMind AI
 
-## Overview
+# An Agentic Repository Intelligence Workspace for GitHub Knowledge Discovery
+
+---
+
+# 1. Overview
 
 ## 1.1 Product Description
 
-RepoMind AI is an Agentic RAG-powered developer intelligence platform that transforms GitHub repositories into interactive, searchable knowledge bases.
+RepoMind AI is an Agentic RAG-powered developer intelligence platform that transforms software repositories into intelligent, searchable, and continuously improving knowledge bases.
 
-The platform enables developers to connect one or multiple GitHub repositories and automatically ingest, process, index, and understand repository knowledge from diverse sources including:
-An AI engineering workspace that understands software repositories, explains architecture, tracks knowledge evolution, and lets developers inspect and evaluate the entire RAG pipeline
+The platform enables developers and engineering teams to connect one or multiple GitHub repositories and automatically ingest, understand, search, evaluate, and interact with repository knowledge.
 
-1. README files
-2. Documentation
-3. Wikis
-4. Code examples
-5. Release notes
-6. GitHub Issues
-7. Pull Requests
-8. Repository metadata
+RepoMind AI creates an intelligence layer over software repositories by combining:
 
-Using advanced retrieval techniques, multi-agent orchestration, semantic understanding, and evaluation-driven RAG pipelines, RepoMind AI allows users to ask complex questions about software projects and receive accurate, citation-backed answers.
+- Retrieval Augmented Generation (RAG)
+- Multi-agent orchestration
+- Hybrid search
+- Semantic understanding
+- Repository-aware reasoning
+- Automated evaluation
+- Production observability
 
-Unlike traditional code search tools that rely on keyword matching, or generic LLM assistants that lack repository-specific context, RepoMind AI builds a continuously updated intelligence layer over software repositories.
+The platform allows developers to understand unfamiliar codebases, explore architectural decisions, debug issues, analyze historical changes, and interact with repositories through grounded AI conversations.
+
+Unlike traditional code search systems that only match keywords, or generic AI assistants that lack repository context, RepoMind AI builds a continuously updated repository knowledge layer capable of reasoning across documentation, code, issues, pull requests, and repository history.
 
 ---
 
 # 2. Problem Statement
 
-Modern software repositories contain large amounts of distributed knowledge.
+Modern software repositories contain large amounts of fragmented knowledge.
 
-A developer trying to understand an unfamiliar project often needs to search through:
+A developer trying to understand an unfamiliar project must search through:
 
-* README files for setup instructions
-* Documentation for concepts
-* Source code for implementation details
-* Issues for bug explanations
-* Pull Requests for design decisions
-* Release notes for historical changes
+- README files
+- Documentation
+- Source code
+- Examples
+- Issues
+- Pull Requests
+- Release notes
+- Repository history
 
-This creates several problems:
+This creates several challenges.
 
-### Knowledge fragmentation
+---
 
-Important information is distributed across multiple sources.
+## 2.1 Knowledge Fragmentation
 
-### Poor discoverability
+Important technical knowledge is distributed across multiple locations.
 
-Developers cannot easily find why certain decisions were made.
+Example:
 
-### Lack of contextual understanding
+A feature explanation may exist in:
 
-Traditional search finds files but does not explain relationships.
+- documentation
+- implementation code
+- a previous pull request
+- issue discussions
 
-### LLM hallucination risk
+Developers must manually connect these pieces.
 
-General-purpose LLMs do not have complete repository context and may generate inaccurate answers.
+---
 
-### Time-consuming onboarding
+## 2.2 Poor Discoverability
 
-New developers spend significant time understanding unfamiliar codebases.
+Traditional search systems return files or keywords but fail to explain:
+
+- why something exists
+- how components interact
+- what design decisions were made
+
+---
+
+## 2.3 Lack of Repository Context
+
+General-purpose LLM assistants do not naturally understand:
+
+- repository architecture
+- project-specific terminology
+- historical changes
+- implementation details
+
+This increases hallucination risk.
+
+---
+
+## 2.4 Slow Developer Onboarding
+
+New contributors spend significant time understanding:
+
+- project structure
+- dependencies
+- workflows
+- design decisions
 
 ---
 
 # 3. Proposed Solution
 
-RepoMind AI creates an intelligent repository knowledge layer.
+RepoMind AI creates an intelligent repository knowledge workspace.
 
 The platform:
 
-1. Connects to GitHub repositories.
-2. Automatically extracts repository knowledge.
-3. Cleans and structures information.
-4. Creates searchable indexes.
+1. Connects GitHub repositories.
+2. Extracts repository knowledge.
+3. Processes different document types.
+4. Creates searchable knowledge indexes.
 5. Uses hybrid retrieval and reranking.
 6. Applies agentic reasoning.
-7. Generates grounded answers with citations.
-8. Evaluates answer quality continuously.
-9. Provides monitoring and observability.
+7. Generates citation-backed answers.
+8. Evaluates retrieval and answer quality.
+9. Monitors system performance.
+10. Continuously improves through experiments.
 
 ---
 
 # 4. Target Users
 
-## Primary Users
+---
 
-### Software Developers
+# 4.1 Software Developers
 
 Use cases:
 
-* Understand unfamiliar repositories
-* Debug issues
-* Learn frameworks
-* Explore architecture
+- Understand unfamiliar repositories
+- Debug implementation issues
+- Explore architecture
+- Learn new frameworks
+- Find relevant code and documentation
 
 ---
 
-### Open Source Contributors
+# 4.2 Open Source Contributors
 
 Use cases:
 
-* Quickly understand contribution areas
-* Find relevant files
-* Understand previous discussions
+- Understand contribution areas
+- Find related issues
+- Explore previous discussions
+- Learn project conventions
 
 ---
 
-### Engineering Teams
+# 4.3 Engineering Teams
 
 Use cases:
 
-* Internal repository knowledge assistant
-* Developer onboarding
-* Technical documentation assistant
+- Internal repository assistant
+- Developer onboarding platform
+- Technical documentation assistant
+- Engineering knowledge management
 
 ---
 
 # 5. Product Goals
 
-## Primary Goals
+---
 
-Build a production-style Agentic RAG system capable of:
+# Primary Goals
 
-* Multi-repository ingestion
-* Intelligent retrieval
-* Grounded question answering
-* Retrieval evaluation
-* End-to-end evaluation
-* Monitoring
+Build a production-style Agentic RAG platform capable of:
+
+- Multi-repository knowledge management
+- Automated repository ingestion
+- Repository-aware question answering
+- Hybrid retrieval
+- Agentic reasoning
+- Retrieval evaluation
+- End-to-end RAG evaluation
+- AI observability
+- Production deployment
 
 ---
 
-## Secondary Goals
+# Secondary Goals
 
 Demonstrate:
 
-* AI engineering practices
-* Production deployment
-* CI/CD
-* Observability
-* Scalable architecture
+- AI engineering practices
+- Production RAG architecture
+- Cloud deployment
+- CI/CD automation
+- Monitoring
+- Evaluation-driven development
 
 ---
 
@@ -146,67 +192,66 @@ Demonstrate:
 
 ---
 
-# Feature 1: Repository Workspace Management
+# Feature 1: Multi Repository Workspace
 
 ## Description
 
 Users can create workspaces containing multiple repositories.
 
 Example:
-
-```
 AI Framework Workspace
 
 ✓ LangGraph
 ✓ LangChain
-✓ CrewAI
 ✓ LlamaIndex
-```
+✓ CrewAI
 
 ---
 
 Capabilities:
 
-* Add repository URL
-* Remove repository
-* Trigger ingestion
-* View repository status
-* Manage multiple knowledge bases
+- Add repositories
+- Remove repositories
+- Manage repository collections
+- Trigger ingestion
+- Monitor repository status
+- Query one or multiple repositories
 
 ---
 
-# Feature 2: Automated Knowledge Ingestion Pipeline
+# Feature 2: Automated Knowledge Ingestion
 
 ## Description
 
-The system automatically extracts repository information.
+RepoMind automatically extracts repository knowledge.
 
-Sources:
+Supported sources:
 
-### Documentation
+## Documentation
 
-* README.md
-* docs/
-* markdown files
+- README files
+- Markdown documentation
+- Wiki pages
+- Tutorials
+- Examples
 
-### Development History
+## Development History
 
-* Issues
-* Pull Requests
-* Discussions
-* Release notes
+- Issues
+- Pull Requests
+- Discussions
+- Release notes
 
-### Repository Structure
+## Repository Information
 
-* Languages
-* Dependencies
-* Directory structure
+- File structure
+- Languages
+- Dependencies
+- Metadata
 
 ---
 
 Pipeline:
-
-```
 GitHub Repository
 
 ↓
@@ -219,57 +264,58 @@ Cleaning
 
 ↓
 
-Metadata enrichment
+Metadata Enrichment
 
 ↓
 
-Semantic chunking
+Document Classification
 
 ↓
 
-Embedding generation
+Document-Aware Chunking
 
 ↓
 
-Index creation
+Embedding Generation
 
 ↓
 
-Evaluation dataset creation
+Index Creation
 
 ↓
 
-Ready for querying
-```
+Evaluation Dataset Generation
+
+↓
+
+Knowledge Base Ready
+
 
 ---
 
 # Feature 3: Intelligent Retrieval System
 
-## Description
-
-RepoMind AI implements advanced retrieval instead of simple similarity search.
+RepoMind implements production-grade retrieval.
 
 Pipeline:
 
-```
+
 User Query
 
 ↓
 
-Conversation-aware Query Rewriting
+Conversation-Aware Query Rewriting
 
 ↓
 
 Hybrid Retrieval
 
-       |
-       |
-       ↓
+    |
+    |
 
 BM25 Search
 
-+
+    +
 
 Vector Search
 
@@ -287,117 +333,93 @@ Context Selection
 
 ↓
 
-LLM
-```
+LLM Generation
+
 
 ---
 
-Technologies:
+Capabilities:
 
-* PostgreSQL
-* pgvector
-* BM25
-* Embeddings
-* ONNX Runtime
-* Cross Encoder reranker
-
----
-
-# Feature 4: Agentic Question Answering
-
-## Description
-
-The system uses specialized agents to answer repository questions.
+- Semantic search
+- Keyword search
+- Hybrid retrieval
+- Query rewriting
+- Context ranking
+- Citation generation
 
 ---
 
-## Agent Architecture
+# Feature 4: Agentic Repository Understanding
 
-```
-                 User Query
+RepoMind uses specialized agents for repository reasoning.
 
-                     |
-
-              Orchestrator Agent
-
-                     |
-
- ---------------------------------
-
- |        |          |            |
-
-Repo    Docs     Issue       Retrieval
-
-Agent   Agent    Agent        Agent
-
-
-                     |
-
-              Answer Agent
-
-                     |
-
-              Final Response
-```
-
----
-
-Agents:
+Agent responsibilities:
 
 ## Repository Agent
 
 Handles:
 
-* repository metadata
-* structure understanding
-* project overview
+- repository metadata
+- structure understanding
+- project overview
+
+---
 
 ## Documentation Agent
 
 Handles:
 
-* README
-* docs
-* tutorials
+- README
+- documentation
+- tutorials
+
+---
+
+## Code Intelligence Agent
+
+Handles:
+
+- source code understanding
+- implementation details
+
+---
 
 ## Issue Agent
 
 Handles:
 
-* bugs
-* discussions
-* solutions
+- bugs
+- discussions
+- troubleshooting knowledge
+
+---
 
 ## Pull Request Agent
 
 Handles:
 
-* feature changes
-* historical decisions
+- feature history
+- architectural decisions
 
-## Retrieval Agent
-
-Handles:
-
-* search
-* reranking
-* context selection
+---
 
 ## Answer Agent
 
 Handles:
 
-* final generation
-* citations
-* explanations
+- final response generation
+- citations
+- explanation quality
 
 ---
 
 # Feature 5: Explainable Retrieval
 
-Every answer should expose:
+Every answer provides transparency.
 
-```
+The user can inspect:
+
+
 Answer
 
 ↓
@@ -410,122 +432,181 @@ Retrieved Documents
 
 ↓
 
-Ranking Scores
+Similarity Scores
 
 ↓
 
-Reasoning Path
+Reranking Scores
 
 ↓
 
-Latency Breakdown
-```
+Pipeline Execution Trace
+
 
 Example:
 
+
 Question:
 
-> How does authentication work?
+How does authentication work?
 
-Response:
-
-```
 Sources:
 
-1. auth.py
-Score: 0.92
-
-2. security.md
-Score: 0.87
-
-3. PR #245
-Score: 0.81
-```
+auth.py
+Score: 0.94
+security.md
+Score: 0.89
+PR #245
+Score: 0.83
 
 ---
 
-# Feature 6: RAG Evaluation Platform
+# Feature 6: Evaluation Platform
 
-## Description
-
-RepoMind AI evaluates its own quality.
+RepoMind evaluates its own RAG performance.
 
 ---
 
-## Retrieval Metrics
+## Retrieval Evaluation
 
-* Precision@K
-* Recall@K
-* MRR
-* NDCG
-* Hit Rate
+Metrics:
 
-## Answer Metrics
-
-* Faithfulness
-* Answer relevance
-* Context precision
-* Context recall
-
-## Agent Metrics
-
-* Tool selection accuracy
-* Retrieval success
-* Agent execution path
-
-Evaluation is a major component of LLM Zoomcamp 2026, which specifically includes retrieval evaluation, RAG answer evaluation, and agent evaluation basics. ([DataTalks.Club][2])
+- Recall@K
+- Precision@K
+- MRR
+- NDCG
+- Hit Rate
 
 ---
 
-# Feature 7: Monitoring Dashboard
+## Generation Evaluation
 
-## Description
+Metrics:
 
-Production observability dashboard.
+- Faithfulness
+- Answer relevance
+- Context precision
+- Context recall
+
+---
+
+## Agent Evaluation
+
+Metrics:
+
+- Agent routing accuracy
+- Retrieval success
+- Execution path efficiency
+- Failure analysis
+
+---
+
+# Feature 7: RAG Experiment Dashboards
+
+RepoMind includes evaluation dashboards to compare system configurations.
+
+---
+
+## Chunking Experiments
+
+Compare:
+
+- Fixed chunking
+- Recursive chunking
+- Semantic chunking
+- Document-aware chunking
+
+Metrics:
+
+- Retrieval quality
+- Latency
+- Context quality
+
+---
+
+## Embedding Experiments
+
+Compare:
+
+- Different embedding models
+- Local models
+- Cloud models
+- ONNX optimized models
+
+Metrics:
+
+- Recall
+- Latency
+- Memory usage
+
+---
+
+## Retrieval Experiments
+
+Compare:
+
+- Vector search
+- BM25
+- Hybrid retrieval
+- Hybrid + reranking
+
+---
+
+## Query Rewriting Experiments
+
+Compare:
+
+- Original queries
+- Rewritten queries
+- Conversation-aware queries
+
+---
+
+## Agent Experiments
+
+Track:
+
+- Agent routing
+- Tool usage
+- Execution latency
+- Answer quality
+
+---
+
+# Feature 8: Monitoring and Observability
+
+RepoMind provides production monitoring.
+
+---
+
+## System Monitoring
 
 Tracks:
 
-## System Metrics
-
-* API latency
-* Requests
-* Errors
-* Resource usage
-
-## RAG Metrics
-
-* Retrieval latency
-* Embedding latency
-* Reranking latency
-* LLM latency
-
-## Quality Metrics
-
-* Evaluation scores
-* User feedback
-* Failed queries
-
-Dashboard:
-
-```
-Monitoring
-
-Requests       10,542
-
-Avg Latency    1.8s
-
-Faithfulness   92%
-
-Recall@10      87%
-
-Failed Queries 14
-```
+- API latency
+- Requests
+- Errors
+- CPU usage
+- Memory usage
 
 ---
 
-# Feature 8: Developer-Friendly Frontend
+## AI Monitoring
 
-## Pages
+Tracks:
+
+- LLM calls
+- Token usage
+- Retrieval traces
+- Agent execution
+- Prompt performance
+- Evaluation scores
+
+---
+
+# Feature 9: Developer Interface
+
+Frontend provides a complete engineering workspace.
 
 ---
 
@@ -533,52 +614,53 @@ Failed Queries 14
 
 Shows:
 
-* repositories
-* system health
-* recent activity
+- repositories
+- system health
+- recent activity
 
 ---
 
-## Repository View
+## Repository Workspace
 
 Shows:
 
-* ingestion status
-* indexed sources
-* metadata
+- repository information
+- ingestion status
+- indexed sources
 
 ---
 
-## Ingestion Pipeline
+## Ingestion Pipeline View
 
-Visual workflow:
+Visual progress:
 
-```
-✓ Clone Repository
 
-✓ Parse Documents
+✓ Repository Connected
 
-✓ Chunk Data
+✓ Documents Extracted
 
-✓ Generate Embeddings
+✓ Documents Classified
 
-✓ Build Index
+✓ Chunks Generated
 
-✓ Evaluate
+✓ Embeddings Created
 
-✓ Available
-```
+✓ Index Built
+
+✓ Evaluation Completed
+
 
 ---
 
-## Chat Interface
+## Chat Workspace
 
 Features:
 
-* conversational memory
-* citations
-* source inspection
-* feedback buttons
+- multi repository chat
+- conversation memory
+- citations
+- source inspection
+- feedback
 
 ---
 
@@ -586,77 +668,105 @@ Features:
 
 Shows:
 
-* retrieval performance
-* answer quality
-* comparison experiments
+- RAG metrics
+- experiments
+- comparisons
+- quality trends
 
 ---
 
 # 7. Non Functional Requirements
 
-## Performance
+---
 
-* Async ingestion
-* Background processing
-* Cached embeddings
-* Efficient retrieval
+# Performance
 
-## Reliability
+Requirements:
 
-* Retry failed ingestion
-* Logging
-* Error tracking
-
-## Security
-
-* Secure API keys
-* Repository permission handling
-* Input validation
-
-## Reproducibility
-
-Everything runnable through:
-
-```
-docker compose up
-```
+- asynchronous ingestion
+- background processing
+- cached embeddings
+- efficient retrieval
 
 ---
 
-# 8. Deployment Requirements
+# Reliability
 
-## Local Deployment
+Requirements:
+
+- retry failed ingestion
+- logging
+- error handling
+- monitoring
+
+---
+
+# Security
+
+Requirements:
+
+- secure credentials
+- repository permissions
+- API validation
+
+---
+
+# Reproducibility
+
+System should run using:
+
+
+docker compose up
+
+
+---
+
+# 8. Deployment
+
+---
+
+# Local Deployment
 
 Using:
 
-* Docker Compose
-* PostgreSQL
-* pgvector
-* FastAPI
-* Next.js
-* Monitoring stack
+- Docker Compose
+- PostgreSQL
+- pgvector
+- FastAPI
+- Next.js
+- Redis
+- Workers
+- Monitoring stack
 
-## Cloud Deployment
+---
 
-Target:
+# Cloud Deployment
 
-* AWS / Azure / Render / Railway
+Future deployment targets:
+
+- AWS
+- Azure
+- Container platforms
 
 Includes:
 
-* CI/CD pipeline
-* Automated builds
-* Deployment workflows
+- CI/CD workflows
+- automated builds
+- deployment automation
 
 ---
 
 # 9. Future Enhancements
 
-## GraphRAG
+---
 
-Introduce repository knowledge graphs:
+# GraphRAG
 
-```
+Potential future capability:
+
+Repository knowledge graphs:
+
+
 Class
 
 ↓
@@ -669,64 +779,65 @@ Module
 
 ↓
 
-depends on
+depends_on
 
 ↓
 
 Service
-```
 
-Using Neo4j only when dependency relationships provide additional reasoning value.
+
+Possible technologies:
+
+- Neo4j
+- Graph databases
+
+Introduced only when graph reasoning provides measurable improvement.
 
 ---
 
-## Enterprise Connectors
+# Enterprise Connectors
 
 Future sources:
 
-* GitLab
-* Jira
-* Confluence
-* Internal documentation
+- GitLab
+- Jira
+- Confluence
+- Slack
+- Internal documentation
 
 ---
 
-## Code Intelligence
+# Advanced Code Intelligence
 
-Future:
+Future capabilities:
 
-* dependency analysis
-* architecture diagrams
-* code explanation
-* automated documentation generation
+- dependency analysis
+- architecture visualization
+- automatic documentation generation
+- code change explanation
 
 ---
 
 # 10. Success Criteria
 
-RepoMind AI is successful when:
+RepoMind AI is successful when a developer can:
 
-A developer can:
+✓ Add one or multiple repositories
 
-✅ Add multiple repositories
+✓ Automatically create repository knowledge bases
 
-✅ Automatically build knowledge bases
+✓ Ask complex repository questions
 
-✅ Ask repository-specific questions
+✓ Receive grounded answers with citations
 
-✅ Receive accurate cited answers
+✓ Inspect retrieval decisions
 
-✅ Inspect retrieval decisions
+✓ Compare RAG strategies
 
-✅ Measure RAG quality
+✓ Evaluate system quality
 
-✅ Monitor system performance
+✓ Monitor performance
 
-✅ Deploy the platform locally or in cloud
+✓ Deploy locally or in cloud
 
----
 
-This PRD is our **source of truth** now. Next, we should create **SYSTEM_ARCHITECTURE.md** from this and decide exact services, database schema, and repo structure before coding.
-
-[1]: https://datatalks.club/docs/courses/llm-zoomcamp/project/?utm_source=chatgpt.com "Project | DataTalks.Club Documentation"
-[2]: https://datatalks.club/docs/courses/llm-zoomcamp/whats-new/?utm_source=chatgpt.com "What’s New | DataTalks.Club Documentation"
