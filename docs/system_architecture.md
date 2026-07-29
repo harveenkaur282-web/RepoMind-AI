@@ -1,12 +1,10 @@
-SYSTEM_ARCHITECTURE.md
+## 1. Overview
 
-1. Overview
+## 2. Architecture Goals
 
-2. Architecture Goals
+## 3. Architecture Principles
 
-3. Architecture Principles
-
-4. High-Level System Architecture
+## 4. High-Level System Architecture
 
 5. Detailed Technology Stack
 
