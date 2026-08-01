@@ -2,7 +2,6 @@ from fastapi import FastAPI
 
 from backend.app.api.v1.router import router as api_router
 
-
 app = FastAPI(
     title="RepoMind AI API",
     description="Agentic Repository Intelligence Workspace for GitHub Knowledge Discovery",
