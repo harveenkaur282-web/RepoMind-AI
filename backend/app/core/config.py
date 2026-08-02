@@ -8,8 +8,8 @@ class Settings(BaseSettings):
     environment: str = "development"
     debug: bool = True
 
-    database_url: str
-    redis_url: str
+    database_url: str | None = None
+    redis_url: str | None = None
 
     github_token: str | None = None
 
@@ -23,6 +23,7 @@ class Settings(BaseSettings):
         env_file=".env",
         case_sensitive=False,
     )
+
 
 @lru_cache
 def get_settings() -> Settings:
