@@ -9,7 +9,6 @@ class Settings(BaseSettings):
     debug: bool = True
 
     database_url: str
-
     redis_url: str
 
     github_token: str | None = None
@@ -17,11 +16,13 @@ class Settings(BaseSettings):
     llm_provider: str | None = None
     llm_api_key: str | None = None
 
+    embedding_model: str = "BAAI/bge-small-en-v1.5"
+    reranker_model: str = "BAAI/bge-reranker-base"
+
     model_config = SettingsConfigDict(
         env_file=".env",
         case_sensitive=False,
     )
-
 
 @lru_cache
 def get_settings() -> Settings:
