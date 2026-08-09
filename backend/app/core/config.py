@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     llm_provider: str | None = None
     llm_api_key: str | None = None
 
+    github_token: str | None = None
+
     embedding_model: str = "BAAI/bge-small-en-v1.5"
     reranker_model: str = "BAAI/bge-reranker-base"
 
