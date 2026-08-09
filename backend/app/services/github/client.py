@@ -42,19 +42,14 @@ class GitHubClient:
         )
 
         if response.status_code == 404:
-            raise GitHubNotFoundError(
-                f"Repository not found: {owner}/{repo}"
-            )
+            raise GitHubNotFoundError(f"Repository not found: {owner}/{repo}")
 
         if response.status_code == 403:
-            raise GitHubRateLimitError(
-                f"GitHub API rate limit exceeded for {owner}/{repo}"
-            )
+            raise GitHubRateLimitError(f"GitHub API rate limit exceeded for {owner}/{repo}")
 
         if response.is_error:
             raise GitHubAPIError(
-                f"GitHub API request failed with "
-                f"status {response.status_code}: {response.text}"
+                f"GitHub API request failed with status {response.status_code}: {response.text}"
             )
 
         data: dict[str, Any] = response.json()
