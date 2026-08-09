@@ -10,6 +10,24 @@ jobs:
   backend:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: pgvector/pgvector:pg17
+        env:
+          POSTGRES_USER: repomind
+          POSTGRES_PASSWORD: repomind
+          POSTGRES_DB: repomind
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U repomind -d repomind"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql+asyncpg://repomind:repomind@localhost:5432/repomind
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,6 +45,9 @@ jobs:
 
       - name: Run Ruff
         run: uv run ruff check .
+
+      - name: Run Ruff format check
+        run: uv run ruff format --check .
 
       - name: Run Pytest
         run: uv run pytest

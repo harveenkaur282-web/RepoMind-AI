@@ -9,7 +9,7 @@ from backend.app.db.base import Base
 if TYPE_CHECKING:
     from backend.app.db.models.repository import Repository
 
-    
+
 class Document(Base):
     __tablename__ = "documents"
 
