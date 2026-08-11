@@ -56,5 +56,15 @@ class GitHubClient:
 
         return GitHubRepository.model_validate(data)
 
+    async def get_authenticated_user(self) -> dict[str, object]:
+        response = await self.client.get("/user")
+
+        if response.is_error:
+            raise GitHubAPIError(
+                f"GitHub authentication failed: {response.status_code}: {response.text}"
+            )
+
+        return response.json()
+
     async def close(self) -> None:
         await self.client.aclose()
