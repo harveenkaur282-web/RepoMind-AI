@@ -21,6 +21,7 @@ async def test_get_repository() -> None:
     finally:
         await client.close()
 
+
 @pytest.mark.asyncio
 async def test_authenticated_user() -> None:
     client = GitHubClient()
