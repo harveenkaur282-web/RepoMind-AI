@@ -34,3 +34,31 @@ async def test_authenticated_user() -> None:
 
     finally:
         await client.close()
+
+
+@pytest.mark.asyncio
+async def test_get_repository_tree() -> None:
+    client = GitHubClient()
+
+    try:
+        tree = await client.get_repository_tree(
+            owner="harveenkaur282-web",
+            repo="RepoMind-AI",
+            tree_sha="main",
+        )
+
+        assert "tree" in tree
+        assert isinstance(tree["tree"], list)
+
+        assert "truncated" in tree
+        assert isinstance(tree["truncated"], bool)
+
+        assert len(tree["tree"]) > 0
+
+        for entry in tree["tree"]:
+            assert "path" in entry
+            assert "type" in entry
+            assert "sha" in entry
+
+    finally:
+        await client.close()

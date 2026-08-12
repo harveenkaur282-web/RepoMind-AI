@@ -66,5 +66,29 @@ class GitHubClient:
 
         return response.json()
 
+    async def get_repository_tree(
+        self, owner: str, repo: str, tree_sha: str, recursive: bool = False
+    ) -> dict[str, Any]:
+        params = {"recursive": "1" if recursive else "0"}
+
+        response = await self.client.get(
+            f"/repos/{owner}/{repo}/git/trees/{tree_sha}", params=params
+        )
+
+        if response.status_code == 404:
+            raise GitHubNotFoundError(
+                f"Tree or repository not found: {owner}/{repo} (SHA: {tree_sha})"
+            )
+
+        if response.status_code == 403:
+            raise GitHubRateLimitError(f"GitHub API rate limit exceeded for {owner}/{repo}")
+
+        if response.is_error:
+            raise GitHubAPIError(
+                f"GitHub API request failed with status {response.status_code}: {response.text}"
+            )
+
+        return response.json()
+
     async def close(self) -> None:
         await self.client.aclose()
