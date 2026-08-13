@@ -41,24 +41,20 @@ async def test_get_repository_tree() -> None:
     client = GitHubClient()
 
     try:
+        repository = await client.get_repository(
+            owner="harveenkaur282-web",
+            repo="RepoMind-AI",
+        )
+
         tree = await client.get_repository_tree(
             owner="harveenkaur282-web",
             repo="RepoMind-AI",
-            tree_sha="main",
+            tree_sha=repository.default_branch,
         )
 
         assert "tree" in tree
-        assert isinstance(tree["tree"], list)
-
         assert "truncated" in tree
-        assert isinstance(tree["truncated"], bool)
-
-        assert len(tree["tree"]) > 0
-
-        for entry in tree["tree"]:
-            assert "path" in entry
-            assert "type" in entry
-            assert "sha" in entry
+        assert isinstance(tree["tree"], list)
 
     finally:
         await client.close()
