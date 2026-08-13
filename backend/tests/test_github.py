@@ -58,3 +58,27 @@ async def test_get_repository_tree() -> None:
 
     finally:
         await client.close()
+
+
+@pytest.mark.asyncio
+async def test_get_file_content() -> None:
+    client = GitHubClient()
+
+    try:
+        repository = await client.get_repository(
+            owner="harveenkaur282-web",
+            repo="RepoMind-AI",
+        )
+
+        content = await client.get_file_content(
+            owner="harveenkaur282-web",
+            repo="RepoMind-AI",
+            path="README.md",
+            ref=repository.default_branch,
+        )
+
+        assert "RepoMind" in content
+        assert "AI" in content
+
+    finally:
+        await client.close()
