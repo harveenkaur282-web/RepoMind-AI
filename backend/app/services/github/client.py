@@ -1,3 +1,4 @@
+import base64
 from typing import Any
 
 import httpx
@@ -89,6 +90,46 @@ class GitHubClient:
             )
 
         return response.json()
+
+    async def get_file_content(
+        self,
+        owner: str,
+        repo: str,
+        path: str,
+        ref: str | None = None,
+    ) -> str:
+        params = {"ref": ref} if ref else None
+
+        response = await self.client.get(
+            f"/repos/{owner}/{repo}/contents/{path}",
+            params=params,
+        )
+
+        if response.status_code == 404:
+            raise GitHubNotFoundError(
+                f"File not found: {owner}/{repo}/{path} (ref: {ref or 'default'})"
+            )
+
+        if response.status_code == 403:
+            raise GitHubRateLimitError(f"GitHub API rate limit exceeded for {owner}/{repo}")
+
+        if response.is_error:
+            raise GitHubAPIError(
+                f"GitHub API request failed with status {response.status_code}: {response.text}"
+            )
+
+        data: dict[str, Any] = response.json()
+
+        if data.get("encoding") != "base64":
+            raise GitHubAPIError(
+                f"Unexpected content encoding for {owner}/{repo}/{path}: {data.get('encoding')}"
+            )
+
+        content = data.get("content")
+        if not isinstance(content, str):
+            raise GitHubAPIError(f"No file content returned for {owner}/{repo}/{path}")
+
+        return base64.b64decode(content).decode("utf-8")
 
     async def close(self) -> None:
         await self.client.aclose()
