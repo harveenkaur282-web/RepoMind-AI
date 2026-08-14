@@ -1,7 +1,8 @@
 from fastapi import APIRouter
 
-from backend.app.api.v1.endpoints import health
+from backend.app.api.v1.endpoints import health, ingestion
 
 router = APIRouter(prefix="/api/v1", tags=["API v1"])
 
 router.include_router(health.router)
+router.include_router(ingestion.router)
