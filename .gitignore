@@ -230,3 +230,6 @@ __pycache__/
 
 # Ruff
 .ruff_cache/
+
+# Streamlit local secrets
+frontend/streamlit/.streamlit/secrets.toml
