@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     environment: str = "development"
     debug: bool = True
 
-    database_url: str | None = None
+    database_url: str = "postgresql+asyncpg://repomind:repomind@localhost:5432/repomind"
     redis_url: str | None = None
 
     github_token: str | None = None

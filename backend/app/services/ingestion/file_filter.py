@@ -79,7 +79,7 @@ def should_ingest_file(
 ) -> bool:
     path = PurePosixPath(file_path)
 
-    # We only want files, not directories/subtrees.
+    # we only want files, not directories/subtrees.
     if not path.name:
         return False
 

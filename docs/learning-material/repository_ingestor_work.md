@@ -1,0 +1,2 @@
+
+It ingests a a repo and processed the files- so first it would get repo metadata, then recursive tree, iterate over the tree entries and filter them for blobs only, then pass paths through should_ingest_file() filter and get file content only for the accepted files as satted in the file_filter file and return the processed files. 
