@@ -230,3 +230,7 @@ __pycache__/
 
 # Ruff
 .ruff_cache/
+
+# Streamlit local secrets
+frontend/streamlit/.streamlit/secrets.toml
+# Local chunking drafts (moved to local exclude)
