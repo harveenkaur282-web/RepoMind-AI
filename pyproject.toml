@@ -44,9 +44,5 @@ select = [
 ]
 
 [tool.pytest.ini_options]
-pythonpath = [
-    "backend",
-]
-testpaths = [
-    "backend/tests",
-]
+testpaths = ["backend/tests"]
+pythonpath = ["."]

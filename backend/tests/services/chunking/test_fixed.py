@@ -3,7 +3,6 @@ from pathlib import Path
 
 import pytest
 
-# Ensure repository root is on sys.path so `backend` package imports resolve
 sys.path.insert(0, str(Path.cwd()))
 
 from backend.app.services.chunking.fixed import FixedSizeChunker
@@ -49,19 +48,16 @@ def test_overlap_produces_expected_starts_and_ends():
     chunker = FixedSizeChunker()
     chunks = chunker.chunk(text, chunk_size=10, overlap=3)
 
-    # compute expected starts/ends manually
     assert chunks[0].start_char == 0
     assert chunks[0].end_char == 10
 
     assert chunks[1].start_char == 7
     assert chunks[1].end_char == 17
 
-    # subsequent chunk start
     assert chunks[2].start_char == 14
-    # last chunk may be shorter than chunk_size
+
     assert chunks[-1].end_char == min(len(text), chunks[-1].start_char + 10)
 
-    # chunk indexes should increment
     assert [ch.chunk_index for ch in chunks] == list(range(len(chunks)))
 
 
