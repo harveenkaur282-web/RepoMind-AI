@@ -75,20 +75,14 @@ def test_code_is_split_at_top_level_symbols():
 
     assert len(chunks) >= 2
 
-    symbols = [
-        chunk.metadata.get("symbol")
-        for chunk in chunks
-    ]
+    symbols = [chunk.metadata.get("symbol") for chunk in chunks]
 
     assert "UserService" in symbols
     assert "health_check" in symbols
 
 
 def test_oversized_code_block_is_still_split():
-    text = (
-        "def large_function():\n"
-        + ("    value = 'something'\n" * 20)
-    )
+    text = "def large_function():\n" + ("    value = 'something'\n" * 20)
 
     chunker = DocumentAwareChunker()
 
@@ -122,10 +116,7 @@ def test_issue_content_is_chunked_as_structured_content():
     )
 
     assert len(chunks) == 3
-    assert all(
-        chunk.metadata["document_type"] == "issue"
-        for chunk in chunks
-    )
+    assert all(chunk.metadata["document_type"] == "issue" for chunk in chunks)
 
 
 def test_pull_request_content_is_chunked_as_structured_content():
@@ -147,10 +138,7 @@ def test_pull_request_content_is_chunked_as_structured_content():
     )
 
     assert len(chunks) == 3
-    assert all(
-        chunk.metadata["document_type"] == "pull_request"
-        for chunk in chunks
-    )
+    assert all(chunk.metadata["document_type"] == "pull_request" for chunk in chunks)
 
 
 def test_release_content_is_chunked_as_structured_content():
@@ -172,17 +160,11 @@ def test_release_content_is_chunked_as_structured_content():
     )
 
     assert len(chunks) == 3
-    assert all(
-        chunk.metadata["document_type"] == "release"
-        for chunk in chunks
-    )
+    assert all(chunk.metadata["document_type"] == "release" for chunk in chunks)
 
 
 def test_generic_text_falls_back_to_paragraph_chunking():
-    text = (
-        "First paragraph with useful information.\n\n"
-        "Second paragraph with more information."
-    )
+    text = "First paragraph with useful information.\n\nSecond paragraph with more information."
 
     chunker = DocumentAwareChunker()
 
@@ -194,21 +176,11 @@ def test_generic_text_falls_back_to_paragraph_chunking():
     )
 
     assert len(chunks) == 2
-    assert all(
-        chunk.metadata["document_type"] == "text"
-        for chunk in chunks
-    )
+    assert all(chunk.metadata["document_type"] == "text" for chunk in chunks)
 
 
 def test_chunk_indexes_are_sequential():
-    text = (
-        "# One\n"
-        "First section.\n\n"
-        "# Two\n"
-        "Second section.\n\n"
-        "# Three\n"
-        "Third section."
-    )
+    text = "# One\nFirst section.\n\n# Two\nSecond section.\n\n# Three\nThird section."
 
     chunker = DocumentAwareChunker()
 
@@ -218,9 +190,7 @@ def test_chunk_indexes_are_sequential():
         chunk_size=500,
     )
 
-    assert [chunk.chunk_index for chunk in chunks] == list(
-        range(len(chunks))
-    )
+    assert [chunk.chunk_index for chunk in chunks] == list(range(len(chunks)))
 
 
 def test_chunk_offsets_point_to_original_text():
@@ -240,4 +210,4 @@ def test_chunk_offsets_point_to_original_text():
     )
 
     for chunk in chunks:
-        assert text[chunk.start_char:chunk.end_char] == chunk.text
+        assert text[chunk.start_char : chunk.end_char] == chunk.text

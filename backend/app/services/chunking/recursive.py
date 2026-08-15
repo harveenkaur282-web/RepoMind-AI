@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 from typing import Any
+
 from backend.app.services.chunking.base import BaseChunker
 from backend.app.services.chunking.models import ChunkResult
 
@@ -9,7 +11,7 @@ class RecursiveChunker(BaseChunker):
 
     DEFAULT_SEPARATORS = ("\n\n", "\n", " ", "")
 
-    def chunk(self, text: str, **kwargs:Any) -> list[ChunkResult]:
+    def chunk(self, text: str, **kwargs: Any) -> list[ChunkResult]:
         if not text:
             return []
 
@@ -85,8 +87,7 @@ class RecursiveChunker(BaseChunker):
                 )
 
                 pieces.extend(
-                    (nested_text, part_start + nested_start)
-                    for nested_text, nested_start in nested
+                    (nested_text, part_start + nested_start) for nested_text, nested_start in nested
                 )
 
             cursor = part_end + len(separator)
@@ -116,11 +117,7 @@ class RecursiveChunker(BaseChunker):
         current_start = 0
 
         for piece, piece_start in pieces:
-            candidate = (
-                piece
-                if not current_text
-                else f"{current_text} {piece}"
-            )
+            candidate = piece if not current_text else f"{current_text} {piece}"
 
             if current_text and len(candidate) > chunk_size:
                 chunks.append(

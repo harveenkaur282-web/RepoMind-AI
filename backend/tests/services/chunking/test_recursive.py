@@ -49,7 +49,7 @@ def test_overlap_is_applied():
 
     assert len(chunks) > 1
 
-    for previous, current in zip(chunks, chunks[1:]):
+    for previous, current in zip(chunks, chunks[1:], strict=False):
         assert current.start_char < previous.end_char
 
 
@@ -113,4 +113,4 @@ def test_chunk_offsets_match_original_text():
     chunks = chunker.chunk(text, chunk_size=45, overlap=0)
 
     for chunk in chunks:
-        assert text[chunk.start_char:chunk.end_char] == chunk.text
+        assert text[chunk.start_char : chunk.end_char] == chunk.text
