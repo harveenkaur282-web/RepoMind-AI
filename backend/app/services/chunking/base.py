@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from backend.app.services.chunking.models import ChunkResult, ChunkingConfig
+from backend.app.services.chunking.models import ChunkingConfig, ChunkResult
 
 
 class BaseChunker(ABC):
