@@ -1,7 +1,9 @@
 import hashlib
+import inspect
 from datetime import UTC, datetime
 from typing import Any
 
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.db.models.document import Document
@@ -27,6 +29,16 @@ class RepositoryIngestor:
     ) -> list[ProcessedFile]:
         if self.db is None:
             raise ValueError("Database session is required for repository ingestion.")
+
+        github_url = f"https://github.com/{owner}/{repo}"
+        existing_result = self.db.execute(
+            select(Repository).where(Repository.github_url == github_url)
+        )
+        if inspect.isawaitable(existing_result):
+            existing_result = await existing_result
+
+        if existing_result.scalar_one_or_none() is not None:
+            raise ValueError(f"Repository has already been ingested: {github_url}")
 
         repository = await self.github_client.get_repository(
             owner=owner,

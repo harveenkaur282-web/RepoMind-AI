@@ -1,0 +1,8 @@
+[client]
+showErrorDetails = true
+toolbarMode = "viewer"
+
+[server]
+headless = true
+port = 8502
+enableXsrfProtection = false
