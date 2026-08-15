@@ -44,7 +44,8 @@ def get_api_base_url() -> str:
         pass
 
     raise ValueError(
-        "FastAPI base URL is not configured. Set FASTAPI_BASE_URL or define it in .streamlit/secrets.toml."
+        "FastAPI base URL is not configured. Set FASTAPI_BASE_URL or "
+        "define it in .streamlit/secrets.toml."
     )
 
 
@@ -57,7 +58,8 @@ def _request_json(method: str, path: str, **kwargs: Any) -> dict[str, Any]:
         response = httpx.request(method=method, url=url, timeout=timeout, **kwargs)
     except httpx.TimeoutException as exc:
         raise RuntimeError(
-            "The backend request timed out. Large repositories can take longer to ingest, so the API may need more time."
+            "The backend request timed out. Large repositories can take "
+            "longer to ingest, so the API may need more time."
         ) from exc
 
     if response.is_error:

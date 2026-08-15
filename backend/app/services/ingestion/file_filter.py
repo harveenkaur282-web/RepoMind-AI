@@ -134,10 +134,15 @@ def should_ingest_file(
     if any(part.lower() in BLOCKED_DIRECTORIES for part in path.parts):
         return False
 
-    # keep docs/documentation, but reject localized translation folders inside docs trees.
+    # keep docs/documentation, but reject localized translation folders
+    # inside docs trees.
     normalized_parts = [part.lower() for part in path.parts]
     if "docs" in normalized_parts or "documentation" in normalized_parts:
-        locale_candidates = {part.lower() for part in path.parts if part and part.lower() != "docs" and part.lower() != "documentation"}
+        locale_candidates = {
+            part.lower()
+            for part in path.parts
+            if part and part.lower() not in {"docs", "documentation"}
+        }
         if locale_candidates & LOCALE_DIRECTORY_NAMES:
             return False
 

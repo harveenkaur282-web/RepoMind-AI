@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import streamlit as st
-
 from components.status_badge import render_status_badge
 from utils.api import get_health
 
@@ -52,7 +51,9 @@ def main() -> None:
 
     st.markdown(
         """
-        RepoMind AI ingests a GitHub repository, filters the files that matter, and stores the repository and document metadata in PostgreSQL.
+        RepoMind AI ingests a GitHub repository, filters the files that
+        matter, and stores the repository and document metadata in
+        PostgreSQL.
         """
     )
 

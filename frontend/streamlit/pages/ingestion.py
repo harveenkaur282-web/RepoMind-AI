@@ -3,7 +3,6 @@ from __future__ import annotations
 from urllib.parse import urlparse
 
 import streamlit as st
-
 from components.ingestion_result import render_ingestion_result
 from utils.api import ingest_repository
 
@@ -14,7 +13,9 @@ def parse_repository_url(raw_url: str) -> tuple[str, str]:
         raise ValueError("Please enter a GitHub repository URL.")
 
     if "/" not in value:
-        raise ValueError("Enter a valid GitHub repository URL like https://github.com/owner/repository")
+        raise ValueError(
+            "Enter a valid GitHub repository URL like https://github.com/owner/repository"
+        )
 
     if not value.startswith(("http://", "https://")):
         value = f"https://{value}"
@@ -38,7 +39,11 @@ def parse_repository_url(raw_url: str) -> tuple[str, str]:
 
 def main() -> None:
     st.title("Ingest a GitHub Repository")
-    st.caption("The current RepoMind workflow is request/response based: validate the URL, submit to the backend, and render the actual ingestion response.")
+    st.caption(
+        "The current RepoMind workflow is request/response based: "
+        "validate the URL, submit to the backend, and render the "
+        "actual ingestion response."
+    )
 
     raw_url = st.text_input(
         "GitHub repository URL",
