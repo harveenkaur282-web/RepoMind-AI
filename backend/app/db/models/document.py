@@ -7,6 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.app.db.base import Base
 
 if TYPE_CHECKING:
+    from backend.app.db.models.chunk import Chunk
     from backend.app.db.models.repository import Repository
 
 
@@ -67,4 +68,9 @@ class Document(Base):
 
     repository: Mapped["Repository"] = relationship(
         back_populates="documents",
+    )
+
+    chunks: Mapped[list["Chunk"]] = relationship(
+        back_populates="document",
+        cascade="all, delete-orphan",
     )
