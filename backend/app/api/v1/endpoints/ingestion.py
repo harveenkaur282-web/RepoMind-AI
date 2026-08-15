@@ -1,5 +1,7 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.app.db.dependencies import get_db
 from backend.app.services.ingestion.repository_ingestor import RepositoryIngestor
 
 router = APIRouter(prefix="/ingestion", tags=["ingestion"])
@@ -9,8 +11,9 @@ router = APIRouter(prefix="/ingestion", tags=["ingestion"])
 async def ingest_repository(
     owner: str,
     repo: str,
+    db: AsyncSession = Depends(get_db),
 ) -> dict[str, object]:
-    ingestor = RepositoryIngestor()
+    ingestor = RepositoryIngestor(db=db)
 
     processed_files = await ingestor.ingest_repository(
         owner=owner,
