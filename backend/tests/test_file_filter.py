@@ -27,3 +27,14 @@ def test_blocks_unsupported_extension() -> None:
 
 def test_blocks_large_file() -> None:
     assert should_ingest_file("large.py", file_size=600 * 1024) is False
+
+
+def test_allows_docs_directory_files() -> None:
+    assert should_ingest_file("docs/guides/first-crew.mdx") is True
+    assert should_ingest_file("docs/v1.12.0/en/concepts/tools.mdx") is True
+
+
+def test_blocks_localized_translation_directories() -> None:
+    assert should_ingest_file("docs/v1.12.0/ko/tools/search-research/overview.mdx") is False
+    assert should_ingest_file("docs/v1.12.0/pt-BR/tools/search-research/overview.mdx") is False
+    assert should_ingest_file("i18n/es/tools/overview.mdx") is False

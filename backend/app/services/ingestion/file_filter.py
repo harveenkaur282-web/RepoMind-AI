@@ -59,6 +59,53 @@ BLOCKED_DIRECTORIES = {
     "dist",
     "build",
     "coverage",
+    "i18n",
+    "locale",
+    "locales",
+    "l10n",
+    "translations",
+}
+
+LOCALE_DIRECTORY_NAMES = {
+    "ar",
+    "bg",
+    "cs",
+    "da",
+    "de",
+    "el",
+    "es",
+    "fa",
+    "fi",
+    "fr",
+    "he",
+    "hi",
+    "hr",
+    "hu",
+    "id",
+    "it",
+    "ja",
+    "ko",
+    "lt",
+    "ms",
+    "nb",
+    "nl",
+    "no",
+    "pl",
+    "pt",
+    "pt-br",
+    "ro",
+    "ru",
+    "sk",
+    "sl",
+    "sr",
+    "sv",
+    "th",
+    "tr",
+    "uk",
+    "ur",
+    "vi",
+    "zh",
+    "zh-cn",
 }
 
 BLOCKED_FILENAMES = {
@@ -83,9 +130,16 @@ def should_ingest_file(
     if not path.name:
         return False
 
-    # ignoring files inside blocked directories.
-    if any(part in BLOCKED_DIRECTORIES for part in path.parts):
+    # ignoring files inside blocked directories, including translated content trees.
+    if any(part.lower() in BLOCKED_DIRECTORIES for part in path.parts):
         return False
+
+    # keep docs/documentation, but reject localized translation folders inside docs trees.
+    normalized_parts = [part.lower() for part in path.parts]
+    if "docs" in normalized_parts or "documentation" in normalized_parts:
+        locale_candidates = {part.lower() for part in path.parts if part and part.lower() != "docs" and part.lower() != "documentation"}
+        if locale_candidates & LOCALE_DIRECTORY_NAMES:
+            return False
 
     # ignoring explicitly blocked filenames.
     if path.name in BLOCKED_FILENAMES:

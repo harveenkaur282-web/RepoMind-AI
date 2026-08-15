@@ -1,9 +1,15 @@
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+from fastapi.testclient import TestClient
+from sqlalchemy.exc import IntegrityError
 
+from backend.app.main import app
+from backend.app.services.github.exceptions import GitHubNotFoundError
 from backend.app.services.github.schemas import GitHubOwner, GitHubRepository
 from backend.app.services.ingestion.repository_ingestor import RepositoryIngestor
+
+client = TestClient(app)
 
 
 @pytest.mark.asyncio
@@ -26,6 +32,7 @@ async def test_ingest_repository() -> None:
     }
 
     db = MagicMock()
+    db.execute = AsyncMock(return_value=MagicMock(scalar_one_or_none=MagicMock(return_value=None)))
     db.flush = AsyncMock()
     db.commit = AsyncMock()
 
@@ -76,6 +83,7 @@ async def test_ingest_repository_persists_repository_and_documents() -> None:
     github_client.get_file_content.side_effect = ["# RepoMind AI\n", "print('hello')\n"]
 
     db = MagicMock()
+    db.execute = AsyncMock(return_value=MagicMock(scalar_one_or_none=MagicMock(return_value=None)))
     db.flush = AsyncMock()
     db.commit = AsyncMock()
     db.add = MagicMock()
@@ -91,3 +99,33 @@ async def test_ingest_repository_persists_repository_and_documents() -> None:
     assert db.add.call_count >= 3
     db.flush.assert_awaited()
     db.commit.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_ingest_repository_endpoint_handles_duplicate_ingestion() -> None:
+    with patch(
+        "backend.app.api.v1.endpoints.ingestion.RepositoryIngestor.ingest_repository",
+        new=AsyncMock(side_effect=IntegrityError("duplicate key", None, None)),
+    ):
+        response = client.post(
+            "/api/v1/ingestion/repository",
+            params={"owner": "example", "repo": "project"},
+        )
+
+    assert response.status_code == 409
+    assert "already been ingested" in response.json()["detail"].lower()
+
+
+@pytest.mark.asyncio
+async def test_ingest_repository_endpoint_handles_missing_github_repository() -> None:
+    with patch(
+        "backend.app.api.v1.endpoints.ingestion.RepositoryIngestor.ingest_repository",
+        new=AsyncMock(side_effect=GitHubNotFoundError("Repository not found: example/project")),
+    ):
+        response = client.post(
+            "/api/v1/ingestion/repository",
+            params={"owner": "example", "repo": "project"},
+        )
+
+    assert response.status_code == 404
+    assert "not found" in response.json()["detail"].lower()
