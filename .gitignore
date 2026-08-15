@@ -233,8 +233,4 @@ __pycache__/
 
 # Streamlit local secrets
 frontend/streamlit/.streamlit/secrets.toml
-# Local chunking drafts
-backend/app/services/chunking/factory.py
-backend/app/services/chunking/inspector.py
-backend/app/services/chunking/document_aware.py
-backend/app/services/chunking/recursive.py
+# Local chunking drafts (moved to local exclude)
