@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -11,7 +13,7 @@ router = APIRouter(prefix="/ingestion", tags=["ingestion"])
 async def ingest_repository(
     owner: str,
     repo: str,
-    db: AsyncSession = Depends(get_db),
+    db: Annotated[AsyncSession, Depends(get_db)],
 ) -> dict[str, object]:
     ingestor = RepositoryIngestor(db=db)
 
