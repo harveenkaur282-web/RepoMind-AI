@@ -1,13 +1,17 @@
 import hashlib
 import inspect
+import json
 from datetime import UTC, datetime
+from pathlib import Path
 from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.app.db.models.chunk import Chunk
 from backend.app.db.models.document import Document
 from backend.app.db.models.repository import Repository, RepositoryStatus
+from backend.app.services.chunking.factory import ChunkerFactory
 from backend.app.services.github.client import GitHubClient
 from backend.app.services.ingestion.file_filter import should_ingest_file
 from backend.app.services.ingestion.schemas import ProcessedFile
@@ -31,9 +35,11 @@ class RepositoryIngestor:
             raise ValueError("Database session is required for repository ingestion.")
 
         github_url = f"https://github.com/{owner}/{repo}"
+
         existing_result = self.db.execute(
             select(Repository).where(Repository.github_url == github_url)
         )
+
         if inspect.isawaitable(existing_result):
             existing_result = await existing_result
 
@@ -66,8 +72,11 @@ class RepositoryIngestor:
 
         processed_files: list[ProcessedFile] = []
         tree_entries: list[dict[str, Any]] = tree_response.get("tree", [])
+
         if tree_response.get("truncated", False):
             raise RuntimeError("Repository tree is truncated; ingestion is incomplete.")
+
+        chunker = ChunkerFactory.get("document_aware")
 
         for entry in tree_entries:
             if entry.get("type") != "blob":
@@ -76,7 +85,7 @@ class RepositoryIngestor:
             path = entry.get("path")
             size = entry.get("size")
 
-            if not should_ingest_file(path, file_size=size):
+            if not path or not should_ingest_file(path, file_size=size):
                 continue
 
             try:
@@ -85,18 +94,73 @@ class RepositoryIngestor:
                     repo=repo,
                     path=path,
                 )
+
+                suffix = Path(path).suffix.lower()
+
+                if suffix in {".md", ".markdown", ".mdx"}:
+                    document_type = "markdown"
+                elif suffix in {
+                    ".py",
+                    ".js",
+                    ".jsx",
+                    ".ts",
+                    ".tsx",
+                    ".java",
+                    ".cpp",
+                    ".c",
+                    ".h",
+                    ".hpp",
+                    ".go",
+                    ".rs",
+                    ".rb",
+                    ".php",
+                    ".cs",
+                    ".swift",
+                    ".kt",
+                }:
+                    document_type = "code"
+                else:
+                    document_type = "text"
+
                 document = Document(
                     repository_id=db_repository.id,
-                    document_type="code",
+                    document_type=document_type,
                     path=path,
                     title=path.split("/")[-1],
                     content=content,
-                    source_url=f"https://github.com/{owner}/{repo}/blob/{repository.default_branch}/{path}",
+                    source_url=(
+                        f"https://github.com/{owner}/{repo}/blob/{repository.default_branch}/{path}"
+                    ),
                     content_hash=hashlib.sha256(content.encode("utf-8")).hexdigest(),
                 )
 
                 self.db.add(document)
-                processed_files.append(ProcessedFile(path=path, content=content))
+
+                # Flush so the Document receives its database ID.
+                await self.db.flush()
+
+                chunk_results = chunker.chunk_document(document)
+
+                for chunk_result in chunk_results:
+                    chunk = Chunk(
+                        document_id=document.id,
+                        content=chunk_result.text,
+                        chunk_index=chunk_result.chunk_index,
+                        start_char=chunk_result.start_char,
+                        end_char=chunk_result.end_char,
+                        strategy="document_aware",
+                        metadata_json=json.dumps(chunk_result.metadata),
+                    )
+
+                    self.db.add(chunk)
+
+                processed_files.append(
+                    ProcessedFile(
+                        path=path,
+                        content=content,
+                    )
+                )
+
             except Exception as exc:
                 print(f"Error processing file {path}: {exc}")
                 continue

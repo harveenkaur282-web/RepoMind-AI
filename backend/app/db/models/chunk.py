@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 
+from pgvector.sqlalchemy import VECTOR
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -39,4 +40,14 @@ class Chunk(Base):
 
     document: Mapped["Document"] = relationship(
         back_populates="chunks",
+    )
+
+    openai_embedding: Mapped[list[float] | None] = mapped_column(
+        VECTOR(1536),
+        nullable=True,
+    )
+
+    voyage_embedding: Mapped[list[float] | None] = mapped_column(
+        VECTOR(1024),
+        nullable=True,
     )
