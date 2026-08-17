@@ -33,9 +33,7 @@ class BM25:
         self.b = b
         self.corpus_size = len(corpus)
         self.avgdl = (
-            sum(len(doc) for doc in corpus) / self.corpus_size
-            if self.corpus_size > 0
-            else 0
+            sum(len(doc) for doc in corpus) / self.corpus_size if self.corpus_size > 0 else 0
         )
         self.doc_freqs: list[dict[str, int]] = []
         self.idf: dict[str, float] = {}
@@ -55,9 +53,7 @@ class BM25:
 
         for word, freq in nd.items():
             # Standard BM25 IDF formulation
-            self.idf[word] = math.log(
-                (self.corpus_size - freq + 0.5) / (freq + 0.5) + 1.0
-            )
+            self.idf[word] = math.log((self.corpus_size - freq + 0.5) / (freq + 0.5) + 1.0)
 
     def get_score(self, index: int, query: list[str]) -> float:
         score = 0.0
@@ -244,4 +240,3 @@ class RetrievalService:
                 )
                 for item in sorted_rrf[:top_k]
             ]
-

@@ -5,6 +5,7 @@ from typing import Protocol
 
 class LLMProviderError(Exception):
     """Domain-level exception for LLM provider errors."""
+
     pass
 
 

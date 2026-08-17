@@ -45,10 +45,6 @@ class OllamaProvider:
                     f"Ollama server returned HTTP error: {e.response.status_code}"
                 ) from e
             except httpx.RequestError as e:
-                raise LLMProviderError(
-                    f"Failed to communicate with Ollama server: {e}"
-                ) from e
+                raise LLMProviderError(f"Failed to communicate with Ollama server: {e}") from e
             except (KeyError, TypeError) as e:
-                raise LLMProviderError(
-                    f"Malformed response format from Ollama server: {e}"
-                ) from e
+                raise LLMProviderError(f"Malformed response format from Ollama server: {e}") from e

@@ -43,9 +43,7 @@ def test_bm25_initialize_and_scoring() -> None:
 
 
 def test_bm25_non_existent_term() -> None:
-    corpus = [
-        ["hello", "world"]
-    ]
+    corpus = [["hello", "world"]]
     bm25 = BM25(corpus)
     assert bm25.get_score(0, ["missing"]) == 0.0
 
@@ -54,7 +52,7 @@ def test_bm25_empty_corpus_or_avgdl_zero() -> None:
     # Empty corpus
     bm25_empty = BM25([])
     assert bm25_empty.avgdl == 0
-    
+
     # Corpus with only empty documents (so avgdl is 0)
     bm25_zero = BM25([[], []])
     assert bm25_zero.avgdl == 0
@@ -64,4 +62,3 @@ def test_bm25_empty_corpus_or_avgdl_zero() -> None:
 
 def test_tokenize_none() -> None:
     assert tokenize(None) == []
-

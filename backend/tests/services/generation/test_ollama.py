@@ -15,10 +15,7 @@ async def test_ollama_generate_success() -> None:
     mock_response = MagicMock()
     mock_response.status_code = 200
     mock_response.json.return_value = {
-        "message": {
-            "role": "assistant",
-            "content": "This is the generated response content."
-        }
+        "message": {"role": "assistant", "content": "This is the generated response content."}
     }
 
     with patch("httpx.AsyncClient.post", new_callable=AsyncMock) as mock_post:
@@ -27,12 +24,12 @@ async def test_ollama_generate_success() -> None:
         response = await provider.generate(
             context="Some test context info",
             query="Tell me about context?",
-            system_prompt="Custom system prompt"
+            system_prompt="Custom system prompt",
         )
 
         assert response == "This is the generated response content."
         mock_post.assert_called_once()
-        
+
         # Verify arguments passed to post
         args, kwargs = mock_post.call_args
         assert args[0] == "http://localhost:11434/api/chat"
@@ -98,4 +95,3 @@ def test_ollama_provider_conforms_to_protocol() -> None:
     # Compile-time check/protocol compliance assertion
     provider: LLMProvider = OllamaProvider(base_url="http://localhost:11434", model="test")
     assert provider is not None
-

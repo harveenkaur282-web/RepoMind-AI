@@ -129,7 +129,7 @@ def test_assemble_source_path_missing_relation_raises_error() -> None:
 
 
 def test_assemble_fallback_document_path_when_empty() -> None:
-    doc = Document(path=None) # Document is loaded, but path is None
+    doc = Document(path=None)  # Document is loaded, but path is None
     chunk = Chunk(id=1, content="some code content", document=doc)
     results = [RetrievalResult(chunk=chunk, score=0.9)]
 
