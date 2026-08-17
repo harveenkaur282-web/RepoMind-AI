@@ -67,9 +67,9 @@ async def test_embed_chunks_batches_requests() -> None:
         ["chunk three"],
     )
 
-    assert chunks[0].voyage_embedding == [0.1] * 1024
-    assert chunks[1].voyage_embedding == [0.2] * 1024
-    assert chunks[2].voyage_embedding == [0.3] * 1024
+    assert chunks[0].local_embedding == [0.1] * 1024
+    assert chunks[1].local_embedding == [0.2] * 1024
+    assert chunks[2].local_embedding == [0.3] * 1024
 
     db.flush.assert_awaited()
     db.commit.assert_awaited_once()
