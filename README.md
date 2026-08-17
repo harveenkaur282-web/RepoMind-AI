@@ -145,7 +145,7 @@ graph TD
 
 ---
 
-## 🧪 Testing & CI
+## Testing & CI
 
 To run all unit tests locally:
 ```bash
