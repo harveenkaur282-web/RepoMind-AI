@@ -148,3 +148,19 @@ async def test_ingest_repository_endpoint_instantiates_embedding_service() -> No
         kwargs = mock_ingestor_class.call_args[1]
         assert "embedding_service" in kwargs
         assert kwargs["embedding_service"] is not None
+
+
+@pytest.mark.asyncio
+async def test_update_repository_endpoint_success() -> None:
+    with patch("backend.app.api.v1.endpoints.ingestion.RepositoryIngestor") as mock_ingestor_class:
+        mock_ingestor = MagicMock()
+        mock_ingestor.update_repository = AsyncMock(return_value=[])
+        mock_ingestor_class.return_value = mock_ingestor
+
+        response = client.post(
+            "/api/v1/ingestion/repository/1/update",
+        )
+
+        assert response.status_code == 200
+        mock_ingestor_class.assert_called_once()
+        mock_ingestor.update_repository.assert_awaited_once_with(repository_id=1)

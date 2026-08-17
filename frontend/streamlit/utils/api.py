@@ -113,3 +113,37 @@ def query_rag(
         "/api/v1/rag/query",
         params=params,
     )
+
+
+def delete_repository(repository_id: int) -> None:
+    base_url = get_api_base_url()
+    url = f"{base_url}/api/v1/repositories/{repository_id}"
+    timeout = get_api_timeout_seconds()
+
+    response = httpx.delete(url, timeout=timeout)
+    if response.is_error:
+        detail = response.text
+        try:
+            payload = response.json()
+            detail = payload.get("detail", detail)
+        except ValueError:
+            pass
+        raise RuntimeError(f"API request failed: {detail}")
+
+
+def update_repository(repository_id: int) -> dict[str, Any]:
+    return _request_json(
+        "POST",
+        f"/api/v1/ingestion/repository/{repository_id}/update",
+    )
+
+
+def get_diagnostics() -> dict[str, Any]:
+    return _request_json("GET", "/api/v1/health/diagnostics")
+
+
+def compare_retrieval(query: str, repository_id: int | None = None) -> dict[str, Any]:
+    params = {"query": query}
+    if repository_id is not None:
+        params["repository_id"] = repository_id
+    return _request_json("POST", "/api/v1/rag/compare", params=params)

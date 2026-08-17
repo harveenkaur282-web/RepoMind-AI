@@ -24,14 +24,15 @@ def main() -> None:
     repositories_page = st.Page("pages/repositories.py", title="Repositories")
     assistant_page = st.Page("pages/assistant.py", title="AI Assistant")
 
-    navigation = st.navigation(
-        [
-            home_page,
-            ingestion_page,
-            repositories_page,
-            assistant_page,
-        ]
-    )
+    st.sidebar.title("Settings")
+    dev_mode = st.sidebar.toggle("Developer Mode", value=False)
+
+    pages = [home_page, ingestion_page, repositories_page, assistant_page]
+    if dev_mode:
+        developer_page = st.Page("pages/developer.py", title="Developer Console")
+        pages.append(developer_page)
+
+    navigation = st.navigation(pages)
     navigation.run()
 
 

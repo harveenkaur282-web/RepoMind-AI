@@ -5,7 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.core.config import get_settings
 from backend.app.db.dependencies import get_db
-from backend.app.services.embeddings.service import EmbeddingService
 from backend.app.services.embeddings.voyage import VoyageEmbeddingProvider
 from backend.app.services.generation.ollama import OllamaProvider
 from backend.app.services.rag.service import RAGResponse, RAGService
@@ -30,8 +29,7 @@ async def query_rag(
     if strategy in ("dense", "hybrid"):
         try:
             provider = VoyageEmbeddingProvider(api_key=settings.voyage_api_key)
-            embedding_service = EmbeddingService(db=db, provider=provider)
-            query_embedding = await embedding_service.embed_query(query)
+            query_embedding = await provider.embed_query(query)
         except Exception as exc:
             raise HTTPException(
                 status_code=500,
@@ -80,3 +78,47 @@ async def query_rag(
         "total_chunks": response.total_chunks,
         "total_tokens": response.total_tokens,
     }
+
+
+@router.post("/compare")
+async def compare_retrieval(
+    query: str,
+    repository_id: int | None = None,
+    db: Annotated[AsyncSession, Depends(get_db)] = None,
+) -> dict[str, list[dict[str, object]]]:
+    settings = get_settings()
+    retrieval_service = RetrievalService(db=db)
+
+    query_embedding = None
+    try:
+        provider = VoyageEmbeddingProvider(api_key=settings.voyage_api_key)
+        query_embedding = await provider.embed_query(query)
+    except Exception:
+        pass
+
+    results = {}
+    strategies = ["dense", "bm25", "hybrid"]
+    for strategy in strategies:
+        if strategy == "dense" and query_embedding is None:
+            results[strategy] = []
+            continue
+        try:
+            hits = await retrieval_service.search(
+                query_text=query,
+                query_embedding=query_embedding if strategy in ("dense", "hybrid") else None,
+                strategy=strategy,
+                repository_id=repository_id,
+                top_k=5,
+            )
+            results[strategy] = [
+                {
+                    "content": hit.chunk.content,
+                    "document_path": hit.chunk.document.path if hit.chunk.document else "Unknown",
+                    "score": hit.score,
+                }
+                for hit in hits
+            ]
+        except Exception as exc:
+            results[strategy] = [{"error": str(exc)}]
+
+    return results
