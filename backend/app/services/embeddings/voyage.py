@@ -64,9 +64,7 @@ class VoyageEmbeddingProvider(EmbeddingProvider):
             # Sleep between batches to respect the 3 RPM free-tier limit.
             # Skip the sleep after the final batch.
             if i + _BATCH_SIZE < len(texts):
-                logger.debug(
-                    "Rate-limit sleep %.0fs before next batch", _SLEEP_BETWEEN_BATCHES
-                )
+                logger.debug("Rate-limit sleep %.0fs before next batch", _SLEEP_BETWEEN_BATCHES)
                 await asyncio.sleep(_SLEEP_BETWEEN_BATCHES)
 
         return all_embeddings
