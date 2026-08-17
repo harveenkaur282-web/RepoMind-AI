@@ -106,7 +106,7 @@ def test_factory_get_llm_provider() -> None:
         llm_provider="openrouter",
         openrouter_api_key=None,
     )
-    with pytest.raises(LLMProviderError, match="OpenRouter API key is not configured"):
+    with pytest.raises(LLMProviderError, match="OpenRouter API key is required"):
         get_llm_provider(settings_no_key)
 
     # 3. Test OpenRouter selection success

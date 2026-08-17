@@ -98,7 +98,7 @@ def test_factory_get_groq_provider() -> None:
         llm_provider="groq",
         groq_api_key=None,
     )
-    with pytest.raises(LLMProviderError, match="Groq API key is not configured"):
+    with pytest.raises(LLMProviderError, match="Groq API key is required"):
         get_llm_provider(settings_no_key)
 
     # 2. Test Groq selection success

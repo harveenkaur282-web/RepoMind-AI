@@ -98,7 +98,7 @@ def test_factory_get_gemini_provider() -> None:
         llm_provider="gemini",
         gemini_api_key=None,
     )
-    with pytest.raises(LLMProviderError, match="Gemini API key is not configured"):
+    with pytest.raises(LLMProviderError, match="Gemini API key is required"):
         get_llm_provider(settings_no_key)
 
     # 2. Test Gemini selection success
