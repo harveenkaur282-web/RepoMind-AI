@@ -16,9 +16,11 @@ The system is structured as a decoupled web application with four primary layers
         │  (Service Orchestration)
         ▼
 [ RAG Pipeline Orchestrator ]
+        ├──► [ Query Rewriter ] ────► (Vague to code-optimized queries)
         ├──► [ Retrieval Service ] ──► (Dense / BM25 / Hybrid)
+        ├──► [ Document Reranker ] ──► (Local Cross-Encoder ranking)
         ├──► [ Context Assembler ] ──► (Deduplication, Token Capping)
-        └──► [ LLM Provider ] ───────► (Ollama / api/chat)
+        └──► [ LLM Provider ] ───────► (Ollama / OpenRouter / Gemini / Groq)
 ```
 
 ---
@@ -54,7 +56,17 @@ The system is structured as a decoupled web application with four primary layers
 ## 4. RAG Services Layer
 *   **Location**: `backend/app/services/`
 *   **Responsibilities**:
+    *   **Query Rewriter**: `QueryRewriter` parses conversational queries and rewrites them into code-specific search tokens.
     *   **Retrieval**: `RetrievalService` resolves queries against the database using BM25, dense vector, or hybrid rank fusion scoring.
+    *   **Reranking**: `LocalCrossEncoderReranker` scores candidate results using token intersection and path-component matching to surface the most relevant chunks.
     *   **Context Assembly**: `ContextAssembler` filters, deduplicates by ID, maps file paths, and truncates matching chunks to fit inside token boundaries.
-    *   **LLM Provider**: `OllamaProvider` connects to local Ollama server chat endpoints, converting format errors into custom `LLMProviderError` boundaries.
-    *   **RAG Service**: `RAGService` acts as the coordinator, sequentially invoking retrieval, context assembly, and LLM providers.
+    *   **LLM Provider**: `OllamaProvider`, `GeminiProvider`, `GroqProvider`, and `OpenRouterProvider` connect to local/hosted LLM servers, normalizing exceptions into custom `LLMProviderError` boundaries.
+    *   **RAG Service**: `RAGService` acts as the coordinator, sequentially invoking rewriting, retrieval, reranking, context assembly, and LLM providers.
+
+---
+
+## 5. Evaluation Layer
+*   **Location**: `backend/app/evaluation/`
+*   **Responsibilities**:
+    *   **Pydantic Models**: Defines evaluation datasets and question/ground-truth validation schema.
+    *   **Dataset Storage**: Located in `evaluation/data/` as versioned JSON datasets containing manually verified codebase queries.

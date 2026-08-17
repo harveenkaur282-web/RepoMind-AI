@@ -4,7 +4,7 @@ An Intelligent RAG-powered Codebase Search and Question-Answering Workspace for 
 
 ---
 
-## 🚀 Reproducibility Guide
+## Reproducibility Guide
 
 You can run **RepoMind-AI** on your own local device. Follow these steps to clone the repository, spin up the database, run migrations, and start the application.
 
@@ -69,7 +69,7 @@ You can run **RepoMind-AI** on your own local device. Follow these steps to clon
 
 ---
 
-## 💡 Problem & Motivation
+## Problem & Motivation
 
 Navigating and understanding a large or unfamiliar codebase on GitHub can be time-consuming. Developers frequently spend hours scanning files, parsing helper structures, and trying to trace API pathways. 
 
@@ -77,7 +77,7 @@ Navigating and understanding a large or unfamiliar codebase on GitHub can be tim
 
 ---
 
-## 🛠️ Main Features
+## Main Features
 
 *   **Repository Ingestion**: Ingest any public (or private, via GITHUB_TOKEN) repository directly by inputting `owner/name`.
 *   **Incremental Repository Updates**: Uses Git blob SHA comparisons to sync remote files. It skips unchanged documents to avoid redundant chunking and embedding (saving cost and time), processes modified/new files, and cleans up deleted documents.
@@ -91,7 +91,7 @@ Navigating and understanding a large or unfamiliar codebase on GitHub can be tim
 
 ---
 
-## 🏗️ Architecture & RAG Flow
+## Architecture & RAG Flow
 
 The application follows a decoupled client-server architecture:
 
@@ -106,15 +106,25 @@ graph TD
 
 ### Retrieval-Augmented Generation (RAG) Flow:
 1.  **Ingestion & Chunking**: Remote repository files are parsed using a `document_aware` chunker, generating embeddings via the Voyage API, and storing chunks as vectors in PostgreSQL.
-2.  **Query & Embedding**: The user enters a question in Streamlit. If using dense/hybrid search, the query is embedded via the Voyage API.
-3.  **Context Matching**: `RetrievalService` runs the selected strategy (dense, BM25, or hybrid) to gather relevant code chunks.
-4.  **Context Assembly**: Chunks are deduplicated, sorted, formatted with file path headers, and token-capped.
-5.  **LLM Chat Generation**: The prompt is sent to the local Ollama server, which generates the code explanation.
-6.  **Response rendering**: Streamlit displays the final response and attaches the source code chunks in clean, expandable code windows.
+2.  **Query Rewriting (Optional)**: If enabled, the original query is optimized for codebase lookup, extracting technical entities, and stripping filler words.
+3.  **Embedding & Search**: The search query (original or rewritten) is embedded (if strategy is dense/hybrid) and mapped to database chunks.
+4.  **Document Reranking (Optional)**: If enabled, retrieval results are scored and reordered via a local cross-encoder model to surface the most relevant pieces.
+5.  **Context Assembly**: Chunks are deduplicated, formatted with file path headers, and token-capped.
+6.  **LLM Generation**: The assembled context and original query are sent to the LLM provider (Ollama, OpenRouter, Gemini, or Groq) to generate the grounded response.
+
+```mermaid
+graph TD
+    A[Original User Query] --> B[Query Rewriter]
+    B -->|Search Query| C[RetrievalService]
+    C -->|Candidate Pools| D[Local Cross-Encoder Reranker]
+    D -->|Reordered Candidates| E[Context Assembler]
+    E -->|Context String| F[LLM Generation Provider]
+    A -->|Original Query| F
+```
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 *   **Frontend**: Streamlit
 *   **Backend**: FastAPI (Python 3.12)
@@ -128,16 +138,18 @@ graph TD
 
 ---
 
-## 📊 Evaluation & Future Improvements
+## Evaluation & Future Improvements
 
 ### Current Status
 *   Retrieval strategies are fully implemented (dense, BM25, hybrid).
-*   FastAPI endpoints have mock tests validating RAG services, retrieval scoring, context assembly limits, and Ollama exception handlers.
+*   Configurable prompt strategies (concise, detailed, and senior developer assistant templates) are added.
+*   A query-rewriting layer to optimize vague query terms for code search is integrated.
+*   A document reranking stage utilizing a lightweight local cross-encoder for code context is integrated.
+*   FastAPI endpoints have mock tests validating RAG services, retrieval scoring, context assembly limits, and Ollama/Gemini/Groq/OpenRouter exception handlers.
 
 ### Planned Evaluation
 *   **Retrieval Evaluation**: Setting up a ground-truth dataset of queries and relevant code snippets to calculate Hit Rate and Mean Reciprocal Rank (MRR) across Dense, BM25, and Hybrid strategies.
-*   **LLM Evaluation**: Grading Ollama answers using a LLM-as-a-judge paradigm (measuring answer correctness, groundness, and compliance).
-*   **Reranking**: Implementing a Cohere or local Cross-Encoder reranking step between retrieval and context assembly.
+*   **LLM Evaluation**: Grading LLM responses (Ollama, Gemini, Groq, etc.) using a LLM-as-a-judge paradigm (measuring correctness, faithfulness, and format compliance).
 
 ### Known Limitations
 *   **GitHub Rate Limits**: Unauthenticated ingestion hits a 60 request/hour ceiling. Passing a `GITHUB_TOKEN` increases this to 5,000 requests/hour.
@@ -145,7 +157,7 @@ graph TD
 
 ---
 
-## 🧪 Testing & CI
+## Testing & CI
 
 To run all unit tests locally:
 ```bash

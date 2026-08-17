@@ -1,6 +1,6 @@
 # Retrieval Strategies
 
-RepoMind-AI implements three different retrieval strategies to search codebase repositories.
+RepoMind-AI implements multiple retrieval strategies, query optimization, and post-retrieval re-scoring to search codebase repositories.
 
 ---
 
@@ -34,9 +34,28 @@ RepoMind-AI implements three different retrieval strategies to search codebase r
 
 ---
 
-## Why We Implemented All Three
-We implemented all three strategies to allow for **Retrieval Evaluation**:
-*   Dense search is powerful for broad conceptual sweeps but can easily lose track of exact matching variable names or function symbols.
-*   BM25 is highly precise for keyword matching but fails if the user asks a question using synonyms.
-*   Hybrid search aims to bridge the gap.
-*   *Planned Evaluation*: During the evaluation phase, we will grade each strategy using metrics like **Hit Rate** and **MRR** (Mean Reciprocal Rank) to mathematically determine which strategy performs best for codebase search.
+## 4. Query Rewriting Layer
+*   **How it works**:
+    *   Uses the configured LLM provider to clean up and structure natural language queries.
+    *   Strips conversational headers (e.g. "hey, can you find...") and returns clean, search-friendly tokens.
+*   **Benefit**: Greatly improves BM25 matching and semantic hits for vague user queries.
+
+---
+
+## 5. Document Reranking (Cross-Encoder)
+*   **How it works**:
+    *   A post-retrieval scoring step using `LocalCrossEncoderReranker`.
+    *   Tokenizes candidates at the identifier level (breaking CamelCase and snake_case) and calculates overlaps, phrase sequences, and path-component matches.
+*   **Benefit**: Scores document chunks directly against the search query, reordering candidate lists to float the most contextually relevant code blocks to the top.
+
+---
+
+## Evaluation Dataset
+We have created a versioned evaluation dataset in `evaluation/data/retrieval_dataset_v1.json` with ground-truth codebase queries. We will use this dataset to evaluate and compare:
+1.  Dense Retrieval
+2.  BM25 Retrieval
+3.  Hybrid (RRF) Retrieval
+4.  Hybrid + Query Rewriting
+5.  Hybrid + Reranking
+
+We will measure performance using metrics like **Hit Rate** and **MRR** (Mean Reciprocal Rank).
