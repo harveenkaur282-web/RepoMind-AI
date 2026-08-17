@@ -69,6 +69,12 @@ async def test_query_rag_endpoint_success() -> None:
             strategy="hybrid",
             repository_id=42,
             document_id=None,
+            system_prompt=(
+                "Answer the user's question using only the provided repository context. "
+                "Be concise and do not invent information."
+            ),
+            prompt_strategy="concise_grounded",
+            search_query=None,
         )
 
 

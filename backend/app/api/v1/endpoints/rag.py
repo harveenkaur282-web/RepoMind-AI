@@ -7,6 +7,8 @@ from backend.app.core.config import get_settings
 from backend.app.db.dependencies import get_db
 from backend.app.services.embeddings.voyage import VoyageEmbeddingProvider
 from backend.app.services.generation.factory import get_llm_provider
+from backend.app.services.rag.prompts import get_system_prompt
+from backend.app.services.rag.rewriter import QueryRewriter
 from backend.app.services.rag.service import RAGResponse, RAGService
 from backend.app.services.retrieval.context import ContextAssembler
 from backend.app.services.retrieval.service import RetrievalService
@@ -20,16 +22,36 @@ async def query_rag(
     strategy: str = "dense",
     repository_id: int | None = None,
     document_id: int | None = None,
+    prompt_strategy: str = "concise_grounded",
+    rewrite_query: bool = False,
     db: Annotated[AsyncSession, Depends(get_db)] = None,
 ) -> dict[str, object]:
     settings = get_settings()
+
+    try:
+        llm_provider = get_llm_provider(settings)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+    search_query = None
+    if rewrite_query:
+        try:
+            rewriter = QueryRewriter(llm_provider)
+            search_query = await rewriter.rewrite(query)
+        except Exception as exc:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Query rewriting failed: {exc}",
+            ) from exc
+
+    query_to_embed = search_query if search_query is not None else query
 
     # 1. Get embedding for query if strategy needs it
     query_embedding = None
     if strategy in ("dense", "hybrid"):
         try:
             provider = VoyageEmbeddingProvider(api_key=settings.voyage_api_key)
-            query_embedding = await provider.embed_query(query)
+            query_embedding = await provider.embed_query(query_to_embed)
         except Exception as exc:
             raise HTTPException(
                 status_code=500,
@@ -39,10 +61,11 @@ async def query_rag(
     # 2. Setup services
     retrieval_service = RetrievalService(db=db)
     context_assembler = ContextAssembler()
+
     try:
-        llm_provider = get_llm_provider(settings)
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
+        system_prompt = get_system_prompt(prompt_strategy)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 
     rag_service = RAGService(
         retrieval_service=retrieval_service,
@@ -57,6 +80,9 @@ async def query_rag(
             strategy=strategy,
             repository_id=repository_id,
             document_id=document_id,
+            system_prompt=system_prompt,
+            prompt_strategy=prompt_strategy,
+            search_query=search_query,
         )
     except Exception as exc:
         raise HTTPException(
@@ -77,6 +103,8 @@ async def query_rag(
         "strategy": response.strategy,
         "total_chunks": response.total_chunks,
         "total_tokens": response.total_tokens,
+        "prompt_strategy": response.prompt_strategy,
+        "rewritten_query": response.rewritten_query,
     }
 
 
