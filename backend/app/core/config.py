@@ -18,8 +18,11 @@ class Settings(BaseSettings):
 
     voyage_api_key: str | None = None
     groq_api_key: str | None = None
+    groq_model: str = "llama-3.1-70b-versatile"
     gemini_api_key: str | None = None
+    gemini_model: str = "gemini-1.5-flash"
     openrouter_api_key: str | None = None
+    openrouter_model: str = "meta-llama/llama-3-8b-instruct:free"
 
     embedding_model: str = "BAAI/bge-small-en-v1.5"
     reranker_model: str = "BAAI/bge-reranker-base"
