@@ -22,12 +22,14 @@ def main() -> None:
     home_page = st.Page("pages/home.py", title="Home", default=True)
     ingestion_page = st.Page("pages/ingestion.py", title="Ingest Repository")
     repositories_page = st.Page("pages/repositories.py", title="Repositories")
+    assistant_page = st.Page("pages/assistant.py", title="AI Assistant")
 
     navigation = st.navigation(
         [
             home_page,
             ingestion_page,
             repositories_page,
+            assistant_page,
         ]
     )
     navigation.run()

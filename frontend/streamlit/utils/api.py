@@ -94,3 +94,22 @@ def get_repositories() -> list[dict[str, Any]]:
     if not isinstance(data, list):
         raise RuntimeError("The repository list endpoint returned a non-list response.")
     return data
+
+
+def query_rag(
+    query: str,
+    strategy: str = "dense",
+    repository_id: int | None = None,
+) -> dict[str, Any]:
+    params = {
+        "query": query,
+        "strategy": strategy,
+    }
+    if repository_id is not None:
+        params["repository_id"] = repository_id
+
+    return _request_json(
+        "POST",
+        "/api/v1/rag/query",
+        params=params,
+    )
