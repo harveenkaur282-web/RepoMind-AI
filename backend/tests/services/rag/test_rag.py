@@ -61,6 +61,7 @@ async def test_rag_service_success() -> None:
         strategy="hybrid",
         repository_id=42,
         document_id=None,
+        top_k=10,
     )
     mock_assembler.assemble.assert_called_once_with(results)
     mock_llm.generate.assert_awaited_once_with(
@@ -109,6 +110,7 @@ async def test_rag_service_empty_retrieval() -> None:
         strategy="bm25",
         repository_id=None,
         document_id=None,
+        top_k=10,
     )
     mock_assembler.assemble.assert_called_once_with([])
     mock_llm.generate.assert_awaited_once_with(

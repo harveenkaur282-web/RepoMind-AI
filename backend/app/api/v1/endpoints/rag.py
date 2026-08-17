@@ -8,6 +8,7 @@ from backend.app.db.dependencies import get_db
 from backend.app.services.embeddings.voyage import VoyageEmbeddingProvider
 from backend.app.services.generation.factory import get_llm_provider
 from backend.app.services.rag.prompts import get_system_prompt
+from backend.app.services.rag.reranker import LocalCrossEncoderReranker
 from backend.app.services.rag.rewriter import QueryRewriter
 from backend.app.services.rag.service import RAGResponse, RAGService
 from backend.app.services.retrieval.context import ContextAssembler
@@ -24,6 +25,8 @@ async def query_rag(
     document_id: int | None = None,
     prompt_strategy: str = "concise_grounded",
     rewrite_query: bool = False,
+    rerank: bool | None = None,
+    rerank_limit: int | None = None,
     db: Annotated[AsyncSession, Depends(get_db)] = None,
 ) -> dict[str, object]:
     settings = get_settings()
@@ -67,10 +70,19 @@ async def query_rag(
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
+    # Resolve reranker settings
+    use_rerank = rerank if rerank is not None else settings.reranker_enabled
+    use_limit = rerank_limit if rerank_limit is not None else settings.reranker_limit
+
+    reranker = None
+    if use_rerank:
+        reranker = LocalCrossEncoderReranker(model_name=settings.reranker_model)
+
     rag_service = RAGService(
         retrieval_service=retrieval_service,
         context_assembler=context_assembler,
         llm_provider=llm_provider,
+        reranker=reranker,
     )
 
     try:
@@ -83,6 +95,8 @@ async def query_rag(
             system_prompt=system_prompt,
             prompt_strategy=prompt_strategy,
             search_query=search_query,
+            rerank=use_rerank,
+            rerank_limit=use_limit,
         )
     except Exception as exc:
         raise HTTPException(
@@ -94,11 +108,17 @@ async def query_rag(
         "answer": response.answer,
         "chunks": [
             {
-                "id": chunk.id,
-                "content": chunk.content,
-                "document_path": chunk.document.path if chunk.document else "Unknown",
+                "id": res.chunk.id if hasattr(res, "chunk") else res.id,
+                "content": res.chunk.content if hasattr(res, "chunk") else res.content,
+                "document_path": (
+                    (res.chunk.document.path if res.chunk.document else "Unknown")
+                    if hasattr(res, "chunk")
+                    else (res.document.path if res.document else "Unknown")
+                ),
+                "score": getattr(res, "score", None),
+                "rerank_score": getattr(res, "rerank_score", None),
             }
-            for chunk in response.chunks
+            for res in (response.results if response.results is not None else response.chunks)
         ],
         "strategy": response.strategy,
         "total_chunks": response.total_chunks,

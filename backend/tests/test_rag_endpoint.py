@@ -75,6 +75,8 @@ async def test_query_rag_endpoint_success() -> None:
             ),
             prompt_strategy="concise_grounded",
             search_query=None,
+            rerank=False,
+            rerank_limit=20,
         )
 
 

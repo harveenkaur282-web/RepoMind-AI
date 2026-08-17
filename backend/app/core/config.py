@@ -26,6 +26,8 @@ class Settings(BaseSettings):
 
     embedding_model: str = "BAAI/bge-small-en-v1.5"
     reranker_model: str = "BAAI/bge-reranker-base"
+    reranker_enabled: bool = False
+    reranker_limit: int = 20
 
     ollama_url: str = "http://localhost:11434"
     ollama_model: str = "qwen2.5-coder:7b"

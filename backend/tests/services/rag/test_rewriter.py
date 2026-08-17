@@ -80,6 +80,7 @@ async def test_rag_pipeline_orchestrates_rewriting() -> None:
         strategy="dense",
         repository_id=None,
         document_id=None,
+        top_k=10,
     )
 
     # 2. Final LLM Generation must receive the ORIGINAL query
@@ -124,4 +125,5 @@ async def test_rag_pipeline_without_rewriting() -> None:
         strategy="dense",
         repository_id=None,
         document_id=None,
+        top_k=10,
     )

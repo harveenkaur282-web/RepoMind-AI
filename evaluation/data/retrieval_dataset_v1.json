@@ -1,0 +1,79 @@
+{
+  "version": "1.0.0",
+  "samples": [
+    {
+      "id": "eval-001",
+      "question": "What parameters does the answer_query method in RAGService accept?",
+      "relevant_documents": [
+        "backend/app/services/rag/service.py"
+      ],
+      "relevant_chunks": [
+        "async def answer_query(",
+        "search_query: str | None = None,",
+        "rerank: bool = False,"
+      ],
+      "category": "technical_terms",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-002",
+      "question": "How does the context assembler deduplicate chunk results and format them with headers?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/context.py"
+      ],
+      "relevant_chunks": [
+        "def assemble(self, results: list[RetrievalResult])",
+        "seen_ids = set()",
+        "unique_results = []"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-003",
+      "question": "How does the LocalCrossEncoderReranker tokenize input strings and assign reranking scores?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "def _tokenize(self, text: str) -> list[str]:",
+        "overlap = query_token_set.intersection(doc_token_set)",
+        "candidate.rerank_score = total_score"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-004",
+      "question": "Where is the FastAPI post route /rag/query defined?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "@router.post(\"/query\")",
+        "async def query_rag("
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-005",
+      "question": "If a hosted LLM provider requires an API key, where is that key validated, and does Ollama require one?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "def validate_llm_settings(settings: Settings) -> None:",
+        "if provider_name in (\"openrouter\", \"gemini\", \"groq\"):",
+        "Ollama must not require an API key."
+      ],
+      "category": "semantic",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    }
+  ]
+}
