@@ -76,6 +76,7 @@ class RetrievalResult:
 
     chunk: Chunk
     score: float
+    rerank_score: float | None = None
 
 
 class RetrievalService:
