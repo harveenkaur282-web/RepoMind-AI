@@ -25,7 +25,7 @@ class GitHubClient:
         }
 
         if settings.github_token:
-            headers["Authorization"] = f"Bearer {settings.github_token}"
+            headers["Authorization"] = f"token {settings.github_token}"
 
         self.client = httpx.AsyncClient(
             base_url=self.BASE_URL,
