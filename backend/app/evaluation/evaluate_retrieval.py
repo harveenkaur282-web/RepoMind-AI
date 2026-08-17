@@ -13,7 +13,7 @@ from sqlalchemy.future import select
 from backend.app.db.models.document import Document
 from backend.app.db.session import AsyncSessionLocal
 from backend.app.evaluation.models import EvaluationDataset
-from backend.app.services.embeddings.voyage import VoyageEmbeddingProvider
+from backend.app.services.embeddings.local import LocalEmbeddingProvider
 from backend.app.services.retrieval.service import RetrievalService
 
 
@@ -55,10 +55,10 @@ async def run_evaluation(
     total_latency = 0.0
     errors = 0
 
-    # Mock VoyageEmbeddingProvider to return a static vector for offline query processing
-    dummy_embedding = [0.1] * 1024
+    # Mock LocalEmbeddingProvider to return a static vector for offline query processing
+    dummy_embedding = [0.1] * 768
     with patch.object(
-        VoyageEmbeddingProvider,
+        LocalEmbeddingProvider,
         "embed_query",
         new_callable=AsyncMock,
         return_value=dummy_embedding,
@@ -103,7 +103,7 @@ async def run_evaluation(
                     # Query embedding resolution if dense or hybrid
                     query_embedding = None
                     if strategy in ("dense", "hybrid"):
-                        provider = VoyageEmbeddingProvider(api_key="mock_key")
+                        provider = LocalEmbeddingProvider()
                         query_embedding = await provider.embed_query(sample.question)
 
                     results = await retrieval_service.search(
@@ -142,6 +142,10 @@ async def run_evaluation(
         "avg_latency_ms": avg_latency * 1000,
         "query_count": total_queries,
         "error_count": errors,
+        "embedding_provider": "local",
+        "embedding_model": LocalEmbeddingProvider.MODEL_NAME,
+        "dataset_version": dataset.version if hasattr(dataset, "version") else "v2",
+        "simulated": simulated,
     }
 
 
