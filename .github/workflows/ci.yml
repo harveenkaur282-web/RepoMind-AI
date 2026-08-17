@@ -49,6 +49,9 @@ jobs:
       - name: Run Ruff format check
         run: uv run ruff format --check .
 
+      - name: Run Database Migrations
+        run: uv run alembic upgrade head
+
       - name: Run Pytest
         env:
           GITHUB_TOKEN: ${{ secrets.REPOMIND_GITHUB_TOKEN }}
