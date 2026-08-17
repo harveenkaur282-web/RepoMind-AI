@@ -32,7 +32,7 @@ def main() -> None:
     st.markdown("---")
 
     # 3. Side-by-Side Retrieval Playground
-    st.subheader("🔍 RAG Retrieval Playground")
+    st.subheader("RAG Retrieval Playground")
     st.caption(
         "Compare semantic (dense), keyword (BM25), and "
         "fused (hybrid) retrieval matching side-by-side."
@@ -57,7 +57,7 @@ def main() -> None:
                     col_dense, col_bm25, col_hybrid = st.columns(3)
 
                     with col_dense:
-                        st.markdown("### 🧠 Dense (Semantic)")
+                        st.markdown("### Dense (Semantic)")
                         hits = comparison.get("dense", [])
                         if not hits:
                             st.write("No matching semantic chunks found.")
@@ -71,7 +71,7 @@ def main() -> None:
                                     st.code(hit["content"][:300] + "...", language="python")
 
                     with col_bm25:
-                        st.markdown("### 📝 BM25 (Keyword)")
+                        st.markdown("### BM25 (Keyword)")
                         hits = comparison.get("bm25", [])
                         if not hits:
                             st.write("No keyword matching chunks found.")
@@ -85,7 +85,7 @@ def main() -> None:
                                     st.code(hit["content"][:300] + "...", language="python")
 
                     with col_hybrid:
-                        st.markdown("### 🔀 Hybrid (RRF)")
+                        st.markdown("### Hybrid (RRF)")
                         hits = comparison.get("hybrid", [])
                         if not hits:
                             st.write("No hybrid results.")
@@ -104,7 +104,7 @@ def main() -> None:
     st.markdown("---")
 
     # 4. Service Diagnostics Panel
-    st.subheader("⚡ Service Latencies & Diagnostics")
+    st.subheader("Service Latencies & Diagnostics")
     c_left, c_right = st.columns(2)
 
     with c_left:
