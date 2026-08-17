@@ -1,0 +1,3785 @@
+{
+  "version": "2.0.0",
+  "samples": [
+    {
+      "id": "eval-001",
+      "question": "What is the entrypoint file for the FastAPI application?",
+      "relevant_documents": [
+        "backend/app/main.py"
+      ],
+      "relevant_chunks": [
+        "app = FastAPI",
+        "cors"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-002",
+      "question": "How is CORS middleware configured in the FastAPI main application?",
+      "relevant_documents": [
+        "backend/app/main.py"
+      ],
+      "relevant_chunks": [
+        "app = FastAPI",
+        "cors"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-003",
+      "question": "Where are the routers included in the FastAPI app instance?",
+      "relevant_documents": [
+        "backend/app/main.py"
+      ],
+      "relevant_chunks": [
+        "app = FastAPI",
+        "cors"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-004",
+      "question": "What title and version is assigned to the FastAPI app instance?",
+      "relevant_documents": [
+        "backend/app/main.py"
+      ],
+      "relevant_chunks": [
+        "app = FastAPI",
+        "cors"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-005",
+      "question": "How does the backend mount routers or register sub-routers?",
+      "relevant_documents": [
+        "backend/app/main.py"
+      ],
+      "relevant_chunks": [
+        "app = FastAPI",
+        "cors"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-006",
+      "question": "Is there an overall startup hook or event listener registered in main.py?",
+      "relevant_documents": [
+        "backend/app/main.py"
+      ],
+      "relevant_chunks": [
+        "app = FastAPI",
+        "cors"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-007",
+      "question": "How are API endpoints prefixed or grouped under v1?",
+      "relevant_documents": [
+        "backend/app/main.py"
+      ],
+      "relevant_chunks": [
+        "app = FastAPI",
+        "cors"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-008",
+      "question": "What middleware is added to allow Streamlit client requests?",
+      "relevant_documents": [
+        "backend/app/main.py"
+      ],
+      "relevant_chunks": [
+        "app = FastAPI",
+        "cors"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-009",
+      "question": "Where does FastAPI initialize its main app object?",
+      "relevant_documents": [
+        "backend/app/main.py"
+      ],
+      "relevant_chunks": [
+        "app = FastAPI",
+        "cors"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-010",
+      "question": "Does main.py import any settings or configuration directly?",
+      "relevant_documents": [
+        "backend/app/main.py"
+      ],
+      "relevant_chunks": [
+        "app = FastAPI",
+        "cors"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-011",
+      "question": "How is the Settings class defined using Pydantic BaseSettings?",
+      "relevant_documents": [
+        "backend/app/core/config.py"
+      ],
+      "relevant_chunks": [
+        "class Settings",
+        "get_settings"
+      ],
+      "category": "configuration",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-012",
+      "question": "Where is the default PostgreSQL database connection string defined?",
+      "relevant_documents": [
+        "backend/app/core/config.py"
+      ],
+      "relevant_chunks": [
+        "class Settings",
+        "get_settings"
+      ],
+      "category": "configuration",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-013",
+      "question": "What default model is configured for Ollama code generation?",
+      "relevant_documents": [
+        "backend/app/core/config.py"
+      ],
+      "relevant_chunks": [
+        "class Settings",
+        "get_settings"
+      ],
+      "category": "configuration",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-014",
+      "question": "What is the default Ollama server URL configured in settings?",
+      "relevant_documents": [
+        "backend/app/core/config.py"
+      ],
+      "relevant_chunks": [
+        "class Settings",
+        "get_settings"
+      ],
+      "category": "configuration",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-015",
+      "question": "Where are Voyage AI embedding and reranker model names configured?",
+      "relevant_documents": [
+        "backend/app/core/config.py"
+      ],
+      "relevant_chunks": [
+        "class Settings",
+        "get_settings"
+      ],
+      "category": "configuration",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-016",
+      "question": "How does settings handle env files and case sensitivity?",
+      "relevant_documents": [
+        "backend/app/core/config.py"
+      ],
+      "relevant_chunks": [
+        "class Settings",
+        "get_settings"
+      ],
+      "category": "configuration",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-017",
+      "question": "What environment variables configure OpenRouter, Gemini, and Groq API keys?",
+      "relevant_documents": [
+        "backend/app/core/config.py"
+      ],
+      "relevant_chunks": [
+        "class Settings",
+        "get_settings"
+      ],
+      "category": "configuration",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-018",
+      "question": "Where is the get_settings function cached using lru_cache?",
+      "relevant_documents": [
+        "backend/app/core/config.py"
+      ],
+      "relevant_chunks": [
+        "class Settings",
+        "get_settings"
+      ],
+      "category": "configuration",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-019",
+      "question": "What is the default model name for Groq and Gemini providers?",
+      "relevant_documents": [
+        "backend/app/core/config.py"
+      ],
+      "relevant_chunks": [
+        "class Settings",
+        "get_settings"
+      ],
+      "category": "configuration",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-020",
+      "question": "Does settings support Redis URL configuration?",
+      "relevant_documents": [
+        "backend/app/core/config.py"
+      ],
+      "relevant_chunks": [
+        "class Settings",
+        "get_settings"
+      ],
+      "category": "configuration",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-021",
+      "question": "Is github_token configured with a default value in config.py?",
+      "relevant_documents": [
+        "backend/app/core/config.py"
+      ],
+      "relevant_chunks": [
+        "class Settings",
+        "get_settings"
+      ],
+      "category": "configuration",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-022",
+      "question": "How can I customize settings using an env file name?",
+      "relevant_documents": [
+        "backend/app/core/config.py"
+      ],
+      "relevant_chunks": [
+        "class Settings",
+        "get_settings"
+      ],
+      "category": "configuration",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-023",
+      "question": "What is the default embedding model name defined in core configuration?",
+      "relevant_documents": [
+        "backend/app/core/config.py"
+      ],
+      "relevant_chunks": [
+        "class Settings",
+        "get_settings"
+      ],
+      "category": "configuration",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-024",
+      "question": "Where is the app_name string defined in Settings?",
+      "relevant_documents": [
+        "backend/app/core/config.py"
+      ],
+      "relevant_chunks": [
+        "class Settings",
+        "get_settings"
+      ],
+      "category": "configuration",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-025",
+      "question": "What config parameters manage the local cross encoder reranking limit?",
+      "relevant_documents": [
+        "backend/app/core/config.py"
+      ],
+      "relevant_chunks": [
+        "class Settings",
+        "get_settings"
+      ],
+      "category": "configuration",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-026",
+      "question": "How is the async database session yield handled in get_db?",
+      "relevant_documents": [
+        "backend/app/db/dependencies.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-027",
+      "question": "Where is the FastAPI dependency get_db declared?",
+      "relevant_documents": [
+        "backend/app/db/dependencies.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-028",
+      "question": "How does session.py create the async engine and sessionmaker?",
+      "relevant_documents": [
+        "backend/app/db/dependencies.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-029",
+      "question": "What driver is used for async database connections in RepoMind?",
+      "relevant_documents": [
+        "backend/app/db/dependencies.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-030",
+      "question": "How does the database dependency clean up or close sessions after calls?",
+      "relevant_documents": [
+        "backend/app/db/dependencies.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-031",
+      "question": "Is get_db bound to scoped sessions or fresh instances?",
+      "relevant_documents": [
+        "backend/app/db/dependencies.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-032",
+      "question": "How is async_session_maker configured to expire_on_commit?",
+      "relevant_documents": [
+        "backend/app/db/dependencies.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-033",
+      "question": "Where does SQLALchemy bind the async engine in session.py?",
+      "relevant_documents": [
+        "backend/app/db/dependencies.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-034",
+      "question": "What is the default pool size or connection limit for asyncpg engine?",
+      "relevant_documents": [
+        "backend/app/db/dependencies.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-035",
+      "question": "How are session transaction rollbacks handled in case of exceptions?",
+      "relevant_documents": [
+        "backend/app/db/dependencies.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-036",
+      "question": "How is the relationship between Repository and Document models declared?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-037",
+      "question": "Where is the Chunk model schema defined in the database folder?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-038",
+      "question": "What column stores the high-dimensional embeddings for chunks?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-039",
+      "question": "How does cascade delete orphan configuration clean up chunk vectors?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-040",
+      "question": "What indexes are defined on Document and Chunk tables for fast queries?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-041",
+      "question": "What data type represents the primary key IDs in Repository model?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-042",
+      "question": "How is document path stored in the Document schema?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-043",
+      "question": "Where are the mapped SQLAlchemy models defined?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-044",
+      "question": "How is the vector dimension size of pgvector defined in Chunk model?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-045",
+      "question": "Is there a unique constraint on repository clone URLs?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-046",
+      "question": "How are documents associated with their respective repository parent ID?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-047",
+      "question": "What fields does the Chunk model have other than content and embedding?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-048",
+      "question": "Does the Document table store git blob SHA values?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-049",
+      "question": "Where is the back_populates relationship for chunks specified?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-050",
+      "question": "How is pgvector Vector class imported in SQLAlchemy models?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-051",
+      "question": "Is there a created_at or updated_at timestamp in Repository schema?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-052",
+      "question": "What is the maximum length of repository clone URL string?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-053",
+      "question": "How is repository owner and name stored in the database?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-054",
+      "question": "What fields in Chunk model refer back to Document and Repository?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-055",
+      "question": "Are there foreign key constraints on the Document and Chunk tables?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-056",
+      "question": "Where is the primary key defined for Chunk model?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-057",
+      "question": "What SQLAlchemy class represents the Document model?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-058",
+      "question": "Does repository ingestion record the default branch name?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-059",
+      "question": "How is document content length or size tracked?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-060",
+      "question": "What is the relationship between Chunk and Document in database models?",
+      "relevant_documents": [
+        "backend/app/db/models/document.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-061",
+      "question": "Where is the server diagnostics health check endpoint defined?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/health.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-062",
+      "question": "What database metrics and table row counts does diagnostics report?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/health.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-063",
+      "question": "Where is the GET /api/v1/health route registered?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/health.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-064",
+      "question": "How is the database connection status checked in health route?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/health.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-065",
+      "question": "What JSON response format is returned by health check diagnostics?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/health.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-066",
+      "question": "How do we check if Ollama is running from health checks?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/health.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-067",
+      "question": "Does diagnostics route execute any raw SQL count commands?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/health.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-068",
+      "question": "What metrics are returned for repositories, documents, and chunks count?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/health.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-069",
+      "question": "How are SQLAlchemy exceptions handled in the health diagnostics endpoint?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/health.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-070",
+      "question": "Where is the ping check logic for Ollama model status?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/health.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-071",
+      "question": "Where is the endpoint to list all ingested repositories defined?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/repositories.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-072",
+      "question": "How is the DELETE /api/v1/repositories/{id} route implemented?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/repositories.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-073",
+      "question": "What route triggers the cascading deletion of a repository?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/repositories.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-074",
+      "question": "How are repositories fetched with async sessions in API routes?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/repositories.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-075",
+      "question": "What response payload format is returned when a repository is deleted?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/repositories.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-076",
+      "question": "Is there a GET route to retrieve a single repository by ID?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/repositories.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-077",
+      "question": "How are API route requests validated for repository deletions?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/repositories.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-078",
+      "question": "Where are repository endpoint parameters defined?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/repositories.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-079",
+      "question": "Does listing repositories return document counts or total chunks?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/repositories.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-080",
+      "question": "How are repository IDs parsed from request paths in api routes?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/repositories.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-081",
+      "question": "Where is the REST endpoint for repository ingestion defined?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-082",
+      "question": "How is the incremental repository update route POST v1 ingestion implemented?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-083",
+      "question": "What request parameters are needed to trigger ingestion updates?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-084",
+      "question": "How is the RepositoryIngestor service instantiated in API routes?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-085",
+      "question": "What exceptions are caught when repository ingestion fails?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-086",
+      "question": "Does ingestion route run asynchronously or block the request thread?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-087",
+      "question": "How does the ingestion endpoint validate clone URLs or owner/repo format?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-088",
+      "question": "Where are GitHub tokens resolved in ingestion routes?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-089",
+      "question": "What JSON structure is returned after a successful repository sync?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-090",
+      "question": "Is there a rate limiting protection on the repository ingestion routes?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-091",
+      "question": "How does POST ingestion update route resolve repository ID?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-092",
+      "question": "Where is the update_repository method called from the API layer?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-093",
+      "question": "Does the ingestion endpoint return the count of files updated?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-094",
+      "question": "How are DB session commits triggered after ingestion finishes?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-095",
+      "question": "Where is the repository clone url parsed in ingestion api?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-096",
+      "question": "What dependencies are injected into the ingestion route handler?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-097",
+      "question": "How is the GitHub API client authorized inside ingestion routes?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-098",
+      "question": "Does ingestion API support custom branch names as parameters?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-099",
+      "question": "What HTTP error code is returned if repository to update does not exist?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-100",
+      "question": "Where are the FastAPI routing prefixes defined for ingestion?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/ingestion.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-101",
+      "question": "Where is the API endpoint to run a RAG query defined?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-102",
+      "question": "How is the query_rag route POST /rag/query implemented?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-103",
+      "question": "What parameters does the query_rag endpoint accept?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-104",
+      "question": "How is prompt_strategy validated inside the query_rag endpoint?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-105",
+      "question": "Where is get_llm_provider called in RAG query routes?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-106",
+      "question": "How does POST /rag/query resolve query rewriting options?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-107",
+      "question": "Where is VoyageEmbeddingProvider instantiated in the RAG route?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-108",
+      "question": "What is the POST /rag/compare endpoint used for?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-109",
+      "question": "How does the compare route retrieve chunks for multiple strategies?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-110",
+      "question": "Does compare endpoint run dense, BM25, and hybrid search side-by-side?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-111",
+      "question": "What response payload format is returned by compare retrieval route?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-112",
+      "question": "How is the query embedded before calling retrieval in rag endpoints?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-113",
+      "question": "Where are HTTPExceptions raised for failed query embeddings?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-114",
+      "question": "How are document_id and repository_id filters passed to rag routes?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-115",
+      "question": "What JSON format lists matching chunks with original and rerank scores?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-116",
+      "question": "How is the default prompt strategy configured in the RAG API router?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-117",
+      "question": "Does query_rag catch generic exception failures and return HTTP 500?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-118",
+      "question": "Where are prompt strategy configurations resolved in endpoints?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-119",
+      "question": "Does compare route use LLM providers or just RetrievalService?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-120",
+      "question": "How are document paths formatted in chunk dictionaries in RAG API?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-121",
+      "question": "What parameters are passed from POST /query route to answer_query?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-122",
+      "question": "Where are settings loaded in the RAG endpoint router?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-123",
+      "question": "Is there an endpoint that checks the health of LLM connections?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-124",
+      "question": "How are original query and rewritten search query structured in response?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-125",
+      "question": "How are database dependency session bindings injected in RAG routes?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-126",
+      "question": "Where is the system prompt fetched in the query_rag handler?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-127",
+      "question": "What is the structure of the RAG compare JSON output?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-128",
+      "question": "Does POST /query accept a custom rerank boolean parameter?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-129",
+      "question": "How is rerank_limit parsed from query parameters in API routes?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-130",
+      "question": "Are CORS origins allowed for RAG query and compare endpoints?",
+      "relevant_documents": [
+        "backend/app/api/v1/endpoints/rag.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "location",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-131",
+      "question": "How is VoyageEmbeddingProvider implemented using VoyageAI client?",
+      "relevant_documents": [
+        "backend/app/services/embeddings/voyage.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-132",
+      "question": "What method is defined in EmbeddingProvider protocol for query embedding?",
+      "relevant_documents": [
+        "backend/app/services/embeddings/voyage.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-133",
+      "question": "What embedding model name is passed to Voyage client by default?",
+      "relevant_documents": [
+        "backend/app/services/embeddings/voyage.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-134",
+      "question": "How are document chunks embedded in batches in Voyage provider?",
+      "relevant_documents": [
+        "backend/app/services/embeddings/voyage.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-135",
+      "question": "How are exceptions handled if the Voyage AI API call fails?",
+      "relevant_documents": [
+        "backend/app/services/embeddings/voyage.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-136",
+      "question": "Where is VoyageEmbeddingProvider defined in services?",
+      "relevant_documents": [
+        "backend/app/services/embeddings/voyage.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-137",
+      "question": "What API key variable is required by VoyageEmbeddingProvider?",
+      "relevant_documents": [
+        "backend/app/services/embeddings/voyage.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-138",
+      "question": "Does VoyageEmbeddingProvider implement async embed_query and embed_documents?",
+      "relevant_documents": [
+        "backend/app/services/embeddings/voyage.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-139",
+      "question": "How does the embedding service handle API rate limit retry backoffs?",
+      "relevant_documents": [
+        "backend/app/services/embeddings/voyage.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-140",
+      "question": "What dimension size is returned by Voyage code embeddings?",
+      "relevant_documents": [
+        "backend/app/services/embeddings/voyage.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-141",
+      "question": "Is there a protocol interface class for embedding providers?",
+      "relevant_documents": [
+        "backend/app/services/embeddings/voyage.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-142",
+      "question": "How is the Voyage client instantiated with API keys in provider?",
+      "relevant_documents": [
+        "backend/app/services/embeddings/voyage.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-143",
+      "question": "Does embed_documents accept a list of strings and return list of lists?",
+      "relevant_documents": [
+        "backend/app/services/embeddings/voyage.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-144",
+      "question": "How is the base embedding service module structured?",
+      "relevant_documents": [
+        "backend/app/services/embeddings/voyage.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-145",
+      "question": "Where can I customize the embedding model parameter in code?",
+      "relevant_documents": [
+        "backend/app/services/embeddings/voyage.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-146",
+      "question": "How does get_llm_provider select the provider from Settings?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-147",
+      "question": "Where is validate_llm_settings defined in generation layer?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-148",
+      "question": "How are API keys validated for OpenRouter, Gemini, and Groq?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-149",
+      "question": "Does Ollama require an API key validation check in factory?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-150",
+      "question": "What exception is raised if a required API key is missing?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-151",
+      "question": "How is GeminiProvider instantiated in the factory?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-152",
+      "question": "Where are Groq and OpenRouter providers loaded and configured?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-153",
+      "question": "How does OllamaProvider communicate with local Ollama url?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-154",
+      "question": "What base protocol class represents LLMProvider interface?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-155",
+      "question": "Is LLMProviderError used to normalize all provider connection failures?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-156",
+      "question": "How is the generation model name configured per provider?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-157",
+      "question": "Where is the async request completion method defined for LLMs?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-158",
+      "question": "How does GroqProvider handle completions using httpx client?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-159",
+      "question": "What API URL is used by GroqProvider completions endpoint?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-160",
+      "question": "How does GeminiProvider initialize Google GenerativeAI API key?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-161",
+      "question": "Does OpenRouterProvider support custom models in completion request?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-162",
+      "question": "How are authorization headers structured in OpenRouter requests?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-163",
+      "question": "Where is httpx.AsyncClient timeout configured for LLM providers?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-164",
+      "question": "How does OllamaProvider handle malformed JSON responses?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-165",
+      "question": "What is the system prompt mapping structure inside LLM request body?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-166",
+      "question": "Does the generation layer log or print sensitive API keys?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-167",
+      "question": "Where is the completion response parsed in OpenRouterProvider?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-168",
+      "question": "How does GeminiProvider map generation config parameters?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-169",
+      "question": "What is the default completion model for OpenRouter in code?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-170",
+      "question": "How are provider errors translated into LLMProviderError?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-171",
+      "question": "Where are tests for generation providers and factory validation?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-172",
+      "question": "Does get_llm_provider fall back to Ollama if settings are unknown?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-173",
+      "question": "How are JSON payload formats structured for Groq completions?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-174",
+      "question": "Is there an async close connection method for LLM providers?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-175",
+      "question": "Does the factory validation check settings before provider setup?",
+      "relevant_documents": [
+        "backend/app/services/generation/factory.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-176",
+      "question": "How does RepositoryIngestor check file updates using Git blob SHAs?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-177",
+      "question": "Where is the file parsing and text chunking logic triggered during ingestion?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-178",
+      "question": "How does the ingestion process skip unchanged documents in RepoMind?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-179",
+      "question": "What method inside RepositoryIngestor removes deleted repo files?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-180",
+      "question": "How does incremental update determine if a file is modified?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-181",
+      "question": "Where is the GitHub client instantiated inside RepositoryIngestor?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-182",
+      "question": "How are Voyage embeddings generated for new document chunks?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-183",
+      "question": "What chunking strategy is used by default for repo code files?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-184",
+      "question": "How are documents saved and mapped to Chunk rows in database?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-185",
+      "question": "What exceptions are thrown if Git tree fetching fails?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-186",
+      "question": "How is the repository record initialized in database on first sync?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-187",
+      "question": "Does RepositoryIngestor run file classification to filter binary files?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-188",
+      "question": "Where is the batch size configured for chunk embedding ingestion?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-189",
+      "question": "How are document aware chunks mapped to pgvector columns?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-190",
+      "question": "What happens to existing chunks in DB when a file is modified?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-191",
+      "question": "How are document records linked to repository records in database?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-192",
+      "question": "Does the ingestor support updating specific files instead of entire repo?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-193",
+      "question": "What branch is cloned by default if branch parameter is omitted?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-194",
+      "question": "How does the ingestor handle empty repositories or folders?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-195",
+      "question": "Where is transaction management handled in repository ingestion service?",
+      "relevant_documents": [
+        "backend/app/services/ingestion/repository_ingestor.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-196",
+      "question": "What distinct system prompts are defined in prompts.py?",
+      "relevant_documents": [
+        "backend/app/services/rag/prompts.py"
+      ],
+      "relevant_chunks": [
+        "PROMPT_STRATEGIES",
+        "def get_system_prompt"
+      ],
+      "category": "conceptual",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-197",
+      "question": "How is the concise_grounded prompt strategy structured in code?",
+      "relevant_documents": [
+        "backend/app/services/rag/prompts.py"
+      ],
+      "relevant_chunks": [
+        "PROMPT_STRATEGIES",
+        "def get_system_prompt"
+      ],
+      "category": "conceptual",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-198",
+      "question": "Where is get_system_prompt defined in RAG services?",
+      "relevant_documents": [
+        "backend/app/services/rag/prompts.py"
+      ],
+      "relevant_chunks": [
+        "PROMPT_STRATEGIES",
+        "def get_system_prompt"
+      ],
+      "category": "conceptual",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-199",
+      "question": "What instruction does the detailed_grounded prompt give to the LLM?",
+      "relevant_documents": [
+        "backend/app/services/rag/prompts.py"
+      ],
+      "relevant_chunks": [
+        "PROMPT_STRATEGIES",
+        "def get_system_prompt"
+      ],
+      "category": "conceptual",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-200",
+      "question": "How does developer_assistant strategy prompt handle file paths?",
+      "relevant_documents": [
+        "backend/app/services/rag/prompts.py"
+      ],
+      "relevant_chunks": [
+        "PROMPT_STRATEGIES",
+        "def get_system_prompt"
+      ],
+      "category": "conceptual",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-201",
+      "question": "What error is raised if an invalid prompt strategy name is passed?",
+      "relevant_documents": [
+        "backend/app/services/rag/prompts.py"
+      ],
+      "relevant_chunks": [
+        "PROMPT_STRATEGIES",
+        "def get_system_prompt"
+      ],
+      "category": "conceptual",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-202",
+      "question": "Where is the PROMPT_STRATEGIES dictionary defined in prompts?",
+      "relevant_documents": [
+        "backend/app/services/rag/prompts.py"
+      ],
+      "relevant_chunks": [
+        "PROMPT_STRATEGIES",
+        "def get_system_prompt"
+      ],
+      "category": "conceptual",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-203",
+      "question": "Are system prompts token efficient or highly verbose?",
+      "relevant_documents": [
+        "backend/app/services/rag/prompts.py"
+      ],
+      "relevant_chunks": [
+        "PROMPT_STRATEGIES",
+        "def get_system_prompt"
+      ],
+      "category": "conceptual",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-204",
+      "question": "How does the system prompt warn LLMs about lack of context?",
+      "relevant_documents": [
+        "backend/app/services/rag/prompts.py"
+      ],
+      "relevant_chunks": [
+        "PROMPT_STRATEGIES",
+        "def get_system_prompt"
+      ],
+      "category": "conceptual",
+      "difficulty": "easy",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-205",
+      "question": "What is the system prompt used by QueryRewriter?",
+      "relevant_documents": [
+        "backend/app/services/rag/rewriter.py"
+      ],
+      "relevant_chunks": [
+        "class QueryRewriter",
+        "def rewrite"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-206",
+      "question": "How does QueryRewriter optimize a natural language search query?",
+      "relevant_documents": [
+        "backend/app/services/rag/rewriter.py"
+      ],
+      "relevant_chunks": [
+        "class QueryRewriter",
+        "def rewrite"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-207",
+      "question": "Where is QueryRewriter class defined in RAG folder?",
+      "relevant_documents": [
+        "backend/app/services/rag/rewriter.py"
+      ],
+      "relevant_chunks": [
+        "class QueryRewriter",
+        "def rewrite"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-208",
+      "question": "What method is called on LLMProvider by the QueryRewriter?",
+      "relevant_documents": [
+        "backend/app/services/rag/rewriter.py"
+      ],
+      "relevant_chunks": [
+        "class QueryRewriter",
+        "def rewrite"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-209",
+      "question": "How are quotes and whitespace stripped from rewritten queries?",
+      "relevant_documents": [
+        "backend/app/services/rag/rewriter.py"
+      ],
+      "relevant_chunks": [
+        "class QueryRewriter",
+        "def rewrite"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-210",
+      "question": "What exception is thrown if query rewriting fails in rewriter?",
+      "relevant_documents": [
+        "backend/app/services/rag/rewriter.py"
+      ],
+      "relevant_chunks": [
+        "class QueryRewriter",
+        "def rewrite"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-211",
+      "question": "Is there a standalone test file for testing QueryRewriter?",
+      "relevant_documents": [
+        "backend/app/services/rag/rewriter.py"
+      ],
+      "relevant_chunks": [
+        "class QueryRewriter",
+        "def rewrite"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-212",
+      "question": "Does QueryRewriter query database or just rewrite text?",
+      "relevant_documents": [
+        "backend/app/services/rag/rewriter.py"
+      ],
+      "relevant_chunks": [
+        "class QueryRewriter",
+        "def rewrite"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-213",
+      "question": "What parameters are passed to generate in QueryRewriter.rewrite?",
+      "relevant_documents": [
+        "backend/app/services/rag/rewriter.py"
+      ],
+      "relevant_chunks": [
+        "class QueryRewriter",
+        "def rewrite"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-214",
+      "question": "How does LocalCrossEncoderReranker tokenize search queries?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-215",
+      "question": "What method is defined in Reranker Protocol interface?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-216",
+      "question": "How does CamelCase and snake_case splitting work in local reranker?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-217",
+      "question": "Where is path matching boost score calculated in reranker?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-218",
+      "question": "How does local reranker compute term overlap intersection?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-219",
+      "question": "What phrase match bonus score is added for matching token sequences?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-220",
+      "question": "How does LocalCrossEncoderReranker sort candidates descending?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-221",
+      "question": "Are empty candidate lists supported by local reranker method?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-222",
+      "question": "Where is rerank_score attribute populated on RetrievalResult?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-223",
+      "question": "What settings configuration controls the local reranker model name?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-224",
+      "question": "How is the reranker class instantiated in API endpoints?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-225",
+      "question": "Does the local reranker require torch, transformers, or external APIs?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-226",
+      "question": "How are scores clamped between zero and one in local reranker?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-227",
+      "question": "Where are unit tests validating cross encoder reordering order?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-228",
+      "question": "Is there a candidate limit applied before calling rerank method?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-229",
+      "question": "What regex pattern is used to break camelCase in tokenize?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-230",
+      "question": "Does local reranker fall back to vector search scores on tie?",
+      "relevant_documents": [
+        "backend/app/services/rag/reranker/local.py"
+      ],
+      "relevant_chunks": [
+        "class LocalCrossEncoderReranker",
+        "def rerank"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-231",
+      "question": "How does RAGService orchestrate query, retrieval, and generation?",
+      "relevant_documents": [
+        "backend/app/services/rag/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "architecture",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-232",
+      "question": "What properties are defined on the RAGResponse dataclass?",
+      "relevant_documents": [
+        "backend/app/services/rag/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "architecture",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-233",
+      "question": "Where is the search_query parameter resolved in answer_query?",
+      "relevant_documents": [
+        "backend/app/services/rag/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "architecture",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-234",
+      "question": "How is the larger candidate pool limit passed to RetrievalService?",
+      "relevant_documents": [
+        "backend/app/services/rag/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "architecture",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-235",
+      "question": "Where is the reranker called inside the RAGService pipeline?",
+      "relevant_documents": [
+        "backend/app/services/rag/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "architecture",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-236",
+      "question": "How are reranked results sliced back to top_k final size?",
+      "relevant_documents": [
+        "backend/app/services/rag/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "architecture",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-237",
+      "question": "What parameters are passed to RetrievalService.search in service?",
+      "relevant_documents": [
+        "backend/app/services/rag/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "architecture",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-238",
+      "question": "Where is the context assembler called in RAGService flow?",
+      "relevant_documents": [
+        "backend/app/services/rag/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "architecture",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-239",
+      "question": "How is the generated LLM response returned in RAGResponse?",
+      "relevant_documents": [
+        "backend/app/services/rag/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "architecture",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-240",
+      "question": "What happens if rerank is enabled but no reranker is set?",
+      "relevant_documents": [
+        "backend/app/services/rag/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "architecture",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-241",
+      "question": "How are token count and strategy fields populated in response?",
+      "relevant_documents": [
+        "backend/app/services/rag/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "architecture",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-242",
+      "question": "Does RAGService constructor accept an optional reranker parameter?",
+      "relevant_documents": [
+        "backend/app/services/rag/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "architecture",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-243",
+      "question": "Is the original query preserved for the generation step?",
+      "relevant_documents": [
+        "backend/app/services/rag/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "architecture",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-244",
+      "question": "How does RAGService handle query rewriting configuration?",
+      "relevant_documents": [
+        "backend/app/services/rag/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "architecture",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-245",
+      "question": "Where is the prompt_strategy passed to the generation provider?",
+      "relevant_documents": [
+        "backend/app/services/rag/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "architecture",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-246",
+      "question": "How does ContextAssembler deduplicate chunk results by ID?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/context.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-247",
+      "question": "Where are retrieved chunks formatted into structured strings?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/context.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-248",
+      "question": "How is the max_tokens limit enforced in ContextAssembler?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/context.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-249",
+      "question": "What default token estimator callable is used if none is provided?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/context.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-250",
+      "question": "What properties does the AssembledContext dataclass contain?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/context.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-251",
+      "question": "How is chunk document path included in formatted context string?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/context.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-252",
+      "question": "Is character length division used to estimate token sizes?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/context.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-253",
+      "question": "Where is max_chunks configuration parameter checked in assembly?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/context.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-254",
+      "question": "Does ContextAssembler preserve original retrieval ranking order?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/context.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-255",
+      "question": "How is context formatting prefix styled for file headers?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/context.py"
+      ],
+      "relevant_chunks": [
+        "class",
+        "def"
+      ],
+      "category": "conceptual",
+      "difficulty": "medium",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-256",
+      "question": "How does RetrievalService execute dense similarity searches?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-257",
+      "question": "Where is the Reciprocal Rank Fusion RRF algorithm implemented?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-258",
+      "question": "What constant weight value is added to ranks in RRF scoring?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-259",
+      "question": "How does BM25 score chunks based on token frequency?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-260",
+      "question": "What tokenizer regex pattern is used in BM25 term parsing?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-261",
+      "question": "Where is Inverse Document Frequency IDF calculated for BM25?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-262",
+      "question": "How does retrieval service handle repository_id filters?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-263",
+      "question": "What strategies are supported in RetrievalService.search?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-264",
+      "question": "How are database queries async executed in RetrievalService?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-265",
+      "question": "What is the mathematical definition of RRF score in retrieval?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-266",
+      "question": "Does BM25 search calculate average document length for corpus?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-267",
+      "question": "How are dense vector similarity distances calculated in pgvector?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-268",
+      "question": "Where is RetrievalResult dataclass defined in codebase?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-269",
+      "question": "What is the default top_k parameter value in search?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    },
+    {
+      "id": "eval-270",
+      "question": "Does RetrievalService handle document_id level search filtering?",
+      "relevant_documents": [
+        "backend/app/services/retrieval/service.py"
+      ],
+      "relevant_chunks": [
+        "class RAGService",
+        "def answer_query"
+      ],
+      "category": "implementation",
+      "difficulty": "hard",
+      "repository_name": "harveenkaur282-web/RepoMind-AI"
+    }
+  ]
+}
