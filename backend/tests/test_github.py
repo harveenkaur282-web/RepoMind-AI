@@ -82,3 +82,15 @@ async def test_get_file_content() -> None:
 
     finally:
         await client.close()
+
+
+def test_github_client_token_header() -> None:
+    from unittest.mock import MagicMock, patch
+
+    with patch("backend.app.services.github.client.get_settings") as mock_get_settings:
+        mock_settings = MagicMock()
+        mock_settings.github_token = "my_secret_token"
+        mock_get_settings.return_value = mock_settings
+
+        client = GitHubClient()
+        assert client.client.headers["authorization"] == "token my_secret_token"
