@@ -17,6 +17,8 @@ class RAGResponse:
     strategy: str
     total_chunks: int
     total_tokens: int
+    prompt_strategy: str = "concise_grounded"
+    rewritten_query: str | None = None
 
 
 class RAGService:
@@ -40,11 +42,15 @@ class RAGService:
         repository_id: int | None = None,
         document_id: int | None = None,
         system_prompt: str | None = None,
+        prompt_strategy: str = "concise_grounded",
+        search_query: str | None = None,
     ) -> RAGResponse:
         """Retrieve context chunks, assemble context string, and generate LLM answer."""
+        retrieval_query = search_query if search_query is not None else query
+
         # Retrieval step (relying on RetrievalService's validation)
         retrieved_results = await self.retrieval_service.search(
-            query_text=query,
+            query_text=retrieval_query,
             query_embedding=query_embedding,
             strategy=strategy,
             repository_id=repository_id,
@@ -67,4 +73,6 @@ class RAGService:
             strategy=strategy,
             total_chunks=assembled_context.total_chunks,
             total_tokens=assembled_context.total_tokens,
+            prompt_strategy=prompt_strategy,
+            rewritten_query=search_query,
         )
