@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.app.core.config import get_settings
 from backend.app.db.dependencies import get_db
 from backend.app.services.embeddings.voyage import VoyageEmbeddingProvider
-from backend.app.services.generation.ollama import OllamaProvider
+from backend.app.services.generation.factory import get_llm_provider
 from backend.app.services.rag.service import RAGResponse, RAGService
 from backend.app.services.retrieval.context import ContextAssembler
 from backend.app.services.retrieval.service import RetrievalService
@@ -39,10 +39,10 @@ async def query_rag(
     # 2. Setup services
     retrieval_service = RetrievalService(db=db)
     context_assembler = ContextAssembler()
-    llm_provider = OllamaProvider(
-        base_url=settings.ollama_url,
-        model=settings.ollama_model,
-    )
+    try:
+        llm_provider = get_llm_provider(settings)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
 
     rag_service = RAGService(
         retrieval_service=retrieval_service,
