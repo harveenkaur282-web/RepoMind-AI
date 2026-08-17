@@ -49,6 +49,17 @@ jobs:
       - name: Run Ruff format check
         run: uv run ruff format --check .
 
+      - name: Enable pgvector extension
+        run: |
+          PGPASSWORD=repomind psql \
+            -h localhost \
+            -U repomind \
+            -d repomind \
+            -c "CREATE EXTENSION IF NOT EXISTS vector"
+            
+      - name: Run Database Migrations
+        run: uv run alembic upgrade head
+
       - name: Run Pytest
         env:
           GITHUB_TOKEN: ${{ secrets.REPOMIND_GITHUB_TOKEN }}
