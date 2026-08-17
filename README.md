@@ -4,7 +4,7 @@ An Intelligent RAG-powered Codebase Search and Question-Answering Workspace for 
 
 ---
 
-## 🚀 Reproducibility Guide
+## Reproducibility Guide
 
 You can run **RepoMind-AI** on your own local device. Follow these steps to clone the repository, spin up the database, run migrations, and start the application.
 
@@ -69,7 +69,7 @@ You can run **RepoMind-AI** on your own local device. Follow these steps to clon
 
 ---
 
-## 💡 Problem & Motivation
+## Problem & Motivation
 
 Navigating and understanding a large or unfamiliar codebase on GitHub can be time-consuming. Developers frequently spend hours scanning files, parsing helper structures, and trying to trace API pathways. 
 
@@ -77,7 +77,7 @@ Navigating and understanding a large or unfamiliar codebase on GitHub can be tim
 
 ---
 
-## 🛠️ Main Features
+## Main Features
 
 *   **Repository Ingestion**: Ingest any public (or private, via GITHUB_TOKEN) repository directly by inputting `owner/name`.
 *   **Incremental Repository Updates**: Uses Git blob SHA comparisons to sync remote files. It skips unchanged documents to avoid redundant chunking and embedding (saving cost and time), processes modified/new files, and cleans up deleted documents.
@@ -91,7 +91,7 @@ Navigating and understanding a large or unfamiliar codebase on GitHub can be tim
 
 ---
 
-## 🏗️ Architecture & RAG Flow
+## Architecture & RAG Flow
 
 The application follows a decoupled client-server architecture:
 
@@ -114,13 +114,13 @@ graph TD
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 *   **Frontend**: Streamlit
 *   **Backend**: FastAPI (Python 3.12)
 *   **ORM**: SQLAlchemy (Async Engine)
 *   **Database**: PostgreSQL with `pgvector`
-*   **Cache/Queue**: Redis (ready for future task queueing)
+*   **Cache/Queue**: Redis (ready for future task queueing- only FUTURE right now-)
 *   **Embeddings**: Voyage AI (`voyage-code-3`, 1024 dimensions)
 *   **Local LLM**: Ollama (`qwen2.5-coder:7b`)
 *   **Migrations**: Alembic
@@ -128,7 +128,7 @@ graph TD
 
 ---
 
-## 📊 Evaluation & Future Improvements
+## Evaluation & Future Improvements
 
 ### Current Status
 *   Retrieval strategies are fully implemented (dense, BM25, hybrid).
