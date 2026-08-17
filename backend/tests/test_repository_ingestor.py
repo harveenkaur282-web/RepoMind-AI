@@ -129,3 +129,22 @@ async def test_ingest_repository_endpoint_handles_missing_github_repository() ->
 
     assert response.status_code == 404
     assert "not found" in response.json()["detail"].lower()
+
+
+@pytest.mark.asyncio
+async def test_ingest_repository_endpoint_instantiates_embedding_service() -> None:
+    with patch("backend.app.api.v1.endpoints.ingestion.RepositoryIngestor") as mock_ingestor_class:
+        mock_ingestor = MagicMock()
+        mock_ingestor.ingest_repository = AsyncMock(return_value=[])
+        mock_ingestor_class.return_value = mock_ingestor
+
+        response = client.post(
+            "/api/v1/ingestion/repository",
+            params={"owner": "example", "repo": "project"},
+        )
+
+        assert response.status_code == 200
+        mock_ingestor_class.assert_called_once()
+        kwargs = mock_ingestor_class.call_args[1]
+        assert "embedding_service" in kwargs
+        assert kwargs["embedding_service"] is not None

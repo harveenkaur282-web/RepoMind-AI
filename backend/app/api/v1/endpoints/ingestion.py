@@ -4,7 +4,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.app.core.config import get_settings
 from backend.app.db.dependencies import get_db
+from backend.app.services.embeddings.service import EmbeddingService
+from backend.app.services.embeddings.voyage import VoyageEmbeddingProvider
 from backend.app.services.github.exceptions import (
     GitHubAPIError,
     GitHubNotFoundError,
@@ -21,7 +24,13 @@ async def ingest_repository(
     repo: str,
     db: Annotated[AsyncSession, Depends(get_db)],
 ) -> dict[str, object]:
-    ingestor = RepositoryIngestor(db=db)
+    settings = get_settings()
+    provider = VoyageEmbeddingProvider(api_key=settings.voyage_api_key)
+    embedding_service = EmbeddingService(db=db, provider=provider)
+    ingestor = RepositoryIngestor(
+        db=db,
+        embedding_service=embedding_service,
+    )
 
     try:
         processed_files = await ingestor.ingest_repository(
