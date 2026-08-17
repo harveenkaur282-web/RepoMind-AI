@@ -12,6 +12,7 @@ from backend.app.db.models.chunk import Chunk
 from backend.app.db.models.document import Document
 from backend.app.db.models.repository import Repository, RepositoryStatus
 from backend.app.services.chunking.factory import ChunkerFactory
+from backend.app.services.embeddings.service import EmbeddingService
 from backend.app.services.github.client import GitHubClient
 from backend.app.services.ingestion.file_filter import should_ingest_file
 from backend.app.services.ingestion.schemas import ProcessedFile
@@ -22,9 +23,11 @@ class RepositoryIngestor:
         self,
         db: AsyncSession | None = None,
         github_client: GitHubClient | None = None,
+        embedding_service: EmbeddingService | None = None,
     ) -> None:
         self.db = db
         self.github_client = github_client or GitHubClient()
+        self.embedding_service = embedding_service
 
     async def ingest_repository(
         self,
@@ -164,6 +167,14 @@ class RepositoryIngestor:
             except Exception as exc:
                 print(f"Error processing file {path}: {exc}")
                 continue
+
+        # Flush all newly created chunks before the embedding service queries them.
+        await self.db.flush()
+
+        if self.embedding_service is not None:
+            await self.embedding_service.embed_chunks(
+                repository_id=db_repository.id,
+            )
 
         db_repository.status = RepositoryStatus.READY
         db_repository.last_ingested_at = datetime.now(UTC)
