@@ -13,7 +13,7 @@ class Settings(BaseSettings):
 
     github_token: str | None = None
 
-    llm_provider: str | None = None
+    llm_provider: str = "ollama"
     llm_api_key: str | None = None
 
     voyage_api_key: str | None = None
