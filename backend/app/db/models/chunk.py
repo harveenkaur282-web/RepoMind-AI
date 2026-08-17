@@ -51,3 +51,8 @@ class Chunk(Base):
         VECTOR(1024),
         nullable=True,
     )
+
+    local_embedding: Mapped[list[float] | None] = mapped_column(
+        VECTOR(768),
+        nullable=True,
+    )

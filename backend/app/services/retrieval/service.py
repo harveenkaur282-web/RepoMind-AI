@@ -110,7 +110,7 @@ class RetrievalService:
             if not query_embedding:
                 raise ValueError("query_embedding must not be empty for dense strategy.")
 
-            distance = Chunk.voyage_embedding.cosine_distance(
+            distance = Chunk.local_embedding.cosine_distance(
                 query_embedding,
             )
 
@@ -122,7 +122,7 @@ class RetrievalService:
                 .options(selectinload(Chunk.document))
                 .join(Document, Chunk.document_id == Document.id)
                 .where(
-                    Chunk.voyage_embedding.is_not(None),
+                    Chunk.local_embedding.is_not(None),
                 )
             )
 

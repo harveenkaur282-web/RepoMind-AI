@@ -26,10 +26,10 @@ class EmbeddingService:
         document_id: int | None = None,
         repository_id: int | None = None,
     ) -> int:
-        """Embed chunks that do not already have a Voyage embedding."""
+        """Embed chunks that do not already have a local embedding."""
 
         query = select(Chunk).where(
-            Chunk.voyage_embedding.is_(None),
+            Chunk.local_embedding.is_(None),
         )
 
         if document_id is not None:
@@ -71,7 +71,7 @@ class EmbeddingService:
                         f"got {len(embedding)}."
                     )
 
-                chunk.voyage_embedding = embedding
+                chunk.local_embedding = embedding
 
             embedded_count += len(batch)
 

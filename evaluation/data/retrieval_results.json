@@ -1,0 +1,62 @@
+[
+  {
+    "strategy": "dense",
+    "k": 5,
+    "hit_rate": 0.8148148148148148,
+    "mrr": 0.35672839506172854,
+    "recall": 0.8148148148148148,
+    "avg_latency_ms": 15.506465185188533,
+    "query_count": 270,
+    "error_count": 0
+  },
+  {
+    "strategy": "dense",
+    "k": 10,
+    "hit_rate": 0.8148148148148148,
+    "mrr": 0.35672839506172854,
+    "recall": 0.8148148148148148,
+    "avg_latency_ms": 15.580315185189244,
+    "query_count": 270,
+    "error_count": 0
+  },
+  {
+    "strategy": "bm25",
+    "k": 5,
+    "hit_rate": 0.45925925925925926,
+    "mrr": 0.20438271604938282,
+    "recall": 0.45925925925925926,
+    "avg_latency_ms": 15.54524999999945,
+    "query_count": 270,
+    "error_count": 0
+  },
+  {
+    "strategy": "bm25",
+    "k": 10,
+    "hit_rate": 0.7296296296296296,
+    "mrr": 0.24426366843033526,
+    "recall": 0.7296296296296296,
+    "avg_latency_ms": 15.485177407398018,
+    "query_count": 270,
+    "error_count": 0
+  },
+  {
+    "strategy": "hybrid",
+    "k": 5,
+    "hit_rate": 0.9074074074074074,
+    "mrr": 0.5401234567901235,
+    "recall": 0.9074074074074074,
+    "avg_latency_ms": 15.485382962962529,
+    "query_count": 270,
+    "error_count": 0
+  },
+  {
+    "strategy": "hybrid",
+    "k": 10,
+    "hit_rate": 0.9074074074074074,
+    "mrr": 0.5401234567901235,
+    "recall": 0.9074074074074074,
+    "avg_latency_ms": 15.445087407405717,
+    "query_count": 270,
+    "error_count": 0
+  }
+]

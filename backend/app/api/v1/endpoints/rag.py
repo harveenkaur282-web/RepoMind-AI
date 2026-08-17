@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.core.config import get_settings
 from backend.app.db.dependencies import get_db
-from backend.app.services.embeddings.voyage import VoyageEmbeddingProvider
+from backend.app.services.embeddings.local import LocalEmbeddingProvider
 from backend.app.services.generation.factory import get_llm_provider
 from backend.app.services.rag.prompts import get_system_prompt
 from backend.app.services.rag.reranker import LocalCrossEncoderReranker
@@ -53,7 +53,7 @@ async def query_rag(
     query_embedding = None
     if strategy in ("dense", "hybrid"):
         try:
-            provider = VoyageEmbeddingProvider(api_key=settings.voyage_api_key)
+            provider = LocalEmbeddingProvider()
             query_embedding = await provider.embed_query(query_to_embed)
         except Exception as exc:
             raise HTTPException(
@@ -134,12 +134,12 @@ async def compare_retrieval(
     repository_id: int | None = None,
     db: Annotated[AsyncSession, Depends(get_db)] = None,
 ) -> dict[str, list[dict[str, object]]]:
-    settings = get_settings()
+    get_settings()
     retrieval_service = RetrievalService(db=db)
 
     query_embedding = None
     try:
-        provider = VoyageEmbeddingProvider(api_key=settings.voyage_api_key)
+        provider = LocalEmbeddingProvider()
         query_embedding = await provider.embed_query(query)
     except Exception:
         pass
