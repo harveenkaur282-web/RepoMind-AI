@@ -40,3 +40,20 @@ async def list_repositories(
         }
         for repository in repositories
     ]
+
+
+@router.delete("/{repository_id}", status_code=204)
+async def delete_repository(
+    repository_id: int,
+    db: Annotated[AsyncSession, Depends(get_db)],
+) -> None:
+    """Delete a repository and its associated documents/chunks (via cascade delete)."""
+    result = await db.execute(select(Repository).where(Repository.id == repository_id))
+    repository = result.scalar_one_or_none()
+    if repository is None:
+        from fastapi import HTTPException
+
+        raise HTTPException(status_code=404, detail="Repository not found")
+
+    await db.delete(repository)
+    await db.commit()

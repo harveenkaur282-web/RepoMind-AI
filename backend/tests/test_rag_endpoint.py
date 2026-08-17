@@ -30,17 +30,16 @@ async def test_query_rag_endpoint_success() -> None:
     # 2. Mock RAGService and VoyageEmbeddingProvider
     with (
         patch("backend.app.api.v1.endpoints.rag.RAGService") as mock_service_class,
-        patch("backend.app.api.v1.endpoints.rag.VoyageEmbeddingProvider"),
-        patch("backend.app.api.v1.endpoints.rag.EmbeddingService") as mock_embed_class,
+        patch("backend.app.api.v1.endpoints.rag.VoyageEmbeddingProvider") as mock_provider_class,
     ):
         # Setup mock instances
         mock_service = MagicMock()
         mock_service.answer_query = AsyncMock(return_value=mock_rag_response)
         mock_service_class.return_value = mock_service
 
-        mock_embed_instance = MagicMock()
-        mock_embed_instance.embed_query = AsyncMock(return_value=[0.1] * 1024)
-        mock_embed_class.return_value = mock_embed_instance
+        mock_provider = MagicMock()
+        mock_provider.embed_query = AsyncMock(return_value=[0.1] * 1024)
+        mock_provider_class.return_value = mock_provider
 
         # 3. Call endpoint
         response = client.post(
@@ -63,7 +62,7 @@ async def test_query_rag_endpoint_success() -> None:
         assert payload["chunks"][0]["content"] == "This is matching test content"
 
         # Verify underlying calls
-        mock_embed_instance.embed_query.assert_awaited_once_with("What is RepoMind?")
+        mock_provider.embed_query.assert_awaited_once_with("What is RepoMind?")
         mock_service.answer_query.assert_awaited_once_with(
             query="What is RepoMind?",
             query_embedding=[0.1] * 1024,
