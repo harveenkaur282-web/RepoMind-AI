@@ -4,15 +4,15 @@ services:
     container_name: repomind-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: repomind
-      POSTGRES_PASSWORD: repomind
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: repomind
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U repomind -d repomind"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d repomind"]
       interval: 5s
       timeout: 5s
       retries: 5

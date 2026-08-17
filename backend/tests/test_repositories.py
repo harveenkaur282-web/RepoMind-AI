@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from backend.app.api.v1.endpoints.repositories import list_repositories
+from backend.app.api.v1.endpoints.repositories import delete_repository, list_repositories
 from backend.app.db.models.repository import Repository, RepositoryStatus
 
 
@@ -35,3 +35,39 @@ async def test_list_repositories_returns_repository_summaries() -> None:
     assert repositories[0]["name"] == "project"
     assert repositories[0]["status"] == "ready"
     assert repositories[0]["document_count"] == 0
+
+
+@pytest.mark.asyncio
+async def test_delete_repository_success() -> None:
+    db = AsyncMock()
+    repo = Repository(id=1, owner="test", name="repo")
+
+    # Mock DB query
+    result = MagicMock()
+    result.scalar_one_or_none.return_value = repo
+    db.execute.return_value = result
+
+    await delete_repository(repository_id=1, db=db)
+
+    db.delete.assert_called_once_with(repo)
+    db.commit.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_delete_repository_not_found() -> None:
+    db = AsyncMock()
+
+    # Mock DB query returning None
+    result = MagicMock()
+    result.scalar_one_or_none.return_value = None
+    db.execute.return_value = result
+
+    from fastapi import HTTPException
+
+    with pytest.raises(HTTPException) as exc:
+        await delete_repository(repository_id=99, db=db)
+
+    assert exc.value.status_code == 404
+    assert exc.value.detail == "Repository not found"
+    db.delete.assert_not_called()
+    db.commit.assert_not_awaited()
