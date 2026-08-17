@@ -1,3 +1,4 @@
+import pytest
 
 from backend.app.db.models.chunk import Chunk
 from backend.app.db.models.document import Document
@@ -55,8 +56,9 @@ def test_assemble_removes_duplicates() -> None:
 
 
 def test_assemble_respects_max_chunks() -> None:
-    chunk1 = Chunk(id=1, content="chunk1")
-    chunk2 = Chunk(id=2, content="chunk2")
+    doc = Document(path="app/main.py")
+    chunk1 = Chunk(id=1, content="chunk1", document=doc)
+    chunk2 = Chunk(id=2, content="chunk2", document=doc)
 
     results = [
         RetrievalResult(chunk=chunk1, score=0.9),
@@ -71,8 +73,10 @@ def test_assemble_respects_max_chunks() -> None:
 
 
 def test_assemble_respects_max_tokens() -> None:
-    chunk1 = Chunk(id=1, content="short content")
-    chunk2 = Chunk(id=2, content="very very very long content")
+    doc = Document(path="app/main.py")
+    chunk1 = Chunk(id=1, content="short content", document=doc)
+    doc2 = Document(path="app/main.py")
+    chunk2 = Chunk(id=2, content="very very very long content", document=doc2)
 
     results = [
         RetrievalResult(chunk=chunk1, score=0.9),
@@ -81,22 +85,52 @@ def test_assemble_respects_max_tokens() -> None:
 
     # We set a token estimator that returns the exact length of the text.
     # The formatted chunk1 text is:
-    # "---\nDocument: Unknown\nContent:\nshort content\n" (45 chars)
+    # "---\nDocument: app/main.py\nContent:\nshort content\n" (48 chars)
     # The formatted chunk2 text is:
-    # "---\nDocument: Unknown\nContent:\nvery very very long content\n" (59 chars)
-    assembler = ContextAssembler(max_tokens=50, token_estimator=len)
+    # "---\nDocument: app/main.py\nContent:\nvery very very long content\n" (62 chars)
+    assembler = ContextAssembler(max_tokens=55, token_estimator=len)
     assembled = assembler.assemble(results)
 
-    # Adding chunk1 takes 45 tokens. Adding chunk2 would take 45 + 59 = 104, which exceeds 50.
+    # Adding chunk1 takes 49 tokens. Adding chunk2 would take 49 + 63 = 112, which exceeds 55.
     # Therefore, only chunk1 should be included.
     assert assembled.total_chunks == 1
     assert assembled.chunks[0] is chunk1
-    assert assembled.total_tokens == 45
+    assert assembled.total_tokens == 49
 
 
-def test_assemble_fallback_document_path() -> None:
+def test_assemble_oversized_first_chunk() -> None:
+    doc = Document(path="app/main.py")
+    chunk1 = Chunk(id=1, content="this is a very long first chunk content", document=doc)
+
+    results = [
+        RetrievalResult(chunk=chunk1, score=0.9),
+    ]
+
+    # Set token limit of 10. The formatted chunk is way larger (approx 60 chars).
+    # Since the first chunk itself exceeds the limit, it should not be included.
+    assembler = ContextAssembler(max_tokens=10, token_estimator=len)
+    assembled = assembler.assemble(results)
+
+    assert assembled.total_chunks == 0
+    assert assembled.chunks == []
+    assert assembled.context_str == ""
+    assert assembled.total_tokens == 0
+
+
+def test_assemble_source_path_missing_relation_raises_error() -> None:
     # Chunk with no document object populated
     chunk = Chunk(id=1, content="some code content")
+    results = [RetrievalResult(chunk=chunk, score=0.9)]
+
+    assembler = ContextAssembler()
+    # It should raise ValueError because document relationship is missing
+    with pytest.raises(ValueError, match="Document relationship is not loaded"):
+        assembler.assemble(results)
+
+
+def test_assemble_fallback_document_path_when_empty() -> None:
+    doc = Document(path=None) # Document is loaded, but path is None
+    chunk = Chunk(id=1, content="some code content", document=doc)
     results = [RetrievalResult(chunk=chunk, score=0.9)]
 
     assembler = ContextAssembler()

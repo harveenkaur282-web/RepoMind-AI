@@ -1,13 +1,10 @@
 from __future__ import annotations
 
-import typing
 from collections.abc import Callable
 from dataclasses import dataclass
 
 from backend.app.db.models.chunk import Chunk
-
-if typing.TYPE_CHECKING:
-    from backend.app.services.retrieval.service import RetrievalResult
+from backend.app.services.retrieval.service import RetrievalResult
 
 
 @dataclass(slots=True)
@@ -50,9 +47,13 @@ class ContextAssembler:
 
         # Helper to format a single chunk
         def format_chunk(chunk: Chunk) -> str:
-            path = "Unknown"
-            if hasattr(chunk, "document") and chunk.document:
-                path = chunk.document.path or "Unknown"
+            if not hasattr(chunk, "document") or chunk.document is None:
+                raise ValueError(
+                    f"Document relationship is not loaded for chunk ID {chunk.id}. "
+                    "Make sure the query loads the document relationship using "
+                    "selectinload/joinedload."
+                )
+            path = chunk.document.path or "Unknown"
             return f"---\nDocument: {path}\nContent:\n{chunk.content}\n"
 
         for res in unique_results:

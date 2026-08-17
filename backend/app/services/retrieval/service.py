@@ -7,6 +7,7 @@ from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from backend.app.db.models.chunk import Chunk
 from backend.app.db.models.document import Document
@@ -121,6 +122,7 @@ class RetrievalService:
                     Chunk,
                     (1 - distance).label("score"),
                 )
+                .options(selectinload(Chunk.document))
                 .join(Document, Chunk.document_id == Document.id)
                 .where(
                     Chunk.voyage_embedding.is_not(None),
@@ -155,6 +157,7 @@ class RetrievalService:
 
             query = (
                 select(Chunk)
+                .options(selectinload(Chunk.document))
                 .join(Document, Chunk.document_id == Document.id)
             )
 
