@@ -11,7 +11,7 @@ from backend.app.services.retrieval.service import RetrievalService
 
 
 def make_vector(index: int) -> list[float]:
-    vector = [0.0] * 1024
+    vector = [0.0] * 768
     vector[index] = 1.0
     return vector
 
@@ -98,7 +98,7 @@ async def test_retrieval_returns_nearest_chunks(
         start_char=0,
         end_char=35,
         strategy="document_aware",
-        voyage_embedding=make_vector(0),
+        local_embedding=make_vector(0),
     )
 
     second_chunk = Chunk(
@@ -108,7 +108,7 @@ async def test_retrieval_returns_nearest_chunks(
         start_char=36,
         end_char=70,
         strategy="document_aware",
-        voyage_embedding=make_vector(1),
+        local_embedding=make_vector(1),
     )
 
     third_chunk = Chunk(
@@ -118,7 +118,7 @@ async def test_retrieval_returns_nearest_chunks(
         start_char=71,
         end_char=100,
         strategy="document_aware",
-        voyage_embedding=make_vector(2),
+        local_embedding=make_vector(2),
     )
 
     retrieval_db.add_all(

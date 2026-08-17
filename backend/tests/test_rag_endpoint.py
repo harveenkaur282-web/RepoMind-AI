@@ -30,7 +30,7 @@ async def test_query_rag_endpoint_success() -> None:
     # 2. Mock RAGService and VoyageEmbeddingProvider
     with (
         patch("backend.app.api.v1.endpoints.rag.RAGService") as mock_service_class,
-        patch("backend.app.api.v1.endpoints.rag.VoyageEmbeddingProvider") as mock_provider_class,
+        patch("backend.app.api.v1.endpoints.rag.LocalEmbeddingProvider") as mock_provider_class,
     ):
         # Setup mock instances
         mock_service = MagicMock()
@@ -38,7 +38,7 @@ async def test_query_rag_endpoint_success() -> None:
         mock_service_class.return_value = mock_service
 
         mock_provider = MagicMock()
-        mock_provider.embed_query = AsyncMock(return_value=[0.1] * 1024)
+        mock_provider.embed_query = AsyncMock(return_value=[0.1] * 768)
         mock_provider_class.return_value = mock_provider
 
         # 3. Call endpoint
@@ -65,7 +65,7 @@ async def test_query_rag_endpoint_success() -> None:
         mock_provider.embed_query.assert_awaited_once_with("What is RepoMind?")
         mock_service.answer_query.assert_awaited_once_with(
             query="What is RepoMind?",
-            query_embedding=[0.1] * 1024,
+            query_embedding=[0.1] * 768,
             strategy="hybrid",
             repository_id=42,
             document_id=None,
