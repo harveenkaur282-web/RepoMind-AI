@@ -25,7 +25,15 @@ def _load_onnx_model():
     tokenizer = AutoTokenizer.from_pretrained(_MODEL_NAME)
 
     logger.info("Initializing ONNX Runtime session: %s", model_path)
-    session = ort.InferenceSession(model_path)
+    try:
+        session = ort.InferenceSession(model_path, providers=["CPUExecutionProvider"])
+    except Exception as e:
+        logger.error("ONNX CPUExecutionProvider initialization failed: %s. Trying fallback.", e)
+        try:
+            session = ort.InferenceSession(model_path)
+        except Exception as e2:
+            logger.critical("ONNX session fallback also failed: %s", e2)
+            raise e2
     return session, tokenizer
 
 
