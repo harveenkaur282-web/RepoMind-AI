@@ -1,5 +1,6 @@
 import json
 import os
+
 import requests
 from dotenv import load_dotenv
 
@@ -39,7 +40,9 @@ def create_datasource() -> str:
     }
 
     # Check if datasource already exists
-    check_response = requests.get(f"{GRAFANA_URL}/api/datasources/name/repomind-postgres", auth=AUTH)
+    check_response = requests.get(
+        f"{GRAFANA_URL}/api/datasources/name/repomind-postgres", auth=AUTH
+    )
     if check_response.status_code == 200:
         print("Datasource already exists, updating...")
         ds_id = check_response.json()["id"]

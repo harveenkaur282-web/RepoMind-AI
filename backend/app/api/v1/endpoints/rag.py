@@ -1,8 +1,8 @@
-from uuid import uuid4
 import time
 from typing import Annotated
+from uuid import uuid4
 
-from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.core.config import get_settings
@@ -93,8 +93,9 @@ async def query_rag(
         reranker=reranker,
     )
 
+    try:
         # Perform retrieval
-        retrieved_chunks = await retrieval_service.search(
+        await retrieval_service.search(
             query_text=query_to_embed,
             query_embedding=query_embedding,
             strategy=strategy,
@@ -123,6 +124,15 @@ async def query_rag(
         total_latency = time.perf_counter() - start_total_time
         # Record failure event in background
         if background_tasks:
+            llm_model = (
+                settings.groq_model
+                if settings.llm_provider == "groq"
+                else (
+                    settings.gemini_model
+                    if settings.llm_provider == "gemini"
+                    else settings.ollama_model
+                )
+            )
             error_data = {
                 "request_id": request_id,
                 "query": query,
@@ -135,7 +145,7 @@ async def query_rag(
                 "assembled_chunk_count": 0,
                 "context_token_count": 0,
                 "llm_provider": settings.llm_provider,
-                "llm_model": settings.groq_model if settings.llm_provider == "groq" else (settings.gemini_model if settings.llm_provider == "gemini" else settings.ollama_model),
+                "llm_model": llm_model,
                 "answer_length": 0,
                 "success": False,
                 "error_message": str(exc),
@@ -157,7 +167,9 @@ async def query_rag(
     # Record success event in background
     if background_tasks:
         # Resolve metrics
-        retrieved_count = len(response.results) if response.results is not None else len(response.chunks)
+        retrieved_count = (
+            len(response.results) if response.results is not None else len(response.chunks)
+        )
         assembled_count = response.total_chunks
         
         # Token details (input/output are optional LLM attributes)
@@ -165,6 +177,15 @@ async def query_rag(
         output_tokens = getattr(response, "output_tokens", None)
         total_toks = response.total_tokens
 
+        llm_model = (
+            settings.groq_model
+            if settings.llm_provider == "groq"
+            else (
+                settings.gemini_model
+                if settings.llm_provider == "gemini"
+                else settings.ollama_model
+            )
+        )
         event_data = {
             "request_id": request_id,
             "query": query,
@@ -177,7 +198,7 @@ async def query_rag(
             "assembled_chunk_count": assembled_count,
             "context_token_count": total_toks,
             "llm_provider": settings.llm_provider,
-            "llm_model": settings.groq_model if settings.llm_provider == "groq" else (settings.gemini_model if settings.llm_provider == "gemini" else settings.ollama_model),
+            "llm_model": llm_model,
             "input_tokens": input_tokens,
             "output_tokens": output_tokens,
             "total_tokens": total_toks,
