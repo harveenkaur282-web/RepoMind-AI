@@ -3,6 +3,8 @@
 This project stores ingested GitHub repository data in PostgreSQL, and Alembic is what keeps that database schema versioned and reproducible.
 
 ## Why we added Alembic
+Alembic is like Git but for databases, serves as a version control system for database schemas allowing us to manage all the changes in structured way. 
+We can easily track changes, generate migration scripts and allow for rollback in case of issues. 
 
 Without a migration tool, the database schema can drift over time:
 
