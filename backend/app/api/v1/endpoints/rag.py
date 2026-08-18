@@ -1,12 +1,16 @@
+from uuid import uuid4
+import time
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.core.config import get_settings
 from backend.app.db.dependencies import get_db
+from backend.app.db.session import AsyncSessionLocal
 from backend.app.services.embeddings.local import LocalEmbeddingProvider
 from backend.app.services.generation.factory import get_llm_provider
+from backend.app.services.monitoring.service import MonitoringService
 from backend.app.services.rag.prompts import get_system_prompt
 from backend.app.services.rag.reranker import LocalCrossEncoderReranker
 from backend.app.services.rag.rewriter import QueryRewriter
@@ -28,7 +32,10 @@ async def query_rag(
     rerank: bool | None = None,
     rerank_limit: int | None = None,
     db: Annotated[AsyncSession, Depends(get_db)] = None,
+    background_tasks: BackgroundTasks = None,
 ) -> dict[str, object]:
+    start_total_time = time.perf_counter()
+    request_id = str(uuid4())
     settings = get_settings()
 
     try:
@@ -51,6 +58,7 @@ async def query_rag(
 
     # 1. Get embedding for query if strategy needs it
     query_embedding = None
+    start_retrieval_time = time.perf_counter()
     if strategy in ("dense", "hybrid"):
         try:
             provider = LocalEmbeddingProvider()
@@ -85,7 +93,19 @@ async def query_rag(
         reranker=reranker,
     )
 
-    try:
+        # Perform retrieval
+        retrieved_chunks = await retrieval_service.search(
+            query_text=query_to_embed,
+            query_embedding=query_embedding,
+            strategy=strategy,
+            repository_id=repository_id,
+            document_id=document_id,
+            top_k=use_limit if use_rerank else 10,
+        )
+        retrieval_latency = time.perf_counter() - start_retrieval_time
+
+        # Perform generation
+        start_generation_time = time.perf_counter()
         response: RAGResponse = await rag_service.answer_query(
             query=query,
             query_embedding=query_embedding,
@@ -98,13 +118,81 @@ async def query_rag(
             rerank=use_rerank,
             rerank_limit=use_limit,
         )
+        generation_latency = time.perf_counter() - start_generation_time
     except Exception as exc:
+        total_latency = time.perf_counter() - start_total_time
+        # Record failure event in background
+        if background_tasks:
+            error_data = {
+                "request_id": request_id,
+                "query": query,
+                "retrieval_strategy": strategy,
+                "prompt_strategy": prompt_strategy,
+                "retrieval_latency_ms": 0.0,
+                "generation_latency_ms": 0.0,
+                "total_latency_ms": total_latency * 1000,
+                "retrieved_chunk_count": 0,
+                "assembled_chunk_count": 0,
+                "context_token_count": 0,
+                "llm_provider": settings.llm_provider,
+                "llm_model": settings.groq_model if settings.llm_provider == "groq" else (settings.gemini_model if settings.llm_provider == "gemini" else settings.ollama_model),
+                "answer_length": 0,
+                "success": False,
+                "error_message": str(exc),
+                "repository_id": repository_id,
+            }
+            async def log_error_event():
+                async with AsyncSessionLocal() as session:
+                    monitor = MonitoringService(session)
+                    await monitor.record_rag_event(error_data)
+            background_tasks.add_task(log_error_event)
+
         raise HTTPException(
             status_code=500,
             detail=f"RAG query failed: {exc}",
         ) from exc
 
+    total_latency = time.perf_counter() - start_total_time
+
+    # Record success event in background
+    if background_tasks:
+        # Resolve metrics
+        retrieved_count = len(response.results) if response.results is not None else len(response.chunks)
+        assembled_count = response.total_chunks
+        
+        # Token details (input/output are optional LLM attributes)
+        input_tokens = getattr(response, "input_tokens", None)
+        output_tokens = getattr(response, "output_tokens", None)
+        total_toks = response.total_tokens
+
+        event_data = {
+            "request_id": request_id,
+            "query": query,
+            "retrieval_strategy": strategy,
+            "prompt_strategy": prompt_strategy,
+            "retrieval_latency_ms": retrieval_latency * 1000,
+            "generation_latency_ms": generation_latency * 1000,
+            "total_latency_ms": total_latency * 1000,
+            "retrieved_chunk_count": retrieved_count,
+            "assembled_chunk_count": assembled_count,
+            "context_token_count": total_toks,
+            "llm_provider": settings.llm_provider,
+            "llm_model": settings.groq_model if settings.llm_provider == "groq" else (settings.gemini_model if settings.llm_provider == "gemini" else settings.ollama_model),
+            "input_tokens": input_tokens,
+            "output_tokens": output_tokens,
+            "total_tokens": total_toks,
+            "answer_length": len(response.answer),
+            "success": True,
+            "repository_id": repository_id,
+        }
+        async def log_success_event():
+            async with AsyncSessionLocal() as session:
+                monitor = MonitoringService(session)
+                await monitor.record_rag_event(event_data)
+        background_tasks.add_task(log_success_event)
+
     return {
+        "request_id": request_id,
         "answer": response.answer,
         "chunks": [
             {
