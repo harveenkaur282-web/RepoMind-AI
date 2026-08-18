@@ -25,7 +25,7 @@ def _load_onnx_model():
     tokenizer = AutoTokenizer.from_pretrained(_MODEL_NAME)
 
     logger.info("Initializing ONNX Runtime session: %s", model_path)
-    session = ort.InferenceSession(model_path, providers=["CPUExecutionProvider"])
+    session = ort.InferenceSession(model_path)
     return session, tokenizer
 
 
