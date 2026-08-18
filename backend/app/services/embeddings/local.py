@@ -3,48 +3,40 @@ from __future__ import annotations
 import asyncio
 import logging
 from functools import lru_cache
+from pathlib import Path
+
+import numpy as np
+import onnxruntime as ort
+from tokenizers import Tokenizer
 
 from backend.app.services.embeddings.base import EmbeddingProvider
 
 logger = logging.getLogger(__name__)
 
-_MODEL_NAME = "Xenova/all-mpnet-base-v2"
+_MODEL_PATH = Path("backend/app/models/Xenova/all-mpnet-base-v2")
 _DIMENSIONS = 768
 
 
 @lru_cache(maxsize=1)
-def _load_onnx_model():
-    """Load and cache the ONNX model and tokenizer directly on first use."""
-    import onnxruntime as ort  # noqa: PLC0415
-    from huggingface_hub import hf_hub_download  # noqa: PLC0415
-    from transformers import AutoTokenizer  # noqa: PLC0415
-
-    logger.info("Downloading ONNX weights directly: %s", _MODEL_NAME)
-    # Download the ONNX model and tokenizer config directly from HF Hub (using Xenova's precompiled repo)
-    model_path = hf_hub_download(repo_id=_MODEL_NAME, filename="onnx/model.onnx")
-    tokenizer = AutoTokenizer.from_pretrained(_MODEL_NAME)
-
-    logger.info("Initializing ONNX Runtime session: %s", model_path)
-    try:
-        session = ort.InferenceSession(model_path, providers=["CPUExecutionProvider"])
-    except Exception as e:
-        logger.error("ONNX CPUExecutionProvider initialization failed: %s. Trying fallback.", e)
-        try:
-            session = ort.InferenceSession(model_path)
-        except Exception as e2:
-            logger.critical("ONNX session fallback also failed: %s", e2)
-            raise e2
-    return session, tokenizer
+def _load_onnx_embedder():
+    """Initializes the tokenizer and ONNX inference session."""
+    logger.info("Initializing native ONNX session from: %s", _MODEL_PATH)
+    tokenizer = Tokenizer.from_file(str(_MODEL_PATH / "tokenizer.json"))
+    session = ort.InferenceSession(
+        str(_MODEL_PATH / "model.onnx"), providers=["CPUExecutionProvider"]
+    )
+    input_names = {inp.name for inp in session.get_inputs()}
+    return session, tokenizer, input_names
 
 
 class LocalEmbeddingProvider(EmbeddingProvider):
-    """Local CPU embedding provider using pure ONNX Runtime directly.
+    """Local CPU embedding provider using pure ONNX Runtime and tokenizers.
 
-    Extremely robust, bypassing HuggingFace Optimum imports entirely to avoid
-    version compatibility conflicts. Runs purely on CPU.
+    Bypasses PyTorch, HuggingFace transformers, and Optimum wrappers entirely
+    following the custom Zoomcamp implementation.
     """
 
-    MODEL_NAME = _MODEL_NAME
+    MODEL_NAME = "Xenova/all-mpnet-base-v2"
     DIMENSIONS = _DIMENSIONS
 
     @property
@@ -62,41 +54,37 @@ class LocalEmbeddingProvider(EmbeddingProvider):
         if not texts:
             return []
 
-        session, tokenizer = _load_onnx_model()
+        session, tokenizer, input_names = _load_onnx_embedder()
         loop = asyncio.get_event_loop()
 
         def _encode() -> list[list[float]]:
-            import numpy as np  # noqa: PLC0415
+            tokenizer.enable_padding()
+            encoded = tokenizer.encode_batch(texts)
 
-            # Tokenize the input texts
-            encoded_input = tokenizer(texts, padding=True, truncation=True, return_tensors="np")
+            feed = {}
+            if "input_ids" in input_names:
+                feed["input_ids"] = np.array([e.ids for e in encoded], dtype=np.int64)
+            if "attention_mask" in input_names:
+                feed["attention_mask"] = np.array(
+                    [e.attention_mask for e in encoded], dtype=np.int64
+                )
+            if "token_type_ids" in input_names:
+                feed["token_type_ids"] = np.array([e.type_ids for e in encoded], dtype=np.int64)
 
-            # Prepare ONNX Runtime input bindings
-            ort_inputs = {
-                "input_ids": encoded_input["input_ids"].astype(np.int64),
-                "attention_mask": encoded_input["attention_mask"].astype(np.int64),
-            }
-            if "token_type_ids" in encoded_input:
-                ort_inputs["token_type_ids"] = encoded_input["token_type_ids"].astype(np.int64)
+            # Execute ONNX graph
+            hidden = session.run(None, feed)[0]
+            mask = feed["attention_mask"][..., None]
 
-            # Run inference directly
-            ort_outputs = session.run(None, ort_inputs)
-            token_embeddings = ort_outputs[0]
+            # Mean Pooling
+            pooled = (hidden * mask).sum(axis=1) / mask.sum(axis=1)
 
-            # Perform mean pooling
-            attention_mask = encoded_input["attention_mask"]
-            input_mask_expanded = np.expand_dims(attention_mask, axis=-1)
-            sum_embeddings = np.sum(token_embeddings * input_mask_expanded, axis=1)
-            sum_mask = np.clip(np.sum(input_mask_expanded, axis=1), a_min=1e-9, a_max=None)
-            embeddings = sum_embeddings / sum_mask
+            # L2 Normalization (cosine similarity compatibility)
+            norms = np.linalg.norm(pooled, axis=1, keepdims=True)
+            normalized = pooled / np.clip(norms, a_min=1e-9, a_max=None)
 
-            # Normalize embeddings
-            norms = np.linalg.norm(embeddings, axis=1, keepdims=True)
-            normalized_embeddings = embeddings / np.clip(norms, a_min=1e-9, a_max=None)
+            return normalized.tolist()
 
-            return normalized_embeddings.tolist()
-
-        logger.debug("Embedding %d texts with direct ONNX Runtime model", len(texts))
+        logger.debug("Embedding %d texts with native ONNX model", len(texts))
         return await loop.run_in_executor(None, _encode)
 
     async def embed_query(
