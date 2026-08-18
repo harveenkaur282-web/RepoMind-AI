@@ -22,12 +22,15 @@ def test_post_feedback_invalid_rating() -> None:
 @patch("backend.app.api.v1.endpoints.feedback.MonitoringService")
 def test_post_feedback_returns_201(mock_service_class) -> None:
     mock_service = mock_service_class.return_value
+    from datetime import UTC, datetime
+
     mock_service.record_feedback = AsyncMock(
         return_value=UserFeedback(
             id=1,
             request_id="test-uuid-feedback",
             rating="positive",
             feedback_text="nice",
+            created_at=datetime.now(UTC),
         )
     )
 

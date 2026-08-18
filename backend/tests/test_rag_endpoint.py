@@ -31,6 +31,8 @@ async def test_query_rag_endpoint_success() -> None:
     with (
         patch("backend.app.api.v1.endpoints.rag.RAGService") as mock_service_class,
         patch("backend.app.api.v1.endpoints.rag.LocalEmbeddingProvider") as mock_provider_class,
+        patch("backend.app.api.v1.endpoints.rag.MonitoringService") as mock_monitor_class,
+        patch("backend.app.api.v1.endpoints.rag.RetrievalService") as mock_retrieval_class,
     ):
         # Setup mock instances
         mock_service = MagicMock()
@@ -40,6 +42,14 @@ async def test_query_rag_endpoint_success() -> None:
         mock_provider = MagicMock()
         mock_provider.embed_query = AsyncMock(return_value=[0.1] * 768)
         mock_provider_class.return_value = mock_provider
+
+        mock_monitor = MagicMock()
+        mock_monitor.record_rag_event = AsyncMock()
+        mock_monitor_class.return_value = mock_monitor
+
+        mock_retrieval = MagicMock()
+        mock_retrieval.search = AsyncMock(return_value=[])
+        mock_retrieval_class.return_value = mock_retrieval
 
         # 3. Call endpoint
         response = client.post(
@@ -82,10 +92,17 @@ async def test_query_rag_endpoint_success() -> None:
 
 @pytest.mark.asyncio
 async def test_query_rag_endpoint_handles_error() -> None:
-    with patch("backend.app.api.v1.endpoints.rag.RAGService") as mock_service_class:
+    with (
+        patch("backend.app.api.v1.endpoints.rag.RAGService") as mock_service_class,
+        patch("backend.app.api.v1.endpoints.rag.RetrievalService") as mock_retrieval_class,
+    ):
         mock_service = MagicMock()
         mock_service.answer_query = AsyncMock(side_effect=RuntimeError("Ollama connection failed"))
         mock_service_class.return_value = mock_service
+
+        mock_retrieval = MagicMock()
+        mock_retrieval.search = AsyncMock(return_value=[])
+        mock_retrieval_class.return_value = mock_retrieval
 
         response = client.post(
             "/api/v1/rag/query",

@@ -5,8 +5,8 @@ from backend.app.services.monitoring.service import MonitoringService
 
 
 @pytest.mark.asyncio
-async def test_record_rag_event_persists_to_db(db_session) -> None:
-    service = MonitoringService(db_session)
+async def test_record_rag_event_persists_to_db(retrieval_db) -> None:
+    service = MonitoringService(retrieval_db)
     event_data = {
         "request_id": "test-uuid-12345",
         "query": "What is 2+2?",
@@ -34,8 +34,8 @@ async def test_record_rag_event_persists_to_db(db_session) -> None:
 
 
 @pytest.mark.asyncio
-async def test_record_feedback_persists_to_db(db_session) -> None:
-    service = MonitoringService(db_session)
+async def test_record_feedback_persists_to_db(retrieval_db) -> None:
+    service = MonitoringService(retrieval_db)
 
     # 1. Create a parent RAG Event first
     event_data = {
