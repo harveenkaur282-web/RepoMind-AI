@@ -2,8 +2,6 @@
 
 An Intelligent RAG-powered Codebase Search and Question-Answering Workspace for GitHub Repositories.
 
----
-
 ## Reproducibility Guide
 
 You can run **RepoMind-AI** on your own local device. Follow these steps to clone the repository, spin up the database, run migrations, and start the application.
