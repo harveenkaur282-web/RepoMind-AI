@@ -151,10 +151,12 @@ async def query_rag(
                 "error_message": str(exc),
                 "repository_id": repository_id,
             }
+
             async def log_error_event():
                 async with AsyncSessionLocal() as session:
                     monitor = MonitoringService(session)
                     await monitor.record_rag_event(error_data)
+
             background_tasks.add_task(log_error_event)
 
         raise HTTPException(
@@ -171,7 +173,7 @@ async def query_rag(
             len(response.results) if response.results is not None else len(response.chunks)
         )
         assembled_count = response.total_chunks
-        
+
         # Token details (input/output are optional LLM attributes)
         input_tokens = getattr(response, "input_tokens", None)
         output_tokens = getattr(response, "output_tokens", None)
@@ -206,10 +208,12 @@ async def query_rag(
             "success": True,
             "repository_id": repository_id,
         }
+
         async def log_success_event():
             async with AsyncSessionLocal() as session:
                 monitor = MonitoringService(session)
                 await monitor.record_rag_event(event_data)
+
         background_tasks.add_task(log_success_event)
 
     return {

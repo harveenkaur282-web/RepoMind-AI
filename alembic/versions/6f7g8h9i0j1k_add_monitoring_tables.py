@@ -65,9 +65,7 @@ def upgrade() -> None:
         sa.Column("rating", sa.String(length=20), nullable=False),
         sa.Column("feedback_text", sa.Text(), nullable=True),
         sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
-        sa.ForeignKeyConstraint(
-            ["request_id"], ["rag_events.request_id"], ondelete="CASCADE"
-        ),
+        sa.ForeignKeyConstraint(["request_id"], ["rag_events.request_id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
     )
 
