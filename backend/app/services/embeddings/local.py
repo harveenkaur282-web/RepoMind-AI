@@ -8,7 +8,7 @@ from backend.app.services.embeddings.base import EmbeddingProvider
 
 logger = logging.getLogger(__name__)
 
-_MODEL_NAME = "sentence-transformers/all-mpnet-base-v2"
+_MODEL_NAME = "Xenova/all-mpnet-base-v2"
 _DIMENSIONS = 768
 
 
@@ -20,7 +20,7 @@ def _load_onnx_model():
     from transformers import AutoTokenizer  # noqa: PLC0415
 
     logger.info("Downloading ONNX weights directly: %s", _MODEL_NAME)
-    # Download the ONNX model and tokenizer config directly from HF Hub
+    # Download the ONNX model and tokenizer config directly from HF Hub (using Xenova's precompiled repo)
     model_path = hf_hub_download(repo_id=_MODEL_NAME, filename="onnx/model.onnx")
     tokenizer = AutoTokenizer.from_pretrained(_MODEL_NAME)
 
