@@ -13,23 +13,26 @@ _DIMENSIONS = 768
 
 
 @lru_cache(maxsize=1)
-def _load_model():
-    """Load and cache the sentence-transformers model on first use."""
-    from sentence_transformers import SentenceTransformer  # noqa: PLC0415
+def _load_onnx_model():
+    """Load and cache the Optimum ONNX model and tokenizer on first use."""
+    from optimum.onnxruntime import ORTModelForFeatureExtraction  # noqa: PLC0415
+    from transformers import AutoTokenizer  # noqa: PLC0415
 
-    logger.info("Loading local embedding model: %s", _MODEL_NAME)
-    model = SentenceTransformer(_MODEL_NAME, trust_remote_code=True)
-    logger.info("Local embedding model loaded.")
-    return model
+    logger.info("Loading Optimum ONNX model: %s", _MODEL_NAME)
+    # This automatically downloads and exports the model to ONNX format (or uses cache)
+    tokenizer = AutoTokenizer.from_pretrained(_MODEL_NAME)
+    model = ORTModelForFeatureExtraction.from_pretrained(
+        _MODEL_NAME, export=True, provider="CPUExecutionProvider"
+    )
+    logger.info("Optimum ONNX model and tokenizer loaded.")
+    return model, tokenizer
 
 
 class LocalEmbeddingProvider(EmbeddingProvider):
-    """Local CPU embedding provider using nomic-ai/nomic-embed-code via sentence-transformers.
+    """Local CPU embedding provider using ONNX Runtime via HuggingFace Optimum.
 
-    No API key or rate limit. Model is downloaded once and cached in the
-    sentence-transformers cache directory (~/.cache/huggingface/hub).
-    Inference runs in a thread-pool executor so it does not block the async
-    event loop.
+    Extremely lightweight, requires no PyTorch dependencies, and uses very little
+    RAM. Works purely on CPU with no API keys or rate limits.
     """
 
     MODEL_NAME = _MODEL_NAME
@@ -50,19 +53,34 @@ class LocalEmbeddingProvider(EmbeddingProvider):
         if not texts:
             return []
 
-        model = _load_model()
+        model, tokenizer = _load_onnx_model()
         loop = asyncio.get_event_loop()
 
         def _encode() -> list[list[float]]:
-            embeddings = model.encode(
-                texts,
-                batch_size=32,
-                show_progress_bar=False,
-                normalize_embeddings=True,
-            )
-            return [emb.tolist() for emb in embeddings]
+            import numpy as np  # noqa: PLC0415
 
-        logger.debug("Embedding %d texts with local model", len(texts))
+            # Tokenize the input texts
+            encoded_input = tokenizer(texts, padding=True, truncation=True, return_tensors="np")
+
+            # Run inference on ONNX Runtime
+            model_output = model(**encoded_input)
+
+            # Perform mean pooling
+            token_embeddings = model_output[0]  # First element of tuple contains hidden state
+            attention_mask = encoded_input["attention_mask"]
+
+            input_mask_expanded = np.expand_dims(attention_mask, axis=-1)
+            sum_embeddings = np.sum(token_embeddings * input_mask_expanded, axis=1)
+            sum_mask = np.clip(np.sum(input_mask_expanded, axis=1), a_min=1e-9, a_max=None)
+            embeddings = sum_embeddings / sum_mask
+
+            # Normalize embeddings to unit length (cosine similarity)
+            norms = np.linalg.norm(embeddings, axis=1, keepdims=True)
+            normalized_embeddings = embeddings / np.clip(norms, a_min=1e-9, a_max=None)
+
+            return normalized_embeddings.tolist()
+
+        logger.debug("Embedding %d texts with ONNX Runtime model", len(texts))
         return await loop.run_in_executor(None, _encode)
 
     async def embed_query(

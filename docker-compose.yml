@@ -31,6 +31,23 @@ services:
       timeout: 3s
       retries: 5
 
+  grafana:
+    image: grafana/grafana:11.1.0
+    container_name: repomind-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   postgres_data:
   redis_data:
+  grafana_data:

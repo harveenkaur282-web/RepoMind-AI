@@ -147,3 +147,19 @@ def compare_retrieval(query: str, repository_id: int | None = None) -> dict[str,
     if repository_id is not None:
         params["repository_id"] = repository_id
     return _request_json("POST", "/api/v1/rag/compare", params=params)
+
+
+def submit_feedback(
+    request_id: str,
+    rating: str,
+    feedback_text: str | None = None,
+) -> dict[str, Any]:
+    return _request_json(
+        "POST",
+        "/api/v1/feedback",
+        json={
+            "request_id": request_id,
+            "rating": rating,
+            "feedback_text": feedback_text,
+        },
+    )

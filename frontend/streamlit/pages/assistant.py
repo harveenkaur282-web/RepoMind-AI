@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import streamlit as st
-from utils.api import get_repositories, query_rag
+from utils.api import get_repositories, query_rag, submit_feedback
 
 
 def main() -> None:
@@ -45,6 +45,9 @@ def main() -> None:
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
+    if "feedback_submitted" not in st.session_state:
+        st.session_state.feedback_submitted = {}
+
     # Clear chat when switching repository
     if (
         "current_repo" not in st.session_state
@@ -52,14 +55,16 @@ def main() -> None:
     ):
         st.session_state.current_repo = selected_repo["id"]
         st.session_state.messages = []
+        st.session_state.feedback_submitted = {}
 
     # Clear chat history button
     if st.sidebar.button("Clear Chat History"):
         st.session_state.messages = []
+        st.session_state.feedback_submitted = {}
         st.rerun()
 
     # 4. Render message history
-    for msg in st.session_state.messages:
+    for idx_msg, msg in enumerate(st.session_state.messages):
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
             if msg["role"] == "assistant" and msg.get("chunks"):
@@ -67,6 +72,38 @@ def main() -> None:
                     for idx, chunk in enumerate(msg["chunks"]):
                         st.markdown(f"**Source {idx + 1}:** `{chunk['document_path']}`")
                         st.code(chunk["content"], language="python")
+
+            # Feedback UI for completed assistant responses
+            if msg["role"] == "assistant" and msg.get("request_id"):
+                req_id = msg["request_id"]
+                if req_id in st.session_state.feedback_submitted:
+                    st.success("Feedback recorded.")
+                else:
+                    col1, col2, _ = st.columns([1, 1, 6])
+                    with col1:
+                        if st.button("Helpful", key=f"up_{req_id}_{idx_msg}"):
+                            try:
+                                submit_feedback(req_id, "positive")
+                                st.session_state.feedback_submitted[req_id] = "positive"
+                                st.rerun()
+                            except Exception as e:
+                                st.error(f"Failed: {e}")
+                    with col2:
+                        if st.button("Not helpful", key=f"down_{req_id}_{idx_msg}"):
+                            st.session_state.feedback_submitted[req_id] = "pending_negative"
+                            st.rerun()
+
+                    if st.session_state.feedback_submitted.get(req_id) == "pending_negative":
+                        with st.form(key=f"feedback_form_{req_id}"):
+                            comment = st.text_area("Tell us more (optional):", key=f"text_{req_id}")
+                            submit_comment = st.form_submit_button("Submit")
+                            if submit_comment:
+                                try:
+                                    submit_feedback(req_id, "negative", comment)
+                                    st.session_state.feedback_submitted[req_id] = "negative"
+                                    st.rerun()
+                                except Exception as e:
+                                    st.error(f"Failed: {e}")
 
     # 5. User Input and API Query
     user_query = st.chat_input("Ask a question about the repository...")
@@ -89,6 +126,7 @@ def main() -> None:
                     )
                     answer = result["answer"]
                     chunks = result.get("chunks", [])
+                    request_id = result.get("request_id")
 
                     st.markdown(answer)
 
@@ -101,8 +139,14 @@ def main() -> None:
 
                     # Save to state
                     st.session_state.messages.append(
-                        {"role": "assistant", "content": answer, "chunks": chunks}
+                        {
+                            "role": "assistant",
+                            "content": answer,
+                            "chunks": chunks,
+                            "request_id": request_id,
+                        }
                     )
+                    st.rerun()
 
                 except Exception as exc:
                     st.error(f"Error querying assistant: {exc}")

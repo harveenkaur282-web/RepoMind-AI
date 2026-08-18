@@ -1,0 +1,320 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "title": "RAG Requests Over Time",
+      "type": "timeseries",
+      "datasource": {
+        "type": "postgres",
+        "uid": "repomind-postgres"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "repomind-postgres"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT $__timeGroupAlias(created_at, 1m) AS time, COUNT(*) as value FROM rag_events WHERE $__timeFilter(created_at) GROUP BY time ORDER BY time",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "title": "Average Total Latency (ms)",
+      "type": "stat",
+      "datasource": {
+        "type": "postgres",
+        "uid": "repomind-postgres"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "repomind-postgres"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT AVG(total_latency_ms) as value FROM rag_events WHERE $__timeFilter(created_at)",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 3,
+      "title": "Retrieval vs Generation Latency",
+      "type": "timeseries",
+      "datasource": {
+        "type": "postgres",
+        "uid": "repomind-postgres"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "repomind-postgres"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT $__timeGroupAlias(created_at, 1m) AS time, AVG(retrieval_latency_ms) as retrieval, AVG(generation_latency_ms) as generation FROM rag_events WHERE $__timeFilter(created_at) GROUP BY time ORDER BY time",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 4,
+      "title": "Token Usage (Input / Output / Total)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "postgres",
+        "uid": "repomind-postgres"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "repomind-postgres"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT $__timeGroupAlias(created_at, 1m) AS time, AVG(input_tokens) as input, AVG(output_tokens) as output, AVG(total_tokens) as total FROM rag_events WHERE $__timeFilter(created_at) GROUP BY time ORDER BY time",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "id": 5,
+      "title": "Retrieval Strategy Usage",
+      "type": "barchart",
+      "datasource": {
+        "type": "postgres",
+        "uid": "repomind-postgres"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "repomind-postgres"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT retrieval_strategy, COUNT(*) as count FROM rag_events WHERE $__timeFilter(created_at) GROUP BY retrieval_strategy",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 16
+      },
+      "id": 6,
+      "title": "Positive vs Negative Feedback",
+      "type": "piechart",
+      "datasource": {
+        "type": "postgres",
+        "uid": "repomind-postgres"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "repomind-postgres"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT rating, COUNT(*) as count FROM user_feedback WHERE $__timeFilter(created_at) GROUP BY rating",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 24
+      },
+      "id": 7,
+      "title": "Error Rate",
+      "type": "stat",
+      "datasource": {
+        "type": "postgres",
+        "uid": "repomind-postgres"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "repomind-postgres"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT (COUNT(CASE WHEN success = false THEN 1 END) * 100.0) / COUNT(*) as error_rate FROM rag_events WHERE $__timeFilter(created_at)",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 24
+      },
+      "id": 8,
+      "title": "Average Context Token Count",
+      "type": "stat",
+      "datasource": {
+        "type": "postgres",
+        "uid": "repomind-postgres"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "repomind-postgres"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT AVG(context_token_count) as avg_context_tokens FROM rag_events WHERE $__timeFilter(created_at)",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 24
+      },
+      "id": 9,
+      "title": "Average Answer Length",
+      "type": "stat",
+      "datasource": {
+        "type": "postgres",
+        "uid": "repomind-postgres"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "repomind-postgres"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT AVG(answer_length) as avg_answer_len FROM rag_events WHERE $__timeFilter(created_at)",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 32
+      },
+      "id": 10,
+      "title": "Request Volume by Repository",
+      "type": "barchart",
+      "datasource": {
+        "type": "postgres",
+        "uid": "repomind-postgres"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "repomind-postgres"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT r.name, COUNT(*) as count FROM rag_events e JOIN repositories r ON e.repository_id = r.id WHERE $__timeFilter(e.created_at) GROUP BY r.name",
+          "refId": "A"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": [],
+  "title": "RepoMind AI Monitoring",
+  "timezone": "",
+  "weekStart": ""
+}
