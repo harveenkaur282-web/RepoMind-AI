@@ -8,7 +8,7 @@ from backend.app.services.embeddings.base import EmbeddingProvider
 
 logger = logging.getLogger(__name__)
 
-_MODEL_NAME = "nomic-ai/nomic-embed-code"
+_MODEL_NAME = "sentence-transformers/all-mpnet-base-v2"
 _DIMENSIONS = 768
 
 
