@@ -135,6 +135,7 @@ async def test_retrieval_returns_nearest_chunks(
 
     results = await service.search(
         query_embedding=query_vector,
+        repository_id=repository.id,
         top_k=3,
     )
 
