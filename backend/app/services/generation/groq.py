@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+
 import httpx
 
 from backend.app.services.generation.base import LLMProviderError
@@ -55,7 +56,8 @@ class GroqProvider:
             except httpx.HTTPStatusError as e:
                 logger.error("Groq API error response: %s", e.response.text)
                 raise LLMProviderError(
-                    f"Groq API returned HTTP error: {e.response.status_code}. Detail: {e.response.text}"
+                    f"Groq API returned HTTP error: "
+                    f"{e.response.status_code}. Detail: {e.response.text}"
                 ) from e
             except httpx.RequestError as e:
                 raise LLMProviderError(f"Failed to communicate with Groq API: {e}") from e
