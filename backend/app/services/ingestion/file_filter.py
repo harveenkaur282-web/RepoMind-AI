@@ -47,6 +47,7 @@ ALLOWED_EXTENSIONS = {
     ".json",
     ".toml",
     ".sql",
+    ".ipynb",
 }
 
 BLOCKED_DIRECTORIES = {

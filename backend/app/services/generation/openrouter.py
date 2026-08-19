@@ -1,8 +1,12 @@
 from __future__ import annotations
 
+import logging
+
 import httpx
 
 from backend.app.services.generation.base import LLMProviderError
+
+logger = logging.getLogger(__name__)
 
 
 class OpenRouterProvider:
@@ -20,7 +24,7 @@ class OpenRouterProvider:
         query: str,
         system_prompt: str | None = None,
     ) -> str:
-        """Translate generate call into OpenRouter chat completion request."""
+        """Translate generate call into OpenRouter chat completions request."""
         if not self.api_key:
             raise LLMProviderError("OpenRouter API key is not configured.")
 
@@ -43,6 +47,7 @@ class OpenRouterProvider:
         payload = {
             "model": self.model,
             "messages": messages,
+            "max_tokens": 2000,
         }
 
         async with httpx.AsyncClient() as client:
@@ -52,8 +57,10 @@ class OpenRouterProvider:
                 data = response.json()
                 return data["choices"][0]["message"]["content"]
             except httpx.HTTPStatusError as e:
+                logger.error("OpenRouter API error response: %s", e.response.text)
                 raise LLMProviderError(
-                    f"OpenRouter API returned HTTP error: {e.response.status_code}"
+                    f"OpenRouter API returned HTTP error: "
+                    f"{e.response.status_code}. Detail: {e.response.text}"
                 ) from e
             except httpx.RequestError as e:
                 raise LLMProviderError(f"Failed to communicate with OpenRouter API: {e}") from e

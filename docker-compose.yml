@@ -47,6 +47,43 @@ services:
       postgres:
         condition: service_healthy
 
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: repomind-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/repomind
+      - REDIS_URL=redis://redis:6379/0
+      - OLLAMA_URL=http://host.docker.internal:11434
+      - OLLAMA_MODEL=qwen2.5-coder:7b
+      - LLM_PROVIDER=ollama
+      - ENVIRONMENT=development
+      - DEBUG=true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: repomind-frontend
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    environment:
+      - FASTAPI_BASE_URL=http://backend:8000
+    depends_on:
+      - backend
+
 volumes:
   postgres_data:
   redis_data:

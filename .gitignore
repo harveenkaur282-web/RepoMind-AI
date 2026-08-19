@@ -234,3 +234,6 @@ __pycache__/
 # Streamlit local secrets
 frontend/streamlit/.streamlit/secrets.toml
 # Local chunking drafts (moved to local exclude)
+
+# Large Local ML Model weights
+backend/app/models/

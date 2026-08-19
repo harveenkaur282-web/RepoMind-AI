@@ -16,11 +16,14 @@ settings = get_settings()
 async def lifespan(app: FastAPI):
     logger.info("application_starting")
 
-    # Future:
-    # - Initialize PostgreSQL
-    # - Connect Redis
-    # - Load embedding model
-    # - Start workers
+    # Load local embedding model on startup to prevent delay on first ingestion
+    try:
+        from backend.app.services.embeddings.local import _load_onnx_embedder
+
+        _load_onnx_embedder()
+        logger.info("Embedding model preloaded successfully on startup")
+    except Exception as e:
+        logger.warning("Could not preload embedding model on startup: %s", e)
 
     yield
 

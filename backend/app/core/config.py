@@ -18,7 +18,7 @@ class Settings(BaseSettings):
 
     voyage_api_key: str | None = None
     groq_api_key: str | None = None
-    groq_model: str = "llama-3.1-70b-versatile"
+    groq_model: str = "llama-3.3-70b-specdec"
     gemini_api_key: str | None = None
     gemini_model: str = "gemini-1.5-flash"
     openrouter_api_key: str | None = None

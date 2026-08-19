@@ -22,9 +22,7 @@ def _load_onnx_embedder():
     """Initializes the tokenizer and ONNX inference session."""
     logger.info("Initializing native ONNX session from: %s", _MODEL_PATH)
     tokenizer = Tokenizer.from_file(str(_MODEL_PATH / "tokenizer.json"))
-    session = ort.InferenceSession(
-        str(_MODEL_PATH / "model.onnx"), providers=["CPUExecutionProvider"]
-    )
+    session = ort.InferenceSession(str(_MODEL_PATH / "model.onnx"))
     input_names = {inp.name for inp in session.get_inputs()}
     return session, tokenizer, input_names
 

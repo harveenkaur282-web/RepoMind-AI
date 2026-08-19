@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import logging
 import httpx
 
 from backend.app.services.generation.base import LLMProviderError
+
+logger = logging.getLogger(__name__)
 
 
 class GroqProvider:
@@ -50,8 +53,9 @@ class GroqProvider:
                 data = response.json()
                 return data["choices"][0]["message"]["content"]
             except httpx.HTTPStatusError as e:
+                logger.error("Groq API error response: %s", e.response.text)
                 raise LLMProviderError(
-                    f"Groq API returned HTTP error: {e.response.status_code}"
+                    f"Groq API returned HTTP error: {e.response.status_code}. Detail: {e.response.text}"
                 ) from e
             except httpx.RequestError as e:
                 raise LLMProviderError(f"Failed to communicate with Groq API: {e}") from e

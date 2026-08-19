@@ -9,10 +9,8 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-install-package torch --no-dev
 
 # Copy application files
-COPY backend/ ./backend/
-COPY alembic/ ./alembic/
-COPY alembic.ini ./
+COPY frontend/ ./frontend/
 
-EXPOSE 8000
+EXPOSE 8501
 
-CMD ["uv", "run", "uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uv", "run", "streamlit", "run", "frontend/streamlit/app.py", "--server.port", "8501", "--server.address", "0.0.0.0"]
