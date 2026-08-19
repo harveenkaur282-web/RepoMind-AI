@@ -166,3 +166,21 @@ User feedback is recorded directly via the `/api/v1/feedback` endpoint. Streamli
 *   **Dependency Injection (DI)**: Follows clean FastAPI dependency patterns (`Depends`), injecting database sessions (`AsyncSession`) and configuration settings directly, easing unit-testing mock configurations.
 *   **Structured Logging**: Utilizes `structlog` to output structured JSON logs, formatting traces, latencies, and transaction metrics for easy Elasticsearch/Grafana parsing.
 *   **ONNX Local Optimizations**: Bypasses standard optimum library dependency conflicts by calling `onnxruntime.InferenceSession` and `tokenizers` directly. Model loading is warmed up once during FastAPI lifespan startup to eliminate runtime latency spikes.
+
+---
+
+## Known Issues & Workarounds
+
+*   **Docker Container to Host Loopback**: Since the backend container needs to query the local Ollama instance on your host machine, direct `localhost` routing fails. The workaround is using Docker's bridge alias `http://host.docker.internal:11434` coupled with allowing external network calls inside Ollama settings (`OLLAMA_HOST=0.0.0.0`).
+*   **Large File Tracking in Git History**: Downloading embedding weights directly inside the workspace folders results in extremely slow Git commit and push routines. To avoid this, model paths must be added to `.gitignore` and cached using local script modules (`download_model.py`) rather than repository builds.
+*   **OneDrive Sync Collisions**: Running `uv sync` inside directory structures backed by OneDrive can throw OS errors (e.g. `os error 396`) due to incompatible cloud file hardlink handlers. Setting `--link-mode=copy` is required to bypass this.
+
+---
+
+## Future Improvements
+
+*   **Asynchronous Ingestion Workers**: Integrate Celery or Arq backing tasks via Redis to support non-blocking repository ingestion of huge codebases without risking HTTP gateway timeouts.
+*   **Graph RAG Integration**: Parse AST relationships and symbol reference structures to form codebase graphs, providing deeper contextual maps to the LLM during class/method queries.
+*   **Cross-Encoder Reranking**: Deploy a local cross-encoder model (e.g., `bge-reranker-base`) to evaluate and sort initial candidate pools before assembling the prompt context.
+*   **Multi-Repo Comparative Search**: Support querying across multiple ingested repositories simultaneously to help analyze dependency trees or shared internal libraries.
+
