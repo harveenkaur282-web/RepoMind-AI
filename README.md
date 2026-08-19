@@ -104,7 +104,28 @@ The project is structured logically separating the backend API service, frontend
 
 ---
 
+## Tech Stack & Core Libraries
+
+*   **Application Services**:
+    *   **FastAPI**: Python async framework powering the backend REST endpoints. Utilizes lifespan event managers for startup pre-loading optimizations.
+    *   **Streamlit**: Frontend user dashboard providing ingestion triggers, assistant dialog components, and developer statistics.
+*   **Database & Vector Engine**:
+    *   **PostgreSQL**: Primary datastore configured with the **`pgvector`** extension to handle 768-dimension vector storage and high-performance cosine similarity queries.
+    *   **SQLAlchemy**: Object-Relational Mapper (ORM) utilizing the async engine (`asyncpg` driver) for scalable, non-blocking transaction handles.
+    *   **Alembic**: Lightweight database migration management environment tracking table upgrades and revision states.
+*   **Caching & Coordination**:
+    *   **Redis**: Key-value data cache running inside a container, preconfigured for future task queue structures.
+*   **AI & Machine Learning Local Pipeline**:
+    *   **ONNX Runtime**: Used locally (`onnxruntime.InferenceSession`) to execute embeddings execution bypasses on `Xenova/all-mpnet-base-v2`, dropping dynamic PyTorch/optimum library dependencies.
+    *   **Tokenizers**: Fast Rust-backed tokenizer loaders (`tokenizers.Tokenizer`) to encode string representations before model execution.
+*   **External Integration APIs**:
+    *   **Ollama**: Host client interface to route prompt context arrays back to locally serving weights (`qwen2.5-coder:7b`).
+    *   **HuggingFace Hub**: Downloader utility to fetch and locally cache model/tokenizer payloads.
+
+---
+
 ## Detailed RAG Flow
+
 
 The application follows a decoupled client-server architecture:
 
