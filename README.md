@@ -207,4 +207,6 @@ User feedback is recorded directly via the `/api/v1/feedback` endpoint. Streamli
 *   **Graph RAG Integration**: Parse AST relationships and symbol reference structures to form codebase graphs, providing deeper contextual maps to the LLM during class/method queries.
 *   **Cross-Encoder Reranking**: Deploy a local cross-encoder model (e.g., `bge-reranker-base`) to evaluate and sort initial candidate pools before assembling the prompt context.
 *   **Multi-Repo Comparative Search**: Support querying across multiple ingested repositories simultaneously to help analyze dependency trees or shared internal libraries.
+*   **Cloud Deployment Architecture**: Transition the stack to a scalable cloud architecture—deploying containerized services on AWS ECS/Fargate or GCP Cloud Run, utilizing AWS RDS (with pgvector) for database storage, and routing queries to managed LLM endpoints (like Bedrock or Gemini API) to replace local Ollama hardware requirements.
+
 
