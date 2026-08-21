@@ -92,89 +92,81 @@ async def run_evaluation(
     total_latency = 0.0
     errors = 0
 
-    # Mock LocalEmbeddingProvider to return a static vector for offline query processing
-    dummy_embedding = [0.1] * 768
-    with patch.object(
-        LocalEmbeddingProvider,
-        "embed_query",
-        new_callable=AsyncMock,
-        return_value=dummy_embedding,
-    ):
-        for sample in dataset.samples:
-            start_time = time.perf_counter()
-            try:
-                if simulated:
-                    # Pure local simulation to bypass DB connection requirements
-                    await asyncio.sleep(0.001)  # Simulate small query latency
-                    # Create simulated ranking list based on strategy
-                    # Hybrid performs best, then dense, then bm25
-                    expected = sample.relevant_documents[0]
-                    import random
+    for sample in dataset.samples:
+        start_time = time.perf_counter()
+        try:
+            if simulated:
+                # Pure local simulation to bypass DB connection requirements
+                await asyncio.sleep(0.001)  # Simulate small query latency
+                # Create simulated ranking list based on strategy
+                # Hybrid performs best, then dense, then bm25
+                expected = sample.relevant_documents[0]
+                import random
 
-                    # Seed only with question hash to make ranking consistent across K
-                    rng = random.Random(hash(sample.question))
+                # Seed only with question hash to make ranking consistent across K
+                rng = random.Random(hash(sample.question))
 
-                    if strategy == "hybrid":
-                        # 92% chance to be in top-K, average rank 2
-                        has_hit = rng.random() < 0.92
-                        rank = rng.randint(1, 3)
-                    elif strategy == "dense":
-                        # 84% chance to be in top-K, average rank 3
-                        has_hit = rng.random() < 0.84
-                        rank = rng.randint(1, 5)
-                    else:  # bm25
-                        # 75% chance to be in top-K, average rank 4.5
-                        has_hit = rng.random() < 0.75
-                        rank = rng.randint(1, 8)
+                if strategy == "hybrid":
+                    # 92% chance to be in top-K, average rank 2
+                    has_hit = rng.random() < 0.92
+                    rank = rng.randint(1, 3)
+                elif strategy == "dense":
+                    # 84% chance to be in top-K, average rank 3
+                    has_hit = rng.random() < 0.84
+                    rank = rng.randint(1, 5)
+                else:  # bm25
+                    # 75% chance to be in top-K, average rank 4.5
+                    has_hit = rng.random() < 0.75
+                    rank = rng.randint(1, 8)
 
-                    retrieved_docs = []
-                    if has_hit and rank <= k:
-                        retrieved_docs = (
-                            ["dummy_other.py"] * (rank - 1)
-                            + [expected]
-                            + ["dummy_other.py"] * (k - rank)
-                        )
-                    else:
-                        retrieved_docs = ["dummy_other.py"] * k
-                    retrieved_chunk_contents: list[str] = []
-                else:
-                    # Query embedding resolution if dense or hybrid
-                    query_embedding = None
-                    if strategy in ("dense", "hybrid"):
-                        provider = LocalEmbeddingProvider()
-                        query_embedding = await provider.embed_query(sample.question)
-
-                    results = await retrieval_service.search(
-                        query_text=sample.question,
-                        query_embedding=query_embedding,
-                        strategy=strategy,
-                        top_k=k,
-                        repository_id=repository_id,  # FIX: scope search to this repo
+                retrieved_docs = []
+                if has_hit and rank <= k:
+                    retrieved_docs = (
+                        ["dummy_other.py"] * (rank - 1)
+                        + [expected]
+                        + ["dummy_other.py"] * (k - rank)
                     )
+                else:
+                    retrieved_docs = ["dummy_other.py"] * k
+                retrieved_chunk_contents: list[str] = []
+            else:
+                # Query embedding resolution if dense or hybrid
+                query_embedding = None
+                if strategy in ("dense", "hybrid"):
+                    provider = LocalEmbeddingProvider()
+                    query_embedding = await provider.embed_query(sample.question)
 
-                    # Extract retrieved relative paths and chunk contents
-                    retrieved_docs = []
-                    retrieved_chunk_contents = []
-                    for res in results:
-                        if res.chunk and res.chunk.document and res.chunk.document.path:
-                            retrieved_docs.append(res.chunk.document.path)
-                        if res.chunk and res.chunk.content:
-                            retrieved_chunk_contents.append(res.chunk.content)
-
-                latency = time.perf_counter() - start_time
-                total_latency += latency
-
-                hits += calculate_hit_rate(retrieved_docs, sample.relevant_documents)
-                mrr_sum += calculate_mrr(retrieved_docs, sample.relevant_documents)
-                recall_sum += calculate_recall(retrieved_docs, sample.relevant_documents)
-                # FIX: score chunk-level precision using relevant_chunks field
-                chunk_precision_sum += calculate_chunk_precision(
-                    retrieved_chunk_contents, sample.relevant_chunks
+                results = await retrieval_service.search(
+                    query_text=sample.question,
+                    query_embedding=query_embedding,
+                    strategy=strategy,
+                    top_k=k,
+                    repository_id=repository_id,  # FIX: scope search to this repo
                 )
 
-            except Exception as exc:
-                errors += 1
-                print(f"Error evaluating query {sample.id}: {exc}")
+                # Extract retrieved relative paths and chunk contents
+                retrieved_docs = []
+                retrieved_chunk_contents = []
+                for res in results:
+                    if res.chunk and res.chunk.document and res.chunk.document.path:
+                        retrieved_docs.append(res.chunk.document.path)
+                    if res.chunk and res.chunk.content:
+                        retrieved_chunk_contents.append(res.chunk.content)
+
+            latency = time.perf_counter() - start_time
+            total_latency += latency
+
+            hits += calculate_hit_rate(retrieved_docs, sample.relevant_documents)
+            mrr_sum += calculate_mrr(retrieved_docs, sample.relevant_documents)
+            recall_sum += calculate_recall(retrieved_docs, sample.relevant_documents)
+            # FIX: score chunk-level precision using relevant_chunks field
+            chunk_precision_sum += calculate_chunk_precision(
+                retrieved_chunk_contents, sample.relevant_chunks
+            )
+
+        except Exception as exc:
+            errors += 1
+            print(f"Error evaluating query {sample.id}: {exc}")
 
     eval_count = total_queries - errors
     avg_latency = (total_latency / eval_count) if eval_count > 0 else 0.0
