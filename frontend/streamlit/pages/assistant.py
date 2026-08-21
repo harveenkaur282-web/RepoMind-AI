@@ -34,7 +34,7 @@ def main() -> None:
     strategy = st.sidebar.selectbox(
         "Retrieval Strategy",
         ["dense", "bm25", "hybrid"],
-        index=2,  # default to hybrid
+        index=0,  # default to dense (most reliable)
         help=(
             "dense uses semantic vector similarity, bm25 uses text keyword matches, "
             "hybrid uses reciprocal rank fusion."

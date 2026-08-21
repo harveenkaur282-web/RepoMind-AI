@@ -35,10 +35,10 @@ You can run **RepoMind-AI** fully local and containerized. The guide below cover
     DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/repomind
     REDIS_URL=redis://redis:6379/0
 
-    # LLM configuration (Queries are routed back to your host machine's Ollama instance)
-    LLM_PROVIDER=ollama
-    OLLAMA_URL=http://host.docker.internal:11434
-    OLLAMA_MODEL=qwen2.5-coder:7b
+    # LLM configuration (Queries are routed to Groq Cloud API for fast completions)
+    LLM_PROVIDER=groq
+    GROQ_API_KEY=your_groq_api_key_here
+    GROQ_MODEL=openai/gpt-oss-20b
 
     # Required for private repos or higher GitHub API rate limits
     GITHUB_TOKEN=your_github_token_here
@@ -84,6 +84,8 @@ The project is structured logically separating the backend API service, frontend
 ├── backend/
 │   ├── Dockerfile                # Production pip-based minimal containerizer for FastAPI
 │   └── app/
+├── screenshots/                  # Folder containing user-interface execution screenshots
+
 │       ├── api/                  # FastAPI router mappings and endpoint handlers (v1)
 │       ├── core/                 # App configurations (Pydantic base settings) and db connections
 │       ├── db/                   # SQLAlchemy declarative model schemas (Chunk, Document, Feedback)

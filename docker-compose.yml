@@ -55,12 +55,16 @@ services:
     restart: unless-stopped
     ports:
       - "8000:8000"
+    volumes:
+      - ./backend/app/models:/workspace/backend/app/models
     environment:
       - DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/repomind
       - REDIS_URL=redis://redis:6379/0
       - OLLAMA_URL=http://host.docker.internal:11434
       - OLLAMA_MODEL=qwen2.5-coder:7b
-      - LLM_PROVIDER=ollama
+      - LLM_PROVIDER=groq
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
       - ENVIRONMENT=development
       - DEBUG=true
     extra_hosts:

@@ -26,7 +26,8 @@ RUN pip install --no-cache-dir \
 COPY backend/ ./backend/
 COPY alembic/ ./alembic/
 COPY alembic.ini ./
+COPY evaluation/ ./evaluation/
 
 EXPOSE 8000
 
-CMD ["python", "-m", "uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python", "-m", "uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000", "--timeout-keep-alive", "300"]

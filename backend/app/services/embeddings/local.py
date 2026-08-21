@@ -13,7 +13,8 @@ from backend.app.services.embeddings.base import EmbeddingProvider
 
 logger = logging.getLogger(__name__)
 
-_MODEL_PATH = Path("backend/app/models/Xenova/all-mpnet-base-v2")
+_BASE_DIR = Path(__file__).resolve().parents[4]
+_MODEL_PATH = _BASE_DIR / "backend/app/models/Xenova/all-mpnet-base-v2"
 _DIMENSIONS = 768
 
 

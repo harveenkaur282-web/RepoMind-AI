@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import math
 import re
 from dataclasses import dataclass
@@ -174,24 +175,22 @@ class RetrievalService:
             if not chunks:
                 return []
 
-            corpus = [tokenize(chunk.content) for chunk in chunks]
-            bm25 = BM25(corpus)
-            query_tokens = tokenize(query_text)
+            # Run CPU-heavy BM25 scoring in a thread executor so we don't block
+            # the asyncio event loop (which keeps the DB connection alive/idle).
+            def _run_bm25() -> list[RetrievalResult]:
+                corpus = [tokenize(chunk.content) for chunk in chunks]
+                bm25 = BM25(corpus)
+                query_tokens = tokenize(query_text)
+                scored: list[RetrievalResult] = []
+                for idx, chunk in enumerate(chunks):
+                    score = bm25.get_score(idx, query_tokens)
+                    if score > 0.0:
+                        scored.append(RetrievalResult(chunk=chunk, score=score))
+                scored.sort(key=lambda x: x.score, reverse=True)
+                return scored[:top_k]
 
-            scored_chunks = []
-            for idx, chunk in enumerate(chunks):
-                score = bm25.get_score(idx, query_tokens)
-                if score > 0.0:  # Only return items with a non-zero score
-                    scored_chunks.append(
-                        RetrievalResult(
-                            chunk=chunk,
-                            score=score,
-                        )
-                    )
-
-            # Sort by score descending
-            scored_chunks.sort(key=lambda x: x.score, reverse=True)
-            return scored_chunks[:top_k]
+            loop = asyncio.get_event_loop()
+            return await loop.run_in_executor(None, _run_bm25)
 
         elif strategy == "hybrid":
             if not query_text:

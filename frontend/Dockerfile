@@ -9,7 +9,8 @@ RUN pip install --no-cache-dir \
     requests \
     pandas \
     pydantic \
-    pydantic-settings
+    pydantic-settings \
+    httpx
 
 # Copy application files
 COPY frontend/ ./frontend/

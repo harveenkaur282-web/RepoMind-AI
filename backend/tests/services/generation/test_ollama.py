@@ -71,7 +71,7 @@ async def test_ollama_generate_request_error() -> None:
 
 def test_ollama_settings_default() -> None:
     settings = get_settings()
-    assert settings.ollama_url == "http://localhost:11434"
+    assert settings.ollama_url in ("http://localhost:11434", "http://host.docker.internal:11434")
     assert settings.ollama_model == "qwen2.5-coder:7b"
 
 

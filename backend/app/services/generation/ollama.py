@@ -36,10 +36,12 @@ class OllamaProvider:
 
         async with httpx.AsyncClient() as client:
             try:
-                response = await client.post(url, json=payload, timeout=60.0)
+                response = await client.post(url, json=payload, timeout=180.0)
                 response.raise_for_status()
                 data = response.json()
                 return data["message"]["content"]
+            except httpx.TimeoutException as e:
+                raise LLMProviderError(f"Ollama generation timed out after 180 seconds: {e}") from e
             except httpx.HTTPStatusError as e:
                 raise LLMProviderError(
                     f"Ollama server returned HTTP error: {e.response.status_code}"

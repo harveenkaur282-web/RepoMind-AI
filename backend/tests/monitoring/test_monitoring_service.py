@@ -1,4 +1,5 @@
 import pytest
+import uuid
 
 from backend.app.db.models.monitoring import FeedbackRating
 from backend.app.services.monitoring.service import MonitoringService
@@ -7,8 +8,9 @@ from backend.app.services.monitoring.service import MonitoringService
 @pytest.mark.asyncio
 async def test_record_rag_event_persists_to_db(retrieval_db) -> None:
     service = MonitoringService(retrieval_db)
+    req_id = str(uuid.uuid4())
     event_data = {
-        "request_id": "test-uuid-12345",
+        "request_id": req_id,
         "query": "What is 2+2?",
         "retrieval_strategy": "dense",
         "prompt_strategy": "concise_grounded",
@@ -29,17 +31,18 @@ async def test_record_rag_event_persists_to_db(retrieval_db) -> None:
 
     event = await service.record_rag_event(event_data)
     assert event.id is not None
-    assert event.request_id == "test-uuid-12345"
+    assert event.request_id == req_id
     assert event.success is True
 
 
 @pytest.mark.asyncio
 async def test_record_feedback_persists_to_db(retrieval_db) -> None:
     service = MonitoringService(retrieval_db)
+    req_id = str(uuid.uuid4())
 
     # 1. Create a parent RAG Event first
     event_data = {
-        "request_id": "test-uuid-feedback",
+        "request_id": req_id,
         "query": "What is 2+2?",
         "retrieval_strategy": "dense",
         "prompt_strategy": "concise_grounded",
@@ -58,7 +61,7 @@ async def test_record_feedback_persists_to_db(retrieval_db) -> None:
 
     # 2. Add feedback
     feedback = await service.record_feedback(
-        request_id="test-uuid-feedback",
+        request_id=req_id,
         rating="positive",
         feedback_text="Very helpful!",
     )
@@ -66,3 +69,5 @@ async def test_record_feedback_persists_to_db(retrieval_db) -> None:
     assert feedback.id is not None
     assert feedback.rating == FeedbackRating.POSITIVE
     assert feedback.feedback_text == "Very helpful!"
+
+
