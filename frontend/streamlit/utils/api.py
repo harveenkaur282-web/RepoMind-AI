@@ -24,7 +24,7 @@ def get_api_timeout_seconds() -> float:
     except Exception:
         pass
 
-    return 180.0
+    return 600.0
 
 
 def get_api_base_url() -> str:

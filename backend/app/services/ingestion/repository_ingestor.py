@@ -64,7 +64,9 @@ class RepositoryIngestor:
         )
 
         self.db.add(db_repository)
-        await self.db.flush()
+        # Commit repo first so it exists in DB with INGESTING status
+        await self.db.commit()
+        await self.db.refresh(db_repository)
 
         tree_response = await self.github_client.get_repository_tree(
             owner=owner,
@@ -80,6 +82,8 @@ class RepositoryIngestor:
             raise RuntimeError("Repository tree is truncated; ingestion is incomplete.")
 
         chunker = ChunkerFactory.get("document_aware")
+
+        failed_files = []
 
         for entry in tree_entries:
             if entry.get("type") != "blob":
@@ -139,8 +143,6 @@ class RepositoryIngestor:
                 )
 
                 self.db.add(document)
-
-                # Flush so the Document receives its database ID.
                 await self.db.flush()
 
                 chunk_results = chunker.chunk_document(document)
@@ -155,7 +157,6 @@ class RepositoryIngestor:
                         strategy="document_aware",
                         metadata_json=json.dumps(chunk_result.metadata),
                     )
-
                     self.db.add(chunk)
 
                 processed_files.append(
@@ -164,23 +165,34 @@ class RepositoryIngestor:
                         content=content,
                     )
                 )
+                # Commit progressively per document so we don't lose progress on timeout!
+                await self.db.commit()
 
             except Exception as exc:
                 print(f"Error processing file {path}: {exc}")
+                failed_files.append((path, str(exc)))
+                await self.db.rollback()
                 continue
 
-        # Flush all newly created chunks before the embedding service queries them.
-        await self.db.flush()
+        if failed_files:
+            print(f"Ingestion completed with {len(failed_files)} failures:")
+            for f_path, err in failed_files:
+                print(f" - {f_path}: {err}")
 
         if self.embedding_service is not None:
-            await self.embedding_service.embed_chunks(
-                repository_id=db_repository.id,
-            )
+            try:
+                print("Generating embeddings for new chunks...")
+                await self.embedding_service.embed_chunks(
+                    repository_id=db_repository.id,
+                )
+            except Exception as exc:
+                print(f"Warning: Embedding generation failed (but documents are saved): {exc}")
 
+        # Update repository status to READY
         db_repository.status = RepositoryStatus.READY
         db_repository.last_ingested_at = datetime.now(UTC)
 
-        await self.db.flush()
+        await self.db.merge(db_repository)
         await self.db.commit()
 
         return processed_files
