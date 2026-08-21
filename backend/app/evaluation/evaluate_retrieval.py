@@ -5,7 +5,6 @@ import asyncio
 import json
 import time
 from pathlib import Path
-from unittest.mock import AsyncMock, patch
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -92,6 +91,10 @@ async def run_evaluation(
     total_latency = 0.0
     errors = 0
 
+    provider = None
+    if not simulated and strategy in ("dense", "hybrid"):
+        provider = LocalEmbeddingProvider()
+
     for sample in dataset.samples:
         start_time = time.perf_counter()
         try:
@@ -132,8 +135,7 @@ async def run_evaluation(
             else:
                 # Query embedding resolution if dense or hybrid
                 query_embedding = None
-                if strategy in ("dense", "hybrid"):
-                    provider = LocalEmbeddingProvider()
+                if provider is not None:
                     query_embedding = await provider.embed_query(sample.question)
 
                 results = await retrieval_service.search(
