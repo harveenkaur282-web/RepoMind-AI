@@ -163,14 +163,21 @@ The evaluation suite (`backend/app/evaluation/evaluate_retrieval.py`) runs autom
 2.  **Mean Reciprocal Rank (MRR@K)**: Evaluates the position of the first correct answer in the ranks:
     $$\text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{\text{rank}_i}$$
 
-### Baseline Evaluation Results (Mock baseline setup)
-Below is the baseline evaluation table compiled using local embeddings and standard QA benchmarks:
+### Real Evaluation Results (RepoMind-AI ground-truth benchmark)
+Below is the real evaluation table compiled by running 270 queries from our QA benchmark dataset directly against the ingested codebase on PostgreSQL + pgvector:
 
-| Search Strategy | Hit Rate @3 | Hit Rate @5 | MRR @3 | MRR @5 |
-| :--- | :--- | :--- | :--- | :--- |
-| **BM25 (Sparse)** | 62.4% | 71.2% | 0.514 | 0.536 |
-| **pgvector (Dense)** | 78.1% | 85.3% | 0.642 | 0.661 |
-| **Hybrid (RRF)** | **88.6%** | **93.2%** | **0.751** | **0.768** |
+| Search Strategy | K | Hit Rate@K | MRR@K | Chunk Precision | Avg Latency (ms) |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **BM25 (Sparse)** | 5 | 10.37% | 0.0287 | 100.00% | 15.00 |
+| **BM25 (Sparse)** | 10 | 21.48% | 0.0435 | 100.00% | 15.00 |
+| **pgvector (Dense)** | 5 | 40.00% | 0.2151 | 82.22% | 15.20 |
+| **pgvector (Dense)** | 10 | **55.93%** | **0.2350** | 91.67% | 15.20 |
+| **Hybrid (RRF)** | 5 | *Pending* | *Pending* | *Pending* | *Pending* |
+| **Hybrid (RRF)** | 10 | *Pending* | *Pending* | *Pending* | *Pending* |
+
+> [!NOTE]
+> Dense semantic search significantly outperforms BM25 keyword matching on code base Q&A. This is because developer questions are written in natural English, whereas code snippets use programming language syntax, making exact keyword mapping (BM25) less effective than semantic vector mappings.
+
 
 ---
 
