@@ -95,7 +95,9 @@ async def run_evaluation(
     if not simulated and strategy in ("dense", "hybrid"):
         provider = LocalEmbeddingProvider()
 
-    for sample in dataset.samples:
+    for idx, sample in enumerate(dataset.samples):
+        if idx > 0 and idx % 50 == 0:
+            print(f" -> Progress: {idx}/{total_queries} queries evaluated...")
         start_time = time.perf_counter()
         try:
             if simulated:
