@@ -185,16 +185,33 @@ Below is the baseline evaluation table compiled by running 270 queries from our 
 
 ---
 
-## System Monitoring & Logs
+## System Monitoring & Grafana
 
-### 1. Prometheus Metrics Dashboard
-A dedicated instrumentation layer tracks API performance metrics:
-*   `http_requests_total`: Counts incoming HTTP requests partitioned by endpoint, status code, and method.
-*   `http_request_duration_seconds`: A histogram tracking response latencies across the ingestion and RAG engines.
-*   `ollama_generation_duration_seconds`: Measures generation times for LLM completions.
+A dedicated instrumentation layer tracks API performance and system metrics, visualizing them on a pre-provisioned Grafana dashboard.
 
-### 2. Feedback Loop
+### 1. Provisioning the Dashboard
+To set up the Grafana PostgreSQL datasource and register the monitoring panels, run the provisioning script on your host machine:
+```bash
+# If using custom admin credentials, set the environment variable
+$env:GRAFANA_ADMIN_PASSWORD="your_custom_password"  # PowerShell
+export GRAFANA_ADMIN_PASSWORD="your_custom_password"  # Bash/Linux
+
+# Run the provisioning script
+uv run python grafana/init.py
+```
+
+### 2. Supported Dashboards
+The **RepoMind-AI Monitoring** dashboard (accessible at `http://localhost:3000/d/bfvzqom4t1on4a/repomind-ai-monitoring`) displays:
+*   **Database Statistics**: Live counts of ingested documents, total code chunks, and feedback entries.
+*   **API Diagnostics**: Request volumes, response statuses (e.g. `200 OK` vs `500 Server Error`), and endpoint distribution.
+*   **Performance Latencies**: Response times for ingestion jobs and semantic retrieval operations.
+
+### 3. Future Instrumentation (Generation Metrics)
+*   **LLM Metrics Integration**: Standardizing custom tracking for prompt-completion token counts, generation duration, and token-per-second metrics across external providers (Ollama, Groq, OpenRouter) to visualize generation latency alongside retrieval latencies.
+
+### 4. Feedback Loop
 User feedback is recorded directly via the `/api/v1/feedback` endpoint. Streamlit collects thumbs-up/down ratings and user comments, storing them in the Postgres `Feedback` table for post-evaluation query tuning.
+
 
 ---
 
