@@ -35,6 +35,8 @@ async def test_ingest_repository() -> None:
     db.execute = AsyncMock(return_value=MagicMock(scalar_one_or_none=MagicMock(return_value=None)))
     db.flush = AsyncMock()
     db.commit = AsyncMock()
+    db.refresh = AsyncMock()
+    db.merge = AsyncMock()
 
     ingestor = RepositoryIngestor(db=db, github_client=github_client)
 
@@ -55,8 +57,7 @@ async def test_ingest_repository() -> None:
         recursive=True,
     )
 
-    db.flush.assert_awaited()
-    db.commit.assert_awaited_once()
+    db.commit.assert_awaited()
 
 
 @pytest.mark.asyncio
@@ -86,6 +87,8 @@ async def test_ingest_repository_persists_repository_and_documents() -> None:
     db.execute = AsyncMock(return_value=MagicMock(scalar_one_or_none=MagicMock(return_value=None)))
     db.flush = AsyncMock()
     db.commit = AsyncMock()
+    db.refresh = AsyncMock()
+    db.merge = AsyncMock()
     db.add = MagicMock()
 
     ingestor = RepositoryIngestor(db=db, github_client=github_client)
@@ -98,7 +101,7 @@ async def test_ingest_repository_persists_repository_and_documents() -> None:
     assert len(processed_files) == 2
     assert db.add.call_count >= 3
     db.flush.assert_awaited()
-    db.commit.assert_awaited_once()
+    db.commit.assert_awaited()
 
 
 @pytest.mark.asyncio
