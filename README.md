@@ -168,15 +168,16 @@ Below is the real evaluation table compiled by running 270 queries from our QA b
 
 | Search Strategy | K | Hit Rate@K | MRR@K | Chunk Precision | Avg Latency (ms) |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **BM25 (Sparse)** | 5 | 10.37% | 0.0287 | 100.00% | 15.00 |
-| **BM25 (Sparse)** | 10 | 21.48% | 0.0435 | 100.00% | 15.00 |
-| **pgvector (Dense)** | 5 | 40.00% | 0.2151 | 82.22% | 15.20 |
+| **BM25 (Sparse)** | 5 | 10.37% | 0.0287 | **100.00%** | **15.00** |
+| **BM25 (Sparse)** | 10 | 21.48% | 0.0435 | **100.00%** | **15.00** |
+| **pgvector (Dense)** | 5 | **40.00%** | **0.2151** | 82.22% | 15.20 |
 | **pgvector (Dense)** | 10 | **55.93%** | **0.2350** | 91.67% | 15.20 |
-| **Hybrid (RRF)** | 5 | *Pending* | *Pending* | *Pending* | *Pending* |
-| **Hybrid (RRF)** | 10 | *Pending* | *Pending* | *Pending* | *Pending* |
+| **Hybrid (RRF)** | 5 | 25.19% | 0.1137 | 90.37% | 758.73 |
+| **Hybrid (RRF)** | 10 | 41.11% | 0.1354 | 96.67% | 602.54 |
 
 > [!NOTE]
-> Dense semantic search significantly outperforms BM25 keyword matching on code base Q&A. This is because developer questions are written in natural English, whereas code snippets use programming language syntax, making exact keyword mapping (BM25) less effective than semantic vector mappings.
+> Dense semantic search significantly outperforms BM25 keyword matching on codebase Q&A. This is because developer questions are written in natural English, whereas code snippets use programming language syntax, making exact keyword mapping (BM25) less effective. Furthermore, because BM25 query results are noisy for natural language queries, combining them with dense results via Reciprocal Rank Fusion (RRF) pulls down the top semantic matches, meaning dense search alone performs best.
+
 
 
 ---
