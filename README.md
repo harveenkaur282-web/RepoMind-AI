@@ -163,8 +163,8 @@ The evaluation suite (`backend/app/evaluation/evaluate_retrieval.py`) runs autom
 2.  **Mean Reciprocal Rank (MRR@K)**: Evaluates the position of the first correct answer in the ranks:
     $$\text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{\text{rank}_i}$$
 
-### Real Evaluation Results (RepoMind-AI ground-truth benchmark)
-Below is the real evaluation table compiled by running 270 queries from our QA benchmark dataset directly against the ingested codebase on PostgreSQL + pgvector:
+### Baseline Evaluation Results (RepoMind-AI ground-truth benchmark)
+Below is the baseline evaluation table compiled by running 270 queries from our QA benchmark dataset directly against the ingested codebase on PostgreSQL + pgvector without reranking or query expansion:
 
 | Search Strategy | K | Hit Rate@K | MRR@K | Chunk Precision | Avg Latency (ms) |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -175,8 +175,11 @@ Below is the real evaluation table compiled by running 270 queries from our QA b
 | **Hybrid (RRF)** | 5 | 25.19% | 0.1137 | 90.37% | 758.73 |
 | **Hybrid (RRF)** | 10 | 41.11% | 0.1354 | 96.67% | 602.54 |
 
-> [!NOTE]
-> Dense semantic search significantly outperforms BM25 keyword matching on codebase Q&A. This is because developer questions are written in natural English, whereas code snippets use programming language syntax, making exact keyword mapping (BM25) less effective. Furthermore, because BM25 query results are noisy for natural language queries, combining them with dense results via Reciprocal Rank Fusion (RRF) pulls down the top semantic matches, meaning dense search alone performs best.
+### Baseline Performance Analysis
+*   **Dense vs. BM25**: Dense semantic search significantly outperforms BM25 keyword matching on codebase Q&A. This is because developer questions are written in natural English (e.g. *"How do I initialize the ONNX engine?"*), whereas code snippets use programming language syntax (e.g. `ort.InferenceSession(...)`), making exact keyword mapping (BM25) less effective than semantic embeddings.
+*   **Hybrid RRF Degradation**: Because BM25 query results are noisy for natural language queries, combining them with dense results via Reciprocal Rank Fusion (RRF) pulls down the correct semantic matches. As a result, dense search alone yields the best baseline metrics.
+*   **Next Steps for Optimization**: To move beyond these baseline numbers, future enhancements will implement a **Cross-Encoder Reranker** (such as `bge-reranker-base`) to re-order the top retrieved candidates, and **LLM Query Expansion** to translate natural language questions into expected code symbols before search execution.
+
 
 
 
