@@ -1,9 +1,5 @@
 # RepoMind-AI
-
-> [!IMPORTANT]
-> **Please refer to the latest commit on the `main` branch for the most up-to-date documentation and code changes.**
-
-An Intelligent RAG-powered Codebase Search and Question-Answering Workspace for GitHub Repositories.
+This is a RAG-powered Codebase Search and Question-Answering Workspace for GitHub Repositories. in future, this will be extended to also answer regarding the issues/PRs,and basically act as a setup required for a newbie on any project. 
 
 ## Reproducibility Guide
 
