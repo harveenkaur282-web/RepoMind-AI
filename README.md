@@ -119,16 +119,63 @@ You can run RepoMind-AI fully containerized. It uses a local ONNX embedding mode
 
 ---
 
-## How It Works
+## System Architecture
 
 ```mermaid
-graph TD
-    A[Streamlit UI] -->|HTTP Request| B[FastAPI Backend]
-    B -->|API/Token| C[GitHub API]
-    B -->|Store Chunks & Vectors| E[PostgreSQL + pgvector]
-    B -->|Neural Reranking| R[ONNX Cross-Encoder]
-    B -->|RAG Context & Query| F[Local Ollama Server]
+graph TB
+    subgraph Client ["Frontend Layer"]
+        UI["Streamlit Workspace UI"]
+    end
+
+    subgraph API ["Async API Server (FastAPI)"]
+        Ingest["Repository Ingestion Engine"]
+        Chunker["Language-Aware Chunker"]
+        RAGRouter["RAG Query Orchestrator"]
+        LLMRouter["Multi-LLM Provider Router"]
+        Monitor["Monitoring & Metrics Service"]
+    end
+
+    subgraph Models ["Local Machine Learning Inference (ONNX)"]
+        Embedder["Local Vector Embedder<br/>(bge-base-en-v1.5)"]
+        Reranker["Neural Cross-Encoder Reranker<br/>(bge-reranker-base)"]
+    end
+
+    subgraph Storage ["Persistence & Retrieval Layer"]
+        PG[("PostgreSQL + pgvector<br/>(Vector Similarity Search)")]
+        BM25["In-Memory BM25 Index<br/>(Sparse Keyword Match)"]
+        RRF["Reciprocal Rank Fusion<br/>(Hybrid Rank Merger)"]
+        Redis[("Redis Cache")]
+    end
+
+    subgraph LLMs ["LLM Generation Providers"]
+        Ollama["Local Ollama<br/>(qwen2.5-coder:7b)"]
+        CloudLLM["Cloud LLMs<br/>(Groq / Gemini / OpenRouter)"]
+    end
+
+    subgraph Observability ["Observability Layer"]
+        Grafana["Grafana Dashboards<br/>(Latencies, Tokens & Feedback)"]
+    end
+
+    UI -->|HTTP Requests| API
+    Ingest -->|Raw Code Files| Chunker
+    Chunker -->|Text Chunks| Embedder
+    Embedder -->|768-dim Vectors| PG
+    
+    RAGRouter -->|Query Text| Embedder
+    RAGRouter -->|Dense Search| PG
+    RAGRouter -->|Sparse Search| BM25
+    PG & BM25 -->|Candidate Hits| RRF
+    RRF -->|Top Candidate Pool| Reranker
+    Reranker -->|Cross-Encoder Scores| RAGRouter
+    
+    RAGRouter -->|Context & System Prompt| LLMRouter
+    LLMRouter -->|Local Pipeline| Ollama
+    LLMRouter -->|Cloud Fallback| CloudLLM
+    
+    API -->|RAG Events & Metrics| Monitor
+    Monitor -->|Analytics Data| Grafana
 ```
+
 
 1. **Ingestion**: The system checks file modifications via Git blob SHAs to avoid re-embedding unchanged documents.
 2. **Chunking**: Code documents are split by functions and classes using language delimiters (Python, JavaScript, etc.).
