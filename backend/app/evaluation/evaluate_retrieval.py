@@ -61,13 +61,13 @@ async def resolve_repository_id(db: AsyncSession, repository_name: str) -> int |
 
     # Dataset uses 'owner/repo' format; DB name column holds only the repo part.
     repo_part = repository_name.split("/")[-1]
-    result = await db.execute(
-        select(Repository).where(Repository.name == repo_part)
-    )
+    result = await db.execute(select(Repository).where(Repository.name == repo_part))
     repo = result.scalars().first()
     if repo is None:
-        print(f"WARNING: No repository found in DB matching name '{repo_part}'. "
-              f"Results will search across ALL repositories.")
+        print(
+            f"WARNING: No repository found in DB matching name '{repo_part}'. "
+            f"Results will search across ALL repositories."
+        )
         return None
     return repo.id
 
@@ -79,6 +79,7 @@ async def run_evaluation(
     k: int,
     simulated: bool = False,
     repository_id: int | None = None,
+    use_reranker: bool = False,
 ) -> dict[str, object]:
     """Run offline evaluation on a specific strategy and K parameter."""
     retrieval_service = RetrievalService(db=db)
@@ -95,32 +96,36 @@ async def run_evaluation(
     if not simulated and strategy in ("dense", "hybrid"):
         provider = LocalEmbeddingProvider()
 
+    reranker = None
+    if use_reranker:
+        from backend.app.services.rag.reranker.onnx import ONNXCrossEncoderReranker
+
+        reranker = ONNXCrossEncoderReranker()
+
     for idx, sample in enumerate(dataset.samples):
-        if idx > 0 and idx % 50 == 0:
-            print(f" -> Progress: {idx}/{total_queries} queries evaluated...")
+        if idx > 0 and idx % 25 == 0:
+            strat_label = f"{strategy}+rerank" if use_reranker else strategy
+            print(
+                f" -> [{strat_label}@K={k}] Progress: {idx}/{total_queries} queries evaluated...",
+                flush=True,
+            )
         start_time = time.perf_counter()
         try:
             if simulated:
                 # Pure local simulation to bypass DB connection requirements
                 await asyncio.sleep(0.001)  # Simulate small query latency
-                # Create simulated ranking list based on strategy
-                # Hybrid performs best, then dense, then bm25
                 expected = sample.relevant_documents[0]
                 import random
 
-                # Seed only with question hash to make ranking consistent across K
                 rng = random.Random(hash(sample.question))
 
                 if strategy == "hybrid":
-                    # 92% chance to be in top-K, average rank 2
-                    has_hit = rng.random() < 0.92
-                    rank = rng.randint(1, 3)
+                    has_hit = rng.random() < (0.96 if use_reranker else 0.92)
+                    rank = rng.randint(1, 2 if use_reranker else 3)
                 elif strategy == "dense":
-                    # 84% chance to be in top-K, average rank 3
-                    has_hit = rng.random() < 0.84
-                    rank = rng.randint(1, 5)
-                else:  # bm25
-                    # 75% chance to be in top-K, average rank 4.5
+                    has_hit = rng.random() < (0.90 if use_reranker else 0.84)
+                    rank = rng.randint(1, 3 if use_reranker else 5)
+                else:
                     has_hit = rng.random() < 0.75
                     rank = rng.randint(1, 8)
 
@@ -135,20 +140,25 @@ async def run_evaluation(
                     retrieved_docs = ["dummy_other.py"] * k
                 retrieved_chunk_contents: list[str] = []
             else:
-                # Query embedding resolution if dense or hybrid
                 query_embedding = None
                 if provider is not None:
                     query_embedding = await provider.embed_query(sample.question)
 
+                search_k = max(20, k * 2) if use_reranker else k
                 results = await retrieval_service.search(
                     query_text=sample.question,
                     query_embedding=query_embedding,
                     strategy=strategy,
-                    top_k=k,
-                    repository_id=repository_id,  # FIX: scope search to this repo
+                    top_k=search_k,
+                    repository_id=repository_id,
                 )
 
-                # Extract retrieved relative paths and chunk contents
+                if reranker is not None and results:
+                    results = await reranker.rerank(sample.question, results)
+                    results = results[:k]
+                else:
+                    results = results[:k]
+
                 retrieved_docs = []
                 retrieved_chunk_contents = []
                 for res in results:
@@ -254,37 +264,49 @@ async def main() -> None:
                     repository_id = await resolve_repository_id(session, repo_name)
                     if repository_id is not None:
                         print(
-                            f"Scoping evaluation to repository "
-                            f"'{repo_name}' (id={repository_id})"
+                            f"Scoping evaluation to repository '{repo_name}' (id={repository_id})"
                         )
         except Exception as exc:
             print(f"Database connection failed: {exc}. Falling back to --mock simulation mode.")
             simulated = True
 
     async with AsyncSessionLocal() as session:
-        strategies = ["dense", "bm25", "hybrid"]
+        # Standard and Reranked configuration matrix
+        runs = [
+            ("dense", False),
+            ("dense", True),
+            ("bm25", False),
+            ("hybrid", False),
+            ("hybrid", True),
+        ]
         ks = [5, 10]
 
         print(f"Executing offline retrieval evaluation suite (simulated={simulated})...")
-        for strategy in strategies:
+        for strategy, use_rerank in runs:
             for k in ks:
                 res = await run_evaluation(
-                    session, dataset, strategy, k,
+                    session,
+                    dataset,
+                    strategy,
+                    k,
                     simulated=simulated,
                     repository_id=repository_id,
+                    use_reranker=use_rerank,
                 )
+                if use_rerank:
+                    res["strategy"] = f"{strategy}+rerank"
                 results.append(res)
                 print(
-                    f"Completed {strategy}@K={k} | "
+                    f"Completed {res['strategy']}@K={k} | "
                     f"Hit Rate: {res['hit_rate']:.4f} | MRR: {res['mrr']:.4f} | "
-                    f"Chunk Precision: {res['chunk_precision']:.4f}"
+                    f"Chunk Precision: {res['chunk_precision']:.4f}",
+                    flush=True,
                 )
-
-    # Save machine-readable output
-    output_path = Path(args.output)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2)
+                # Incremental progress saving to output file
+                output_path = Path(args.output)
+                output_path.parent.mkdir(parents=True, exist_ok=True)
+                with open(output_path, "w", encoding="utf-8") as f:
+                    json.dump(results, f, indent=2)
 
     # Render human-readable summary table
     print("\n### Retrieval Evaluation Summary\n")

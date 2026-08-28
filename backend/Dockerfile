@@ -1,10 +1,11 @@
 FROM python:3.12-slim
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /workspace
 
-# Install dependencies using pip directly, ignoring torch
+# Install dependencies using uv
 COPY pyproject.toml ./
-RUN pip install --no-cache-dir \
+RUN uv pip install --system \
     fastapi \
     uvicorn \
     pydantic \
@@ -30,4 +31,4 @@ COPY evaluation/ ./evaluation/
 
 EXPOSE 8000
 
-CMD ["python", "-m", "uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000", "--timeout-keep-alive", "300"]
+CMD ["uv", "run", "uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000", "--timeout-keep-alive", "300"]

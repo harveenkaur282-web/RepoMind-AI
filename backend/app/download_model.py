@@ -51,4 +51,18 @@ def download(repo, dest="backend/app/models"):
 
 
 if __name__ == "__main__":
-    download("Xenova/all-mpnet-base-v2")
+    import sys
+
+    models = (
+        sys.argv[1:]
+        if len(sys.argv) > 1
+        else [
+            "Xenova/bge-base-en-v1.5",
+            "Xenova/bge-reranker-base",
+        ]
+    )
+    for m in models:
+        try:
+            download(m)
+        except Exception as e:
+            print(f"Error downloading {m}: {e}")

@@ -49,6 +49,11 @@ select = [
     "B",
 ]
 
+[tool.ruff.lint.per-file-ignores]
+"frontend/streamlit/pages/*" = ["E402"]
+"frontend/streamlit/app.py" = ["E402"]
+
+
 [tool.pytest.ini_options]
 testpaths = ["backend/tests"]
 pythonpath = ["."]
