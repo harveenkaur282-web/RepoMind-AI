@@ -1,3 +1,9 @@
+# Environment variables (contains API keys — NEVER commit)
+.env
+
+# ONNX model weights (large binary files)
+backend/app/models/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
