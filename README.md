@@ -122,25 +122,62 @@ You can run RepoMind-AI fully containerized. It uses a local ONNX embedding mode
 ## System Architecture
 
 ```text
-┌──────────────────────────────────────────────────────────────────────────────────┐
-│                                USER INTERFACE                                    │
-│                            Streamlit Workspace UI                                │
-└────────────────────────────────────────┬─────────────────────────────────────────┘
-                                         │
-                                         ▼
-┌──────────────────────────────────────────────────────────────────────────────────┐
-│                             FASTAPI BACKEND SERVER                               │
-│            Ingestion Engine   │   RAG Orchestrator   │   Monitoring              │
-└───────┬────────────────────────────────┬─────────────────────────────────────────┘
-        │                                │
- ┌──────┴──────────────┐          ┌──────┴──────────────┐          ┌───────────────────────┐
- │ 1. INGEST & EMBED   │          │ 2. HYBRID RETRIEVAL │          │ 3. ANSWER GENERATION  │
- │                     │          │                     │          │                       │
- │ ONNX Embedder       │          │ PostgreSQL pgvector │          │ Context Assembler     │
- │ (bge-base-en-v1.5)  │  ──────▶ │ + In-Memory BM25    │  ──────▶ │                       │
- │                     │          │ Reranked via ONNX   │          │ Ollama / Groq / Gemini│
- │ Stores vectors in PG│          │ Cross-Encoder       │          │ LLM Providers         │
- └─────────────────────┘          └─────────────────────┘          └───────────────────────┘
+========================================================================================================================
+                                             REPOMIND-AI SYSTEM ARCHITECTURE
+========================================================================================================================
+
+ [ CLIENT PRESENTATION LAYER ]
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │                                           Streamlit Workspace UI                                                 │
+  │     (Repository Ingestion  *  Interactive RAG Chat  *  Side-by-Side Strategy Playground  *  Dev Console)         │
+  └────────────────────────────────────────┬─────────────────────────────────────────────────────────┘
+                                           │ HTTP REST / JSON API Calls
+                                           ▼
+ [ API & ORCHESTRATION LAYER ]
+  ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │                                        Async API Server (FastAPI)                                                │
+  │  ┌───────────────────────┐   ┌────────────────────────┐   ┌──────────────────────────┐   ┌────────────────────┐  │
+  │  │  Ingestion Router     │   │  RAG Query Router      │   │  Repository Router       │   │ Monitoring Service │  │
+  │  │  POST /ingestion/repo │   │  POST /rag/query       │   │  GET/DELETE /repos       │   │ Structlog Tracker  │  │
+  │  └───────────┬───────────┘   └───────────┬────────────┘   └──────────────────────────┘   └─────────┬──────────┘  │
+  └──────────────┼───────────────────────────┼─────────────────────────────────────────────────────────┼─────────────┘
+                 │                           │                                                         │
+       (1. Async Ingestion)         (2. Hybrid RAG Query)                                     (3. Metrics & Logs)
+                 │                           │                                                         │
+                 ▼                           ▼                                                         ▼
+ [ INGESTION PIPELINE ]          [ SEARCH & RETRIEVAL ENGINE ]                                [ OBSERVABILITY LAYER ]
+  ┌──────────────────────────┐    ┌──────────────────────────────────────────────────────┐    ┌──────────────────────┐
+  │ GitHub REST API Crawler  │    │  ┌───────────────────┐    ┌───────────────────────┐  │    │ PostgreSQL Database  │
+  │ (Git Blob SHA Check)     │    │  │ Query Rewriter    │    │ Context Assembler     │  │    │ RAG Events & Feedback│
+  └──────────────┬───────────┘    │  │ (LLM Expansion)   │    │ (XML Context Wrapper) │  │    └──────────┬───────────┘
+                 │                │  └─────────┬─────────┘    └───────────▲───────────┘  │               │
+                 ▼                │            │                          │              │               ▼
+  ┌──────────────────────────┐    │            ▼                          │              │    ┌──────────────────────┐
+  │ Language-Aware Chunker   │    │  ┌───────────────────┐                │              │    │ Grafana Dashboards   │
+  │ (AST / Structural Splits)│    │  │ Dense Search      ├────────┐       │ (Top Reranked│    │ Latencies, Tokens &  │
+  └──────────────┬───────────┘    │  │ (pgvector Cosine) │        │       │   Context)   │    │ Feedback Analytics)  │
+                 │                │  └───────────────────┘        ▼       │              │    └──────────────────────┘
+                 ▼                │                         ┌─────────────┴──────────┐   │
+ [ LOCAL ONNX INFERENCE ]         │  ┌───────────────────┐  │  Hybrid Rank Merger    │   │
+  ┌──────────────────────────┐    │  │ Sparse Search     ├──┤  (Reciprocal Rank      │   │
+  │ Local Vector Embedder    │    │  │ (In-Memory BM25)  │  │   Fusion RRF)          │   │
+  │ (bge-base-en-v1.5)       │    │  └───────────────────┘  └─────────────┬──────────┘   │
+  │ 768-dim Vector Weights   │    │                                       │              │
+  └──────────────┬───────────┘    │                                       ▼              │
+                 │                │                         ┌────────────────────────┐   │
+                 ▼                │                         │ ONNX Cross-Encoder     │   │
+ [ PERSISTENCE & STORAGE ]        │                         │ Neural Reranker        │   │
+  ┌──────────────────────────┐    │                         │ (bge-reranker-base)    │   │
+  │ PostgreSQL + pgvector    │    │                         └────────────────────────┘   │
+  │ (hnsw / ivfflat indexes) │    └──────────────────────────────────────────────────────┘
+  └──────────────────────────┘                                            │
+                                                                          │ Prompt + Context
+                                                                          ▼
+                                                          [ GENERATION PROVIDER ROUTER ]
+                                                           ┌─────────────────────────────────────────────────────────┐
+                                                           │ * Local Ollama (qwen2.5-coder:7b)                       │
+                                                           │ * Cloud Fallback (Groq / Gemini / OpenRouter)           │
+                                                           └─────────────────────────────────────────────────────────┘
 ```
 
 
