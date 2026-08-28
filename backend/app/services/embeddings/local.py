@@ -14,7 +14,7 @@ from backend.app.services.embeddings.base import EmbeddingProvider
 logger = logging.getLogger(__name__)
 
 _BASE_DIR = Path(__file__).resolve().parents[4]
-_MODEL_PATH = _BASE_DIR / "backend/app/models/Xenova/all-mpnet-base-v2"
+_MODEL_PATH = _BASE_DIR / "backend/app/models/Xenova/bge-base-en-v1.5"
 _DIMENSIONS = 768
 
 
@@ -31,11 +31,11 @@ def _load_onnx_embedder():
 class LocalEmbeddingProvider(EmbeddingProvider):
     """Local CPU embedding provider using pure ONNX Runtime and tokenizers.
 
-    Bypasses PyTorch, HuggingFace transformers, and Optimum wrappers entirely
-    following the custom Zoomcamp implementation.
+    Bypasses PyTorch, HuggingFace transformers, and Optimum wrappers entirely.
+    Uses BAAI BGE-base-en-v1.5 768-dimensional model.
     """
 
-    MODEL_NAME = "Xenova/all-mpnet-base-v2"
+    MODEL_NAME = "Xenova/bge-base-en-v1.5"
     DIMENSIONS = _DIMENSIONS
 
     @property
@@ -53,12 +53,14 @@ class LocalEmbeddingProvider(EmbeddingProvider):
         if not texts:
             return []
 
+        prefixed_texts = texts
+
         session, tokenizer, input_names = _load_onnx_embedder()
         loop = asyncio.get_event_loop()
 
         def _encode() -> list[list[float]]:
             tokenizer.enable_padding()
-            encoded = tokenizer.encode_batch(texts)
+            encoded = tokenizer.encode_batch(prefixed_texts)
 
             feed = {}
             if "input_ids" in input_names:

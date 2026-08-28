@@ -24,8 +24,8 @@ class Settings(BaseSettings):
     openrouter_api_key: str | None = None
     openrouter_model: str = "meta-llama/llama-3-8b-instruct:free"
 
-    embedding_model: str = "BAAI/bge-small-en-v1.5"
-    reranker_model: str = "BAAI/bge-reranker-base"
+    embedding_model: str = "Xenova/bge-base-en-v1.5"
+    reranker_model: str = "Xenova/bge-reranker-base"
     reranker_enabled: bool = False
     reranker_limit: int = 20
 

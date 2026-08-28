@@ -178,7 +178,14 @@ class RetrievalService:
             # Run CPU-heavy BM25 scoring in a thread executor so we don't block
             # the asyncio event loop (which keeps the DB connection alive/idle).
             def _run_bm25() -> list[RetrievalResult]:
-                corpus = [tokenize(chunk.content) for chunk in chunks]
+                corpus = [
+                    tokenize(
+                        f"path: {chunk.document.path if chunk.document else ''} "
+                        f"title: {chunk.document.title if chunk.document else ''}\n"
+                        f"{chunk.content}"
+                    )
+                    for chunk in chunks
+                ]
                 bm25 = BM25(corpus)
                 query_tokens = tokenize(query_text)
                 scored: list[RetrievalResult] = []
@@ -218,18 +225,20 @@ class RetrievalService:
             )
 
             rrf_scores: dict[int, dict[str, Any]] = {}
+            dense_weight = 0.6
+            sparse_weight = 0.4
 
             for rank, res in enumerate(dense_results, start=1):
                 chunk_id = res.chunk.id
                 if chunk_id not in rrf_scores:
                     rrf_scores[chunk_id] = {"chunk": res.chunk, "score": 0.0}
-                rrf_scores[chunk_id]["score"] += 1.0 / (60.0 + rank)
+                rrf_scores[chunk_id]["score"] += dense_weight * (1.0 / (60.0 + rank))
 
             for rank, res in enumerate(bm25_results, start=1):
                 chunk_id = res.chunk.id
                 if chunk_id not in rrf_scores:
                     rrf_scores[chunk_id] = {"chunk": res.chunk, "score": 0.0}
-                rrf_scores[chunk_id]["score"] += 1.0 / (60.0 + rank)
+                rrf_scores[chunk_id]["score"] += sparse_weight * (1.0 / (60.0 + rank))
 
             sorted_rrf = sorted(rrf_scores.values(), key=lambda x: x["score"], reverse=True)
 

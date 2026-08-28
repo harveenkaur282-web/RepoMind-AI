@@ -35,6 +35,7 @@ class RAGEvent(Base):
     output_tokens: Mapped[int | None] = mapped_column(Integer, nullable=True)
     total_tokens: Mapped[int | None] = mapped_column(Integer, nullable=True)
     answer_length: Mapped[int] = mapped_column(Integer)
+    answer: Mapped[str | None] = mapped_column(Text, nullable=True)
     success: Mapped[bool] = mapped_column(Boolean, default=True)
     error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
     repository_id: Mapped[int | None] = mapped_column(

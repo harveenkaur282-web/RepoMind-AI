@@ -1,5 +1,6 @@
-import pytest
 import uuid
+
+import pytest
 
 from backend.app.db.models.monitoring import FeedbackRating
 from backend.app.services.monitoring.service import MonitoringService
@@ -69,5 +70,3 @@ async def test_record_feedback_persists_to_db(retrieval_db) -> None:
     assert feedback.id is not None
     assert feedback.rating == FeedbackRating.POSITIVE
     assert feedback.feedback_text == "Very helpful!"
-
-
