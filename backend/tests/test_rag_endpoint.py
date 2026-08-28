@@ -25,6 +25,7 @@ async def test_query_rag_endpoint_success() -> None:
         strategy="hybrid",
         total_chunks=1,
         total_tokens=10,
+        results=None,
     )
 
     # 2. Mock RAGService and VoyageEmbeddingProvider

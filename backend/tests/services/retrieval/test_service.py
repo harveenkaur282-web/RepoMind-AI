@@ -275,19 +275,19 @@ async def test_search_hybrid_strategy_applies_rrf() -> None:
         top_k=3,
     )
 
-    # RRF rank 1: chunk_both (rank 1 dense, rank 2 bm25) -> score: 1/(60+1) + 1/(60+2) = ~0.0325
-    # RRF rank 2: chunk_bm25 (rank 1 bm25) -> score: 1/(60+1) = ~0.0164
-    # RRF rank 3: chunk_dense (rank 2 dense) -> score: 1/(60+2) = ~0.0161
+    # RRF rank 1: chunk_both (rank 1 dense, rank 1 bm25) -> score: 0.6/(60+1) + 0.4/(60+1) = 1.0/61
+    # RRF rank 2: chunk_dense (rank 2 dense) -> score: 0.6/(60+2)
+    # RRF rank 3: chunk_bm25 (rank 2 bm25) -> score: 0.4/(60+2)
 
     assert len(results) == 3
     assert results[0].chunk is chunk_both
-    assert results[1].chunk is chunk_bm25
-    assert results[2].chunk is chunk_dense
+    assert results[1].chunk is chunk_dense
+    assert results[2].chunk is chunk_bm25
 
     # Verify RRF scores
-    assert abs(results[0].score - (1.0 / 61.0 + 1.0 / 62.0)) < 1e-6
-    assert abs(results[1].score - (1.0 / 61.0)) < 1e-6
-    assert abs(results[2].score - (1.0 / 62.0)) < 1e-6
+    assert abs(results[0].score - (0.6 / 61.0 + 0.4 / 62.0)) < 1e-6
+    assert abs(results[1].score - (0.6 / 62.0)) < 1e-6
+    assert abs(results[2].score - (0.4 / 61.0)) < 1e-6
 
 
 @pytest.mark.asyncio

@@ -12,7 +12,7 @@ from backend.app.services.embeddings.local import LocalEmbeddingProvider
 from backend.app.services.generation.factory import get_llm_provider
 from backend.app.services.monitoring.service import MonitoringService
 from backend.app.services.rag.prompts import get_system_prompt
-from backend.app.services.rag.reranker import LocalCrossEncoderReranker
+from backend.app.services.rag.reranker import ONNXCrossEncoderReranker
 from backend.app.services.rag.rewriter import QueryRewriter
 from backend.app.services.rag.service import RAGResponse, RAGService
 from backend.app.services.retrieval.context import ContextAssembler
@@ -31,6 +31,8 @@ async def query_rag(
     rewrite_query: bool = False,
     rerank: bool | None = None,
     rerank_limit: int | None = None,
+    llm_provider: str | None = None,
+    llm_model: str | None = None,
     db: Annotated[AsyncSession, Depends(get_db)] = None,
     background_tasks: BackgroundTasks = None,
 ) -> dict[str, object]:
@@ -38,15 +40,35 @@ async def query_rag(
     request_id = str(uuid4())
     settings = get_settings()
 
+    # Apply optional LLM provider overrides dynamically
+    override_settings = settings
+    if llm_provider or llm_model:
+        from backend.app.core.config import Settings
+
+        override_settings = Settings(**settings.model_dump())
+        if llm_provider:
+            override_settings.llm_provider = llm_provider
+        if llm_model:
+            provider_key = llm_provider if llm_provider else settings.llm_provider
+            provider_key = provider_key.lower()
+            if provider_key == "groq":
+                override_settings.groq_model = llm_model
+            elif provider_key == "gemini":
+                override_settings.gemini_model = llm_model
+            elif provider_key == "openrouter":
+                override_settings.openrouter_model = llm_model
+            elif provider_key == "ollama":
+                override_settings.ollama_model = llm_model
+
     try:
-        llm_provider = get_llm_provider(settings)
+        llm_provider_instance = get_llm_provider(override_settings)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc
 
     search_query = None
     if rewrite_query:
         try:
-            rewriter = QueryRewriter(llm_provider)
+            rewriter = QueryRewriter(llm_provider_instance)
             search_query = await rewriter.rewrite(query)
         except Exception as exc:
             raise HTTPException(
@@ -84,12 +106,12 @@ async def query_rag(
 
     reranker = None
     if use_rerank:
-        reranker = LocalCrossEncoderReranker(model_name=settings.reranker_model)
+        reranker = ONNXCrossEncoderReranker(model_name=settings.reranker_model)
 
     rag_service = RAGService(
         retrieval_service=retrieval_service,
         context_assembler=context_assembler,
-        llm_provider=llm_provider,
+        llm_provider=llm_provider_instance,
         reranker=reranker,
     )
 
@@ -125,12 +147,16 @@ async def query_rag(
         # Record failure event in background
         if background_tasks:
             llm_model = (
-                settings.groq_model
-                if settings.llm_provider == "groq"
+                override_settings.groq_model
+                if override_settings.llm_provider == "groq"
                 else (
-                    settings.gemini_model
-                    if settings.llm_provider == "gemini"
-                    else settings.ollama_model
+                    override_settings.gemini_model
+                    if override_settings.llm_provider == "gemini"
+                    else (
+                        override_settings.openrouter_model
+                        if override_settings.llm_provider == "openrouter"
+                        else override_settings.ollama_model
+                    )
                 )
             )
             error_data = {
@@ -144,7 +170,7 @@ async def query_rag(
                 "retrieved_chunk_count": 0,
                 "assembled_chunk_count": 0,
                 "context_token_count": 0,
-                "llm_provider": settings.llm_provider,
+                "llm_provider": override_settings.llm_provider,
                 "llm_model": llm_model,
                 "answer_length": 0,
                 "success": False,
@@ -180,12 +206,16 @@ async def query_rag(
         total_toks = response.total_tokens
 
         llm_model = (
-            settings.groq_model
-            if settings.llm_provider == "groq"
+            override_settings.groq_model
+            if override_settings.llm_provider == "groq"
             else (
-                settings.gemini_model
-                if settings.llm_provider == "gemini"
-                else settings.ollama_model
+                override_settings.gemini_model
+                if override_settings.llm_provider == "gemini"
+                else (
+                    override_settings.openrouter_model
+                    if override_settings.llm_provider == "openrouter"
+                    else override_settings.ollama_model
+                )
             )
         )
         event_data = {
@@ -199,12 +229,13 @@ async def query_rag(
             "retrieved_chunk_count": retrieved_count,
             "assembled_chunk_count": assembled_count,
             "context_token_count": total_toks,
-            "llm_provider": settings.llm_provider,
+            "llm_provider": override_settings.llm_provider,
             "llm_model": llm_model,
             "input_tokens": input_tokens,
             "output_tokens": output_tokens,
             "total_tokens": total_toks,
             "answer_length": len(response.answer),
+            "answer": response.answer,
             "success": True,
             "repository_id": repository_id,
         }
@@ -283,3 +314,38 @@ async def compare_retrieval(
             results[strategy] = [{"error": str(exc)}]
 
     return results
+
+
+@router.get("/history")
+async def get_history(
+    repository_id: int | None = None,
+    limit: int = 20,
+    db: Annotated[AsyncSession, Depends(get_db)] = None,
+) -> list[dict[str, object]]:
+    from sqlalchemy import select
+
+    from backend.app.db.models.monitoring import RAGEvent
+
+    query_select = (
+        select(RAGEvent)
+        .where(RAGEvent.success.is_(True))
+        .order_by(RAGEvent.created_at.desc())
+        .limit(limit)
+    )
+
+    if repository_id is not None:
+        query_select = query_select.where(RAGEvent.repository_id == repository_id)
+
+    result = await db.execute(query_select)
+    events = result.scalars().all()
+
+    return [
+        {
+            "request_id": event.request_id,
+            "query": event.query,
+            "answer": event.answer,
+            "created_at": event.created_at.isoformat() if event.created_at else None,
+            "strategy": event.retrieval_strategy,
+        }
+        for event in events
+    ]
