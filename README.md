@@ -121,51 +121,26 @@ You can run RepoMind-AI fully containerized. It uses a local ONNX embedding mode
 
 ## System Architecture
 
-```mermaid
-flowchart LR
-    subgraph Client ["User Interface"]
-        UI["Streamlit Workspace UI"]
-    end
-
-    subgraph API ["FastAPI Backend Server"]
-        Ingest["Repository Ingestion Engine"]
-        RAGRouter["RAG Query Orchestrator"]
-        Monitor["Structlog Monitoring"]
-    end
-
-    subgraph Storage ["Persistence & Search"]
-        PG[("PostgreSQL + pgvector<br/>(768-dim Vectors)")]
-        BM25["In-Memory BM25<br/>(Sparse Keyword Match)"]
-    end
-
-    subgraph ML ["Local ML Inference (ONNX)"]
-        Embedder["ONNX Embedder<br/>(bge-base-en-v1.5)"]
-        Reranker["ONNX Cross-Encoder Reranker<br/>(bge-reranker-base)"]
-    end
-
-    subgraph LLM ["LLM Generation"]
-        Ollama["Local Ollama<br/>(qwen2.5-coder:7b)"]
-        Cloud["Cloud Providers<br/>(Groq / Gemini)"]
-    end
-
-    subgraph Obs ["Observability"]
-        Grafana["Grafana Dashboard"]
-    end
-
-    %% Ingestion Flow
-    UI -->|1. Code Files| Ingest
-    Ingest -->|2. Parse & Embed| Embedder
-    Embedder -->|3. Store Vectors| PG
-
-    %% Query Flow
-    UI -->|4. Query| RAGRouter
-    RAGRouter -->|5. Hybrid Search| PG & BM25
-    PG & BM25 -->|6. Candidate Chunks| Reranker
-    Reranker -->|7. Top-K Reranked Context| RAGRouter
-    RAGRouter -->|8. Prompt + Context| Ollama & Cloud
-
-    %% Metrics
-    API -->|Metrics & Logs| Monitor --> Grafana
+```text
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                                USER INTERFACE                                    │
+│                            Streamlit Workspace UI                                │
+└────────────────────────────────────────┬─────────────────────────────────────────┘
+                                         │
+                                         ▼
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                             FASTAPI BACKEND SERVER                               │
+│            Ingestion Engine   │   RAG Orchestrator   │   Monitoring              │
+└───────┬────────────────────────────────┬─────────────────────────────────────────┘
+        │                                │
+ ┌──────┴──────────────┐          ┌──────┴──────────────┐          ┌───────────────────────┐
+ │ 1. INGEST & EMBED   │          │ 2. HYBRID RETRIEVAL │          │ 3. ANSWER GENERATION  │
+ │                     │          │                     │          │                       │
+ │ ONNX Embedder       │          │ PostgreSQL pgvector │          │ Context Assembler     │
+ │ (bge-base-en-v1.5)  │  ──────▶ │ + In-Memory BM25    │  ──────▶ │                       │
+ │                     │          │ Reranked via ONNX   │          │ Ollama / Groq / Gemini│
+ │ Stores vectors in PG│          │ Cross-Encoder       │          │ LLM Providers         │
+ └─────────────────────┘          └─────────────────────┘          └───────────────────────┘
 ```
 
 
