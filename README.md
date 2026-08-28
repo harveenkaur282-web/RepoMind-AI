@@ -207,23 +207,16 @@ We evaluated our retrieval strategies using a 270-query ground-truth dataset aga
 
 
 ### Evaluation Insights
-* **Neural Reranking Gain**: Adding `Xenova/bge-reranker-base` cross-encoder reranking boosts Hit Rate@10 from **59.63% to 69.26%** (+9.63% absolute gain) and MRR@10 from **0.2287 to 0.2657** (+16.2% relative gain).
-* **Dense vs. Sparse**: Dense vector search (`Xenova/bge-base-en-v1.5`) significantly outperforms BM25 keyword matching for natural language code search.
+* **Neural Reranking Gain**: Adding `Xenova/bge-reranker-base` cross-encoder reranking boosts Hit Rate@10 from **59.63% to 69.26%** (+9.63% absolute gain) 
+* **Dense vs. Sparse**: Dense vector search (`Xenova/bge-base-en-v1.5`) significantly outperforms BM25 keyword matching as well as hybrid approach (done using rrf) 
 * **Low Latency Option**: Un-reranked `dense` search at $K=10$ provides a fast 145ms response time while maintaining a 59.63% hit rate.
 
----
-
-## Future Work & Architectural Roadmap
-
-For detailed future improvements, including Tree-Sitter AST semantic chunking, hierarchical parent-child indexing, code-specialized vector models, and HyDE query synthesis, please refer to our dedicated roadmap document:
-
-* [Future Work & Architectural Roadmap](FUTURE_WORK.md)
 
 ---
 
 ## Monitoring with Grafana
 
-RepoMind-AI includes a pre-configured Grafana monitoring dashboard tracking database size, endpoint latencies, errors, and user feedback ratings.
+This project includes a pre-configured Grafana monitoring dashboard tracking database size, endpoint latencies, errors, and user feedback ratings.
 
 ### Setting Up Monitoring
 Run the dynamic provisioning script from your host machine to set up the datasource and dashboard:
