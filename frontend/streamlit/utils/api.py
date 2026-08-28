@@ -100,6 +100,8 @@ def query_rag(
     query: str,
     strategy: str = "dense",
     repository_id: int | None = None,
+    llm_provider: str | None = None,
+    llm_model: str | None = None,
 ) -> dict[str, Any]:
     params = {
         "query": query,
@@ -107,6 +109,10 @@ def query_rag(
     }
     if repository_id is not None:
         params["repository_id"] = repository_id
+    if llm_provider is not None:
+        params["llm_provider"] = llm_provider
+    if llm_model is not None:
+        params["llm_model"] = llm_model
 
     return _request_json(
         "POST",
@@ -163,3 +169,16 @@ def submit_feedback(
             "feedback_text": feedback_text,
         },
     )
+
+
+def get_chat_history(
+    repository_id: int | None = None,
+    limit: int = 20,
+) -> list[dict[str, Any]]:
+    params = {"limit": limit}
+    if repository_id is not None:
+        params["repository_id"] = repository_id
+    data = _request_json("GET", "/api/v1/rag/history", params=params)
+    if not isinstance(data, list):
+        raise RuntimeError("The chat history endpoint returned a non-list response.")
+    return data

@@ -1,4 +1,8 @@
+import sys
 from pathlib import Path
+
+# Ensure frontend directory is in sys.path for relative component/util imports
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import streamlit as st
 

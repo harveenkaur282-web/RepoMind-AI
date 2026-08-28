@@ -1,10 +1,18 @@
 from __future__ import annotations
 
+import sys
+from pathlib import Path
 from urllib.parse import urlparse
 
+_frontend_dir = str(Path(__file__).resolve().parents[1])
+if _frontend_dir not in sys.path:
+    sys.path.insert(0, _frontend_dir)
+
 import streamlit as st
-from components.ingestion_result import render_ingestion_result
-from utils.api import ingest_repository
+from components.ingestion_result import (
+    render_ingestion_result,  # type: ignore[import-not-found, import-untyped]
+)
+from utils.api import ingest_repository  # type: ignore[import-not-found, import-untyped]
 
 
 def parse_repository_url(raw_url: str) -> tuple[str, str]:

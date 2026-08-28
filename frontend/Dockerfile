@@ -1,10 +1,11 @@
 FROM python:3.12-slim
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /workspace
 
-# Install dependencies using pip directly
+# Install dependencies using uv
 COPY pyproject.toml ./
-RUN pip install --no-cache-dir \
+RUN uv pip install --system \
     streamlit \
     requests \
     pandas \
@@ -17,4 +18,4 @@ COPY frontend/ ./frontend/
 
 EXPOSE 8501
 
-CMD ["python", "-m", "streamlit", "run", "frontend/streamlit/app.py", "--server.port", "8501", "--server.address", "0.0.0.0"]
+CMD ["uv", "run", "streamlit", "run", "frontend/streamlit/app.py", "--server.port", "8501", "--server.address", "0.0.0.0"]

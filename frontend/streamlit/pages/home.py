@@ -1,8 +1,15 @@
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
+# Add frontend/streamlit directory to sys.path for IDE and runtime module resolution
+_frontend_dir = str(Path(__file__).resolve().parents[1])
+if _frontend_dir not in sys.path:
+    sys.path.insert(0, _frontend_dir)
+
 import streamlit as st
-from components.status_badge import render_status_badge
-from utils.api import get_health
+from utils.api import get_health  # type: ignore[import-not-found, import-untyped]
 
 
 def render_health_summary() -> None:
@@ -46,8 +53,6 @@ def render_health_summary() -> None:
 def main() -> None:
     st.title("RepoMind AI")
     st.caption("Repository ingestion and persistence for GitHub codebases.")
-
-    render_status_badge("Current stage: Repository Ingestion", "warning")
 
     st.markdown(
         """

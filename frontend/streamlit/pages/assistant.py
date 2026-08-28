@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import streamlit as st
-from utils.api import get_repositories, query_rag, submit_feedback
+from utils.api import get_chat_history, get_repositories, query_rag, submit_feedback
 
 
 def main() -> None:
@@ -40,6 +40,52 @@ def main() -> None:
             "hybrid uses reciprocal rank fusion."
         ),
     )
+
+    llm_provider = st.sidebar.selectbox(
+        "LLM Provider",
+        ["groq", "gemini", "openrouter", "ollama"],
+        index=0,
+        help="Select which LLM provider to route queries to.",
+    )
+
+    provider_models = {
+        "groq": ["openai/gpt-oss-20b"],
+        "gemini": ["gemini-1.5-flash", "gemini-1.5-pro"],
+        "openrouter": ["meta-llama/llama-3-8b-instruct:free", "mistralai/mistral-7b-instruct:free"],
+        "ollama": ["qwen2.5-coder:7b", "llama3:8b", "mistral:7b"],
+    }
+
+    selected_model = st.sidebar.selectbox(
+        "LLM Model",
+        provider_models[llm_provider],
+        index=0,
+        help="Select the specific LLM model version.",
+    )
+
+    st.sidebar.markdown("---")
+    st.sidebar.subheader("Past Conversations")
+    try:
+        past_events = get_chat_history(repository_id=selected_repo["id"], limit=10)
+        if past_events:
+            for idx_evt, evt in enumerate(past_events):
+                lbl = evt["query"]
+                if len(lbl) > 28:
+                    lbl = lbl[:25] + "..."
+                if st.sidebar.button(lbl, key=f"hist_{evt['request_id']}_{idx_evt}"):
+                    st.session_state.messages = [
+                        {"role": "user", "content": evt["query"]},
+                        {
+                            "role": "assistant",
+                            "content": evt["answer"] or "No answer found.",
+                            "request_id": evt["request_id"],
+                            "chunks": [],
+                        },
+                    ]
+                    st.rerun()
+        else:
+            st.sidebar.write("No past queries recorded.")
+    except Exception as e:
+        st.sidebar.error(f"Error loading history: {e}")
 
     # 3. Chat Session Initialization
     if "messages" not in st.session_state:
@@ -123,6 +169,8 @@ def main() -> None:
                         query=user_query,
                         strategy=strategy,
                         repository_id=selected_repo["id"],
+                        llm_provider=llm_provider,
+                        llm_model=selected_model,
                     )
                     answer = result["answer"]
                     chunks = result.get("chunks", [])
