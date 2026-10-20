@@ -22,11 +22,6 @@ Large repositories can be difficult to navigate when onboarding or debugging. Re
 > **Evaluation note:** Benchmark numbers should be reported alongside the dataset version, retrieval metric, and baseline. This README does not claim a performance improvement without a reproducible comparison.
 
 ---
-A workspace for indexing, searching, and discussing GitHub codebases using RAG (Retrieval-Augmented Generation). It runs entirely locally inside Docker containers. In the future, this will extend to indexing issues and pull requests, serving as an onboarding tool for developers joining new projects.
-
-![RepoMind-AI Assistant Interface](screenshots/Screenshot%202026-08-21%20092156.png)
-
----
 
 ## How to Run the Project
 
