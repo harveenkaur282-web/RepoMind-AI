@@ -1,5 +1,27 @@
-# RepoMind-AI
+# RepoMind AI
 
+> **A local-first RAG workspace for understanding unfamiliar codebases.** Ingest a GitHub repository, retrieve relevant code and documentation, and ask grounded questions through a chat interface.
+
+**Focus areas:** retrieval-augmented generation · hybrid search · reranking · local inference · API/backend engineering
+
+![RepoMind-AI Assistant Interface](screenshots/Screenshot%202026-08-21%20092156.png)
+
+## Why this project
+
+Large repositories can be difficult to navigate when onboarding or debugging. RepoMind explores a codebase-question-answering workflow that combines sparse and dense retrieval, a neural cross-encoder reranker, and an LLM response layer. The project is designed to run locally with Docker and supports local ONNX embedding/reranking models.
+
+## Key engineering components
+
+- **Retrieval:** BM25 and dense vector search backed by PostgreSQL/pgvector.
+- **Reranking:** ONNX cross-encoder reranking to refine retrieved chunks.
+- **Generation:** provider abstraction for Ollama and API-backed LLMs.
+- **Backend/UI:** FastAPI services and a Streamlit workspace.
+- **Operations:** Docker Compose, database migrations, structured event tracking, and Grafana configuration.
+- **Evaluation:** offline evaluation datasets and benchmark scripts are included in the repository; see `evaluation/` and `backend/app/evaluation/`.
+
+> **Evaluation note:** Benchmark numbers should be reported alongside the dataset version, retrieval metric, and baseline. This README does not claim a performance improvement without a reproducible comparison.
+
+---
 A workspace for indexing, searching, and discussing GitHub codebases using RAG (Retrieval-Augmented Generation). It runs entirely locally inside Docker containers. In the future, this will extend to indexing issues and pull requests, serving as an onboarding tool for developers joining new projects.
 
 ![RepoMind-AI Assistant Interface](screenshots/Screenshot%202026-08-21%20092156.png)
